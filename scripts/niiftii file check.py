@@ -33,5 +33,7 @@ def batch_check_nii_files(root_dir):
 
 
 if __name__ == "__main__":
-    DATA_DIR = r"E:\MRI_LOWMEM\train_nifti"  # путь к твоей папке с NIfTI
+    # Get project root directory (two levels up from current file)
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    DATA_DIR = os.path.join(PROJECT_ROOT, "dataset", "nifti_files")  # Update path as needed
     batch_check_nii_files(DATA_DIR)

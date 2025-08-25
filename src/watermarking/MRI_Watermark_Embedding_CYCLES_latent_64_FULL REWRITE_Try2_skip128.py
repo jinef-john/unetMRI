@@ -17,14 +17,17 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import cv2
 
 # ============ CONFIG ============
-DATA_ROOT = r"E:\MRI_LOWMEM\tiny_mri"
+# Get project root directory (three levels up from current file)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+DATA_ROOT = os.path.join(PROJECT_ROOT, "dataset", "brain-tumor-mri-dataset", "Training")
 CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
-SAL_ROOT = r"E:\MRI_LOWMEM\saliency_cycles_latent_skip64"
-WM_ROOT  = r"E:\MRI_LOWMEM\watermarked_cycles_latent_skip64"
-CSV_ROOT = r"E:\MRI_LOWMEM\metrics_logs_latent_skip64"
-C1_PATH = r"E:\MRI_LOWMEM\C1-B3-CBAM\MRI-C1EfficientNet_B3_CBAM.pth"
-NPZ_ROOT = r"E:\MRI_LOWMEM\MRI-NPZ_latent_skip64"
-ENCODER_PTH = r"E:\MRI_LOWMEM\Encoder_latent_64\autoencoder_epoch7.pth"
+SAL_ROOT = os.path.join(PROJECT_ROOT, "output", "saliency_cycles_latent_skip64")
+WM_ROOT  = os.path.join(PROJECT_ROOT, "output", "watermarked_cycles_latent_skip64")
+CSV_ROOT = os.path.join(PROJECT_ROOT, "output", "metrics_logs_latent_skip64")
+C1_PATH = os.path.join(PROJECT_ROOT, "pt models", "MRI-C1EfficientNet_B3_CBAM.pth")
+NPZ_ROOT = os.path.join(PROJECT_ROOT, "output", "MRI-NPZ_latent_skip64")
+ENCODER_PTH = os.path.join(PROJECT_ROOT, "pt models", "autoencoder_epoch7.pth")
 
 
 CYCLES = 5

@@ -1,0 +1,91 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Data files (typically large)
+*.npz
+*.npy
+*.h5
+*.hdf5
+*.pt
+# *.pth
+*.ckpt
+
+# Dataset directories (adjust as needed)
+data/
+datasets/
+AFHQ/
+MRI_data/
+ASCC_data/
+
+# Output directories
+outputs/
+results/
+logs/
+checkpoints/
+models/
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Configuration files with sensitive data
+config.ini
+
+# Temporary files
+*.tmp
+*.temp
+
+# Large model files
+*.bin
+*.safetensors
+
+# Wandb logs (if using)
+wandb/
+
+# Original unorganized files (keep for reference but don't track changes)
+"Py Code Files"/
+
+dataset/

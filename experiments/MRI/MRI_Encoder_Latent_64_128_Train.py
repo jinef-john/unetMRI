@@ -204,9 +204,12 @@ def pick_free_gpu():
 
 # --- Точка входа ---
 def main():
-    DATA_DIR = r'E:\MRI_LOWMEM\Training'
-    MODEL_SAVE_DIR = r'E:\MRI_LOWMEM\Encoder_latent_64_128'
-    LOG_FILE = r'E:\MRI_LOWMEM\Encoder_latent_64_128\trainlog.csv'
+    # Get project root directory (two levels up from current file)
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    
+    DATA_DIR = os.path.join(PROJECT_ROOT, "dataset", "brain-tumor-mri-dataset", "Training")
+    MODEL_SAVE_DIR = os.path.join(PROJECT_ROOT, "pt models")
+    LOG_FILE = os.path.join(PROJECT_ROOT, "output", "encoder_latent_64_128_trainlog.csv")
     os.makedirs(MODEL_SAVE_DIR, exist_ok=True)
 
     # Your bottleneck and skip shapes

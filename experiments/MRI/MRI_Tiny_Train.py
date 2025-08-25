@@ -3,8 +3,11 @@ import shutil
 import random
 
 # Source and target root directories
-SRC_DIR = r'E:\MRI_LOWMEM\Training'
-DST_DIR = r'E:\MRI_LOWMEM\tiny_mri'
+# Get project root directory (two levels up from current file)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+SRC_DIR = os.path.join(PROJECT_ROOT, "dataset", "brain-tumor-mri-dataset", "Training")
+DST_DIR = os.path.join(PROJECT_ROOT, "dataset", "tiny_mri")
 IMAGES_PER_CLASS = 500
 
 # Create target root directory if it doesn't exist

@@ -34,14 +34,16 @@ from MRI_Encoder_Latent_64_Train import Encoder, Decoder
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 device= "cuda" if torch.cuda.is_available() else "cpu"
 
+# Get project root directory (two levels up from current file)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-TRAIN_ROOT   = r"E:\MRI_LOWMEM\Training"
-U2NET_ROOT   = r"E:\MRI_LOWMEM\u2net_masks_png"
-WM_ROOT      = r"E:\MRI_LOWMEM\watermarked_cycles_latent_skip64_U2NET_AUTOTUNE"
-CSV_ROOT     = r"E:\MRI_LOWMEM\csv_logs"
-C1_PATH      = r"E:\MRI_LOWMEM\C1-B3-CBAM\MRI-C1EfficientNet_B3_CBAM.pth"
-AE_PATH      = r"E:\MRI_LOWMEM\Encoder_latent_64\autoencoder_epoch7.pth"
-C2_SAVE_DIR  = r"E:\MRI_LOWMEM\C2-B3"
+TRAIN_ROOT   = os.path.join(PROJECT_ROOT, "dataset", "brain-tumor-mri-dataset", "Training")
+U2NET_ROOT   = os.path.join(PROJECT_ROOT, "output", "u2net_masks_png")
+WM_ROOT      = os.path.join(PROJECT_ROOT, "output", "watermarked_cycles_latent_skip64_U2NET_AUTOTUNE")
+CSV_ROOT     = os.path.join(PROJECT_ROOT, "output", "csv_logs")
+C1_PATH      = os.path.join(PROJECT_ROOT, "pt models", "MRI-C1EfficientNet_B3_CBAM.pth")
+AE_PATH      = os.path.join(PROJECT_ROOT, "pt models", "autoencoder_epoch7.pth")
+C2_SAVE_DIR  = os.path.join(PROJECT_ROOT, "output", "C2-B3")
 
 os.makedirs(WM_ROOT, exist_ok=True)
 os.makedirs(CSV_ROOT, exist_ok=True)

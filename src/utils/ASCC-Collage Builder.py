@@ -32,10 +32,13 @@ def pick_free_gpu():
 pick_free_gpu()
 
 # ===== ПУТИ =====
-NPZ_DIR = r'E:\ASCC_LOWMEM\ASCC-NPZ_latent_skip64_skip128'
-IMG_DIR = r'E:\ASCC_LOWMEM\Printing'
-COLLAGE_DIR = r'E:\ASCC_LOWMEM\Collages_latent_skip64_skip128'
-MODEL_PATH = r'E:\ASCC_LOWMEM\Encoder_latent_64_128\autoencoder_epoch10.pth'  # Подставь свой путь
+# Get project root directory (three levels up from current file)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+NPZ_DIR = os.path.join(PROJECT_ROOT, "output", "ASCC-NPZ_latent_skip64_skip128")
+IMG_DIR = os.path.join(PROJECT_ROOT, "output", "Printing")
+COLLAGE_DIR = os.path.join(PROJECT_ROOT, "output", "Collages_latent_skip64_skip128")
+MODEL_PATH = os.path.join(PROJECT_ROOT, "pt models", "autoencoder_epoch7.pth")  # Updated path
 
 box_height = 32  # txt height
 row1_labels = ["Original", "Recon"]

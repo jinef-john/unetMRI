@@ -15,12 +15,15 @@ from torch.amp import autocast
 
 
 if __name__ == '__main__':
+    # Get project root directory (two levels up from current file)
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    
     # --------- Paths ---------
-    TRAIN_DIR = r'E:\MRI_LOWMEM\Training'
-    VAL_DIR = r'E:\MRI_LOWMEM\Testing'
-    MODEL_PATH = r'E:\MRI_LOWMEM\C1-B3-MRI\MRI-C1EfficientNet_B3.pth'
-    LOG_CSV = r'E:\MRI_LOWMEM\C1-B3-MRI\classifierEFN_B3_train_log.csv'
-    CONF_MAT_DIR = r'E:\MRI_LOWMEM\C1-B3-MRI\confusion_matrices'
+    TRAIN_DIR = os.path.join(PROJECT_ROOT, "dataset", "brain-tumor-mri-dataset", "Training")
+    VAL_DIR = os.path.join(PROJECT_ROOT, "dataset", "brain-tumor-mri-dataset", "Testing")
+    MODEL_PATH = os.path.join(PROJECT_ROOT, "pt models", "MRI-C1EfficientNet_B3.pth")
+    LOG_CSV = os.path.join(PROJECT_ROOT, "output", "classifierEFN_B3_train_log.csv")
+    CONF_MAT_DIR = os.path.join(PROJECT_ROOT, "output", "confusion_matrices")
 
     os.makedirs(CONF_MAT_DIR, exist_ok=True)
     os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)

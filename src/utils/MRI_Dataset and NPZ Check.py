@@ -2,8 +2,11 @@ import os
 from PIL import Image
 import numpy as np
 
-IMG_ROOT = r'E:\MRI_LOWMEM\tiny_mri'
-NPZ_ROOT = r'E:\MRI_LOWMEM\MRI-NPZ_latent_skip64_skip128'
+# Get project root directory (three levels up from current file)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+IMG_ROOT = os.path.join(PROJECT_ROOT, "dataset", "brain-tumor-mri-dataset", "Training")
+NPZ_ROOT = os.path.join(PROJECT_ROOT, "output", "MRI-NPZ_latent_skip64_skip128")
 EXTS = ('.png', '.jpg', '.jpeg')
 
 # Собираем все изображения по классам
@@ -88,7 +91,7 @@ for e in errors:
 
 # Если хочешь — можешь выгрузить всё в .csv для Excel анализа
 import csv
-csv_path = r'E:\MRI_LOWMEM\shape_stats_report.csv'
+csv_path = os.path.join(PROJECT_ROOT, "output", "shape_stats_report.csv")
 with open(csv_path, 'w', newline='') as f:
     writer = csv.DictWriter(f, fieldnames=['class','image','mode','shape','channels','size','npz_info','npz_path'])
     writer.writeheader()

@@ -21,15 +21,18 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+# Get project root directory (three levels up from current file)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 # Source paths (update as needed):
-DATA_ROOT = r"E:\MRI_LOWMEM\tiny_mri"
+DATA_ROOT = os.path.join(PROJECT_ROOT, "dataset", "brain-tumor-mri-dataset", "Training")
 CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 
 # Output folders (as requested):
-SAL_ROOT = r"E:\MRI_LOWMEM\saliency_cycles_latent_skip64_skip128"
-WM_ROOT  = r"E:\MRI_LOWMEM\watermarked_cycles_latent_skip64_skip128"
-CSV_ROOT = r"E:\MRI_LOWMEM\metrics_logs_latent_skip64_skip128"
-C1_PATH = r"E:\MRI_LOWMEM\C1-B3-CBAM\MRI-C1EfficientNet_B3_CBAM.pth"
+SAL_ROOT = os.path.join(PROJECT_ROOT, "output", "saliency_cycles_latent_skip64_skip128")
+WM_ROOT  = os.path.join(PROJECT_ROOT, "output", "watermarked_cycles_latent_skip64_skip128")
+CSV_ROOT = os.path.join(PROJECT_ROOT, "output", "metrics_logs_latent_skip64_skip128")
+C1_PATH = os.path.join(PROJECT_ROOT, "pt models", "MRI-C1EfficientNet_B3_CBAM.pth")
 
 os.makedirs(SAL_ROOT, exist_ok=True)
 os.makedirs(WM_ROOT, exist_ok=True)
@@ -198,7 +201,8 @@ def main():
 
     c2 = EfficientNetB3_CBAM_Bottleneck(num_classes=4).to(device)
 
-    state_dict = torch.load(r'E:\MRI_LOWMEM\Encoder_latent_64_128\autoencoder_epoch9.pth', map_location=device)
+    encoder_path = os.path.join(PROJECT_ROOT, "pt models", "autoencoder_epoch7.pth")
+    state_dict = torch.load(encoder_path, map_location=device)
     # Извлечь только параметры decoder, убрать префикс
     decoder_state = {k.replace('decoder.', ''): v for k, v in state_dict.items() if k.startswith('decoder.')}
     decoder = Decoder().to(device)
