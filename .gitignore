@@ -89,3 +89,5 @@ wandb/
 "Py Code Files"/
 
 dataset/
+
+output/

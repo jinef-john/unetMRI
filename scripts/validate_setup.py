@@ -93,21 +93,6 @@ def test_dataset():
     print(f"  📈 Total images: {total_images}")
     return total_images > 0
 
-def load_model_with_dataparallel_fix(model, checkpoint_path, device):
-    """Load model weights, handling DataParallel 'module.' prefix"""
-    state_dict = torch.load(checkpoint_path, map_location=device)
-    
-    # Check if state_dict has 'module.' prefix (from DataParallel)
-    if any(key.startswith('module.') for key in state_dict.keys()):
-        # Remove 'module.' prefix
-        new_state_dict = {}
-        for key, value in state_dict.items():
-            new_key = key.replace('module.', '') if key.startswith('module.') else key
-            new_state_dict[new_key] = value
-        state_dict = new_state_dict
-    
-    return model.load_state_dict(state_dict, strict=False)
-
 def test_model_loading():
     """Test if models can be loaded successfully"""
     print("\\n🔧 Testing model loading...")
@@ -121,8 +106,8 @@ def test_model_loading():
         c1_path = os.path.join(PROJECT_ROOT, "pt models", "MRI-C1EfficientNet_B3_CBAM.pth")
         
         if os.path.exists(c1_path):
-            c1 = EfficientNetB3_CBAM_Bottleneck(num_classes=4, in_channels=1)
-            load_model_with_dataparallel_fix(c1, c1_path, device)
+            c1 = EfficientNetB3_CBAM_Bottleneck(num_classes=4)
+            c1.load_state_dict(torch.load(c1_path, map_location=device))
             c1.eval()
             print("  ✅ C1 (EfficientNet-B3 CBAM) loaded successfully")
         else:
@@ -197,8 +182,8 @@ def test_forward_pass():
         c1_path = os.path.join(PROJECT_ROOT, "pt models", "MRI-C1EfficientNet_B3_CBAM.pth")
         if os.path.exists(c1_path):
             from efficientnet_cbam import EfficientNetB3_CBAM_Bottleneck
-            c1 = EfficientNetB3_CBAM_Bottleneck(num_classes=4, in_channels=1).to(device)
-            load_model_with_dataparallel_fix(c1, c1_path, device)
+            c1 = EfficientNetB3_CBAM_Bottleneck(num_classes=4).to(device)
+            c1.load_state_dict(torch.load(c1_path, map_location=device))
             c1.eval()
             
             with torch.no_grad():
