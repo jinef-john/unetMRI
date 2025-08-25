@@ -50,8 +50,8 @@ CLASS2IDX = {c:i for i,c in enumerate(CLASSES)}
 
 # Training hyperparams
 EPOCHS = 50
-BATCH_SIZE = 32  
-NUM_WORKERS = 10  
+BATCH_SIZE = 8  
+NUM_WORKERS = 8  
 AMP = True
 
 # Critical: Adversarial training stages
