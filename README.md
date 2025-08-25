@@ -51,5 +51,3 @@ uNETMRI/
 4. Run training scripts
 
 ## Note
-
-This codebase has been reorganized from the original flat structure. Original files are preserved in `Py Code Files/` directory.
