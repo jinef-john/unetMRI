@@ -1,9 +1,11 @@
 import torch
+import os
 
 # Путь к твоему pth-файлу
-import torch
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+pth_path = os.path.join(project_root, 'pt models', 'autoencoder_epoch7.pth')
 
-pth = torch.load('E:/MRI_LOWMEM/Encoder_latent_64_128/autoencoder_epoch9.pth', map_location='cpu')
+pth = torch.load(pth_path, map_location='cpu')
 for k, v in pth.items():
     if 'conv1.weight' in k:
         print(f"{k}: shape={v.shape}")
@@ -15,8 +17,7 @@ for k, v in pth.items():
             print(f"Неожиданное число каналов: {v.shape[1]}")
         break
 
-
-pth_path = r"E:\MRI_LOWMEM\Encoder_latent_64_128\autoencoder_epoch9.pth"
+pth_path = os.path.join(project_root, 'pt models', 'autoencoder_epoch7.pth')
 
 state_dict = torch.load(pth_path, map_location="cpu")
 

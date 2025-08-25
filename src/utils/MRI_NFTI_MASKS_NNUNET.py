@@ -6,10 +6,13 @@ import cv2
 from tqdm import tqdm
 from nnunet.inference.predict import predict
 
+# Get project root directory (three levels up from current file)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 # Пути к данным
-NIFTI_DIR = r"E:\MRI_LOWMEM\train_nifti"
-ORIG_IMG_ROOT = r"E:\MRI_LOWMEM\Training"
-MASK_OUTPUT_DIR = r"E:\MRI_LOWMEM\resultant_Masks"
+NIFTI_DIR = os.path.join(PROJECT_ROOT, "dataset", "nifti_files")  # Update path as needed
+ORIG_IMG_ROOT = os.path.join(PROJECT_ROOT, "dataset", "brain-tumor-mri-dataset", "Training")
+MASK_OUTPUT_DIR = os.path.join(PROJECT_ROOT, "output", "resultant_Masks")
 OVERLAY_OUTPUT_DIR = os.path.join(MASK_OUTPUT_DIR, "overlays")
 
 CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
@@ -18,8 +21,8 @@ CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 def run_nnunet_inference():
     print("Запускаем nnU-Net inference...")
     predict(
-        input_folder=r"E:/MRI_LOWMEM/train_nifti",
-        output_folder=r"E:/MRI_LOWMEM/resultant_Masks",
+        input_folder=os.path.join(PROJECT_ROOT, "dataset", "nifti_files"),  # Update path as needed
+        output_folder=os.path.join(PROJECT_ROOT, "output", "resultant_Masks"),
         task='001',
         model='3d_fullres',
         folds=[0],

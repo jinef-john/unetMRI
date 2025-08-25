@@ -6,9 +6,12 @@ import numpy as np
 from PIL import Image
 
 # Пути — подставь свои
-INPUT_DIR = r"E:\MRI_LOWMEM\train_nifti"
-OUTPUT_DIR = r"E:\MRI_LOWMEM\hd_bet_masks"
-VISUALIZATION_DIR = r"E:\MRI_LOWMEM\hd_bet_masks_jpeg"  # Папка для jpeg масок
+# Get project root directory (three levels up from current file)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+INPUT_DIR = os.path.join(PROJECT_ROOT, "dataset", "nifti_files")  # Update path as needed
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, "output", "hd_bet_masks")
+VISUALIZATION_DIR = os.path.join(PROJECT_ROOT, "output", "hd_bet_masks_jpeg")  # Папка для jpeg масок
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(VISUALIZATION_DIR, exist_ok=True)
 

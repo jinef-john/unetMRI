@@ -20,14 +20,17 @@ except ImportError:
     from pytorch_msssim import ssim  # альтернативный вариант, если стоит pytorch-msssim
 
 # ============ CONFIG ============
-DATA_ROOT = r"E:\ASCC_LOWMEM\tiny_ascc"
+# Get project root directory (three levels up from current file)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+DATA_ROOT = os.path.join(PROJECT_ROOT, "dataset", "ASCC_dataset")  # Update this to your ASCC dataset path
 CLASSES = ['Extrude', 'Idle', 'Inner_wall_Anomalous', 'Inner_wall_Normal', 'Outer_wall_Anomalous', 'Outer_wall_Normal', 'Print']
-#SAL_ROOT = r"E:\MRI_LOWMEM\saliency_cycles_latent_skip64_skip128"
-WM_ROOT  = r"E:\ASCC_LOWMEM\watermarked_cycles_latent_skip64_skip128"
-CSV_ROOT = r"E:\ASCC_LOWMEM\metrics_logs_latent_skip64_skip128"
-C1_PATH = r"E:\ASCC_LOWMEM\C1-B3-CBAM\ASCC-C1EfficientNet_B3_CBAM.pth"
-#NPZ_ROOT = r"E:\MRI_LOWMEM\MRI-NPZ_latent_skip64_skip128"
-ENCODER_PTH = r"E:\MRI_LOWMEM\Encoder_latent_64_128\autoencoder_epoch8.pth"
+#SAL_ROOT = os.path.join(PROJECT_ROOT, "output", "saliency_cycles_latent_skip64_skip128")
+WM_ROOT  = os.path.join(PROJECT_ROOT, "output", "watermarked_cycles_latent_skip64_skip128")
+CSV_ROOT = os.path.join(PROJECT_ROOT, "output", "metrics_logs_latent_skip64_skip128")
+C1_PATH = os.path.join(PROJECT_ROOT, "pt models", "MRI-C1EfficientNet_B3_CBAM.pth")  # Update if you have ASCC-specific model
+#NPZ_ROOT = os.path.join(PROJECT_ROOT, "output", "MRI-NPZ_latent_skip64_skip128")
+ENCODER_PTH = os.path.join(PROJECT_ROOT, "pt models", "autoencoder_epoch7.pth")
 
 
 CYCLES = 5

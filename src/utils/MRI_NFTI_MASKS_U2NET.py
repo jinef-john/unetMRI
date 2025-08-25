@@ -7,13 +7,15 @@ import torch
 from torchvision import transforms
 from tqdm import tqdm
 
+# Get project root directory (three levels up from current file)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Пути — подставь свои
-MODEL_PATH = r"E:\MRI_LOWMEM\U2Net\u2net.pth"
-NIFTI_DIR = r"E:\MRI_LOWMEM\train_nifti"
-ORIG_IMG_ROOT = r"E:\MRI_LOWMEM\Training"
-MASK_PNG_ROOT = r"E:\MRI_LOWMEM\u2net_masks_png"
-OVERLAY_ROOT = r"E:\MRI_LOWMEM\u2net_masks_overlay"
+MODEL_PATH = os.path.join(PROJECT_ROOT, "pt models", "u2net.pth")  # Update if you have this model
+NIFTI_DIR = os.path.join(PROJECT_ROOT, "dataset", "nifti_files")  # Update path as needed
+ORIG_IMG_ROOT = os.path.join(PROJECT_ROOT, "dataset", "brain-tumor-mri-dataset", "Training")
+MASK_PNG_ROOT = os.path.join(PROJECT_ROOT, "output", "u2net_masks_png")
+OVERLAY_ROOT = os.path.join(PROJECT_ROOT, "output", "u2net_masks_overlay")
 
 CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 
