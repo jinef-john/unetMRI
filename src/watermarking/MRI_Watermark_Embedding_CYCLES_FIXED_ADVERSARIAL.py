@@ -50,8 +50,8 @@ CLASS2IDX = {c:i for i,c in enumerate(CLASSES)}
 
 # Training hyperparams
 EPOCHS = 50
-BATCH_SIZE = 16  # Increased for L40S (46GB VRAM) - was 4 
-NUM_WORKERS = 8  # Increased for faster data loading
+BATCH_SIZE = 32  
+NUM_WORKERS = 10  
 AMP = True
 
 # Critical: Adversarial training stages
