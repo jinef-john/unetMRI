@@ -50,21 +50,9 @@ class CBAM(nn.Module):
 
 # === EfficientNet-B6 + CBAM (после блока 5) ===
 class EfficientNetB3_CBAM_Bottleneck(nn.Module):
-    def __init__(self, num_classes=3, in_channels=1):
+    def __init__(self, num_classes=3):
         super().__init__()
         self.base = efficientnet_b3(weights=None, num_classes=num_classes)
-        
-        # Modify first conv layer for 1-channel input if needed
-        if in_channels != 3:
-            first_conv = self.base.features[0][0]  # First conv layer
-            self.base.features[0][0] = nn.Conv2d(
-                in_channels, first_conv.out_channels, 
-                kernel_size=first_conv.kernel_size,
-                stride=first_conv.stride, 
-                padding=first_conv.padding,
-                bias=first_conv.bias is not None
-            )
-        
         self.features1 = nn.Sequential(*list(self.base.features.children())[:6])   # до блока 5 (output: [B,200,32,32])
         self.cbam = CBAM(136)
         self.features2 = nn.Sequential(*list(self.base.features.children())[6:])
