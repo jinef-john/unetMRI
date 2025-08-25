@@ -1,0 +1,61 @@
+# Configuration Template
+# Copy this file and adjust paths for your environment
+
+[PATHS]
+# Base data directories - adjust these for your system
+AFHQ_BASE = "/path/to/AFHQ"
+MRI_BASE = "/path/to/MRI_data"
+ASCC_BASE = "/path/to/ASCC_data"
+
+# Output directories
+MODELS_OUTPUT = "/path/to/saved_models"
+LOGS_OUTPUT = "/path/to/logs"
+RESULTS_OUTPUT = "/path/to/results"
+
+[TRAINING]
+# Default training parameters
+BATCH_SIZE = 32
+LEARNING_RATE = 2e-4
+NUM_EPOCHS = 10
+TARGET_ACCURACY = 0.9875
+
+# Hardware
+USE_CUDA = true
+MULTI_GPU = false
+NUM_WORKERS = 4
+
+[MRI_CONFIG]
+# MRI-specific configuration
+NUM_CLASSES = 4
+IMG_SIZE = 512
+GRAYSCALE = true
+CLASSES = ["glioma", "meningioma", "notumor", "pituitary"]
+
+[AFHQ_CONFIG]
+# AFHQ-specific configuration  
+NUM_CLASSES = 3
+IMG_SIZE = 512
+GRAYSCALE = false
+CLASSES = ["cat", "dog", "wild"]
+
+[ASCC_CONFIG]
+# ASCC-specific configuration
+NUM_CLASSES = 7
+IMG_SIZE_HEIGHT = 120
+IMG_SIZE_WIDTH = 160
+GRAYSCALE = true
+CLASSES = ["Extrude", "Idle", "Inner_wall_Anomalous", "Inner_wall_Normal", "Outer_wall_Anomalous", "Outer_wall_Normal", "Print"]
+
+[WATERMARKING]
+# Watermarking parameters
+CYCLES = 5
+EPOCHS_PER_CYCLE = 5
+PAYLOAD_DIM = 256
+SEED_DIM = 32
+LATENT_SHAPE = [1024, 32, 32]
+SKIP64_SHAPE = [512, 64, 64]  
+SKIP128_SHAPE = [256, 128, 128]
+
+# Early stopping thresholds
+EARLY_STOP_C2_CLEAN = 0.20
+EARLY_STOP_C2_WM = 0.90
