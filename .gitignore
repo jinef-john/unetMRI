@@ -44,7 +44,7 @@ ENV/
 *.h5
 *.hdf5
 *.pt
-*.pth
+# *.pth
 *.ckpt
 
 # Dataset directories (adjust as needed)
