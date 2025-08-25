@@ -208,16 +208,66 @@ class WatermarkGeneratorMiniUNet(nn.Module):
 
 # ---------------- Model Loading Functions ----------------
 def load_c1_frozen():
-    """Load frozen C1 classifier with CBAM"""
-    c1 = EfficientNetB3_CBAM_Bottleneck(num_classes=len(CLASSES))
-    c1.load_state_dict(torch.load(C1_PATH, map_location=DEVICE))
+    """Load frozen C1 model"""
+    print("Loading C1 model...")
+    # Create model with 1-channel input for MRI (grayscale)
+    c1 = EfficientNetB3_CBAM_Bottleneck(num_classes=len(CLASSES)).to(DEVICE)
+    
+    # Modify first layer to accept 1-channel input instead of 3-channel
+    first_conv = c1.base.features[0][0]
+    c1.base.features[0][0] = nn.Conv2d(1, first_conv.out_channels, 
+                                       kernel_size=first_conv.kernel_size,
+                                       stride=first_conv.stride, 
+                                       padding=first_conv.padding, 
+                                       bias=False)
+    
+    # Modify features1 first layer as well
+    first_conv1 = c1.features1[0][0]
+    c1.features1[0][0] = nn.Conv2d(1, first_conv1.out_channels, 
+                                   kernel_size=first_conv1.kernel_size,
+                                   stride=first_conv1.stride, 
+                                   padding=first_conv1.padding, 
+                                   bias=False)
+    
+    # Move to device after architecture modification
+    c1 = c1.to(DEVICE)
+    
+    # Load state dict and handle DataParallel prefix mismatch
+    checkpoint = torch.load(C1_PATH, map_location=DEVICE)
+    if isinstance(checkpoint, dict) and 'state_dict' in checkpoint:
+        state_dict = checkpoint['state_dict']
+    else:
+        state_dict = checkpoint
+    
+    # Remove 'module.' prefix if present (from DataParallel training)
+    if any(key.startswith('module.') for key in state_dict.keys()):
+        new_state_dict = {}
+        for key, value in state_dict.items():
+            new_key = key.replace('module.', '') if key.startswith('module.') else key
+            new_state_dict[new_key] = value
+        state_dict = new_state_dict
+    
+    c1.load_state_dict(state_dict)
     c1.eval()
-    c1.requires_grad_(False)
-    return c1.to(DEVICE)
+    for param in c1.parameters():
+        param.requires_grad = False
+    return c1
 
 def load_autoencoder_frozen():
     """Load frozen autoencoder"""
-    state_dict = torch.load(AE_PATH, map_location=DEVICE)
+    checkpoint = torch.load(AE_PATH, map_location=DEVICE)
+    if isinstance(checkpoint, dict) and 'state_dict' in checkpoint:
+        state_dict = checkpoint['state_dict']
+    else:
+        state_dict = checkpoint
+    
+    # Remove 'module.' prefix if present (from DataParallel training)
+    if any(key.startswith('module.') for key in state_dict.keys()):
+        new_state_dict = {}
+        for key, value in state_dict.items():
+            new_key = key.replace('module.', '') if key.startswith('module.') else key
+            new_state_dict[new_key] = value
+        state_dict = new_state_dict
     
     encoder = Encoder()
     decoder = Decoder()
@@ -238,6 +288,23 @@ def load_autoencoder_frozen():
 def build_c2():
     """Build C2 classifier for adversarial training"""
     c2 = EfficientNetB3_CBAM_Bottleneck(num_classes=len(CLASSES))
+    
+    # Modify first layer to accept 1-channel input instead of 3-channel
+    first_conv = c2.base.features[0][0]
+    c2.base.features[0][0] = nn.Conv2d(1, first_conv.out_channels, 
+                                       kernel_size=first_conv.kernel_size,
+                                       stride=first_conv.stride, 
+                                       padding=first_conv.padding, 
+                                       bias=False)
+    
+    # Modify features1 first layer as well
+    first_conv1 = c2.features1[0][0]
+    c2.features1[0][0] = nn.Conv2d(1, first_conv1.out_channels, 
+                                   kernel_size=first_conv1.kernel_size,
+                                   stride=first_conv1.stride, 
+                                   padding=first_conv1.padding, 
+                                   bias=False)
+    
     return c2.to(DEVICE)
 
 # ---------------- U2Net Mask Loading ----------------
