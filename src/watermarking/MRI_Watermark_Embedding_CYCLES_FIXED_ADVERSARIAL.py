@@ -207,10 +207,25 @@ class WatermarkGeneratorMiniUNet(nn.Module):
         return wm_latent, wm_skip
 
 # ---------------- Model Loading Functions ----------------
+def load_model_with_dataparallel_fix(model, checkpoint_path, device):
+    """Load model weights, handling DataParallel 'module.' prefix"""
+    state_dict = torch.load(checkpoint_path, map_location=device)
+    
+    # Check if state_dict has 'module.' prefix (from DataParallel)
+    if any(key.startswith('module.') for key in state_dict.keys()):
+        # Remove 'module.' prefix
+        new_state_dict = {}
+        for key, value in state_dict.items():
+            new_key = key.replace('module.', '') if key.startswith('module.') else key
+            new_state_dict[new_key] = value
+        state_dict = new_state_dict
+    
+    return model.load_state_dict(state_dict, strict=False)
+
 def load_c1_frozen():
     """Load frozen C1 classifier with CBAM"""
-    c1 = EfficientNetB3_CBAM_Bottleneck(num_classes=len(CLASSES))
-    c1.load_state_dict(torch.load(C1_PATH, map_location=DEVICE))
+    c1 = EfficientNetB3_CBAM_Bottleneck(num_classes=len(CLASSES), in_channels=1)
+    load_model_with_dataparallel_fix(c1, C1_PATH, DEVICE)
     c1.eval()
     c1.requires_grad_(False)
     return c1.to(DEVICE)
@@ -237,7 +252,7 @@ def load_autoencoder_frozen():
 
 def build_c2():
     """Build C2 classifier for adversarial training"""
-    c2 = EfficientNetB3_CBAM_Bottleneck(num_classes=len(CLASSES))
+    c2 = EfficientNetB3_CBAM_Bottleneck(num_classes=len(CLASSES), in_channels=1)
     return c2.to(DEVICE)
 
 # ---------------- U2Net Mask Loading ----------------
