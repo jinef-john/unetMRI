@@ -49,8 +49,8 @@ CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 CLASS2IDX = {c:i for i,c in enumerate(CLASSES)}
 
 # Training hyperparams
-EPOCHS = 50
-BATCH_SIZE = 8  
+EPOCHS = 10
+BATCH_SIZE = 8  # Increased from 8 to 16
 NUM_WORKERS = 8  
 AMP = True
 
