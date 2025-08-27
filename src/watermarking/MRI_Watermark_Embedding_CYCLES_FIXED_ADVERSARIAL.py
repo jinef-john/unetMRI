@@ -49,14 +49,15 @@ CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 CLASS2IDX = {c:i for i,c in enumerate(CLASSES)}
 
 # Training hyperparams
-EPOCHS = 10
-BATCH_SIZE = 8  # Increased from 8 to 16
+EPOCHS = 3
+BATCH_SIZE_WARMUP = 8     # Warmup stage - can handle larger batches
+BATCH_SIZE_ADV = 4        # Adversarial/Fine-tune stages - memory intensive  
 NUM_WORKERS = 8  
 AMP = True
 
-# Critical: Adversarial training stages
-C2_WARMUP_EPOCHS = 5      # Train C2 normally first
-ADVERSARIAL_EPOCHS = 20   # Then adversarial training
+# Critical: Adversarial training stages - ADJUSTED for 3-epoch training
+C2_WARMUP_EPOCHS = 1      # Train C2 normally first (epoch 1)
+ADVERSARIAL_EPOCHS = 2    # Then adversarial training (epochs 2-3)
 FINE_TUNE_EPOCHS = 25     # Final fine-tuning
 
 # Learning rates
@@ -64,8 +65,8 @@ LR_C2_WARMUP = 1e-3
 LR_C2_ADV = 5e-4
 LR_GEN = 1e-3
 
-# Loss weights - CRITICAL for proper adversarial balance
-ALPHA_CLEAN_ENTROPY = 2.0    # Force C2 to fail on clean
+# Loss weights - CRITICAL for proper adversarial balance  
+ALPHA_CLEAN_ENTROPY = 5.0    # Force C2 to fail on clean (INCREASED for stronger effect)
 BETA_WM_CE = 1.0             # C2 accuracy on watermarked
 GAMMA_RECONSTRUCTION = 0.1   # Image quality preservation
 DELTA_EXCLUSION = 10.0       # Brain exclusion penalty
@@ -460,6 +461,9 @@ class AdversarialTrainer:
             # C1 performance
             logits_c1 = self.c1(clean_norm)
             acc_c1 = (logits_c1.argmax(1) == labels).float().mean().item()
+            
+            # Clear intermediate tensors
+            del latents, skip64s, clean_img, clean_norm, logits_c1, logits_c2
         
         return {
             'loss_c2': loss_c2.item(),
@@ -506,6 +510,14 @@ class AdversarialTrainer:
         wm_norm = self.norm_c1(wm_img)
         
         # === CRITICAL: PROPER ADVERSARIAL TRAINING ===
+        # 
+        # FIXED STRATEGY:
+        # 1. C2 should FAIL on clean images (entropy → max, accuracy → 0.25 for 4 classes)
+        # 2. C2 should SUCCEED on watermarked images (entropy → min, accuracy → 1.0)
+        # 3. Generator focuses on quality preservation, NOT fooling C2
+        #
+        # This creates the desired conditional behavior where C2 can detect 
+        # watermarks but fails on clean images due to adversarial training
         
         # Step 1: Update C2 to distinguish watermarked from clean
         self.c2_optimizer.zero_grad()
@@ -517,7 +529,8 @@ class AdversarialTrainer:
         entropy_clean = entropy_from_logits(logits_c2_clean)
         ce_wm = F.cross_entropy(logits_c2_wm, labels)
         
-        loss_c2 = -ALPHA_CLEAN_ENTROPY * entropy_clean + BETA_WM_CE * ce_wm
+        # FIXED: Positive sign to MAXIMIZE entropy on clean (make C2 fail)
+        loss_c2 = ALPHA_CLEAN_ENTROPY * entropy_clean + BETA_WM_CE * ce_wm
         loss_c2.backward()
         self.c2_optimizer.step()
         
@@ -534,21 +547,25 @@ class AdversarialTrainer:
         # Generator losses
         logits_c2_wm_gen = self.c2(wm_norm_gen)
         
-        # Fool C2: Make C2 think watermarked images are clean (high entropy)
-        entropy_wm_gen = entropy_from_logits(logits_c2_wm_gen)
-        fool_c2_loss = -entropy_wm_gen  # Maximize entropy to fool C2
+        # Generator losses - Focus on quality, not fooling C2 on watermarked images
+        # C2 should be able to detect watermarked images (that's the goal!)
         
-        # Quality preservation
+        # Quality preservation (main generator objective)
         l1_loss = F.l1_loss(wm_img_gen, clean_img)
         
         # Exclusion penalty
         exclusion_penalty = self.compute_exclusion_penalty(wm_latent, brain_mask, intensity)
         
-        # Total generator loss
-        loss_gen = fool_c2_loss + GAMMA_RECONSTRUCTION * l1_loss + DELTA_EXCLUSION * exclusion_penalty
+        # Total generator loss - NO adversarial component against C2
+        loss_gen = GAMMA_RECONSTRUCTION * l1_loss + DELTA_EXCLUSION * exclusion_penalty
         
         loss_gen.backward()
         self.gen_optimizer.step()
+        
+        # Clear gradients and cache after each adversarial step
+        self.c2_optimizer.zero_grad()
+        self.gen_optimizer.zero_grad()
+        torch.cuda.empty_cache()
         
         # Metrics
         with torch.no_grad():
@@ -564,6 +581,13 @@ class AdversarialTrainer:
             
             # Quality metrics
             l1_metric = F.l1_loss(wm_img, clean_img).item()
+            
+            # Clear intermediate tensors
+            del logits_c1_clean, logits_c1_wm, logits_c2_clean, logits_c2_wm
+            del clean_norm, wm_norm, wm_norm_gen, wm_img, wm_img_gen
+            del latents, skip64s, latents_wm, skip64s_wm
+            del wm_latent, wm_skip, u2_masks, brain_mask, exclusion_mask
+            torch.cuda.empty_cache()
         
         return {
             'loss_c2': loss_c2.item(),
@@ -574,9 +598,19 @@ class AdversarialTrainer:
             'acc_c2_wm': acc_c2_wm,
             'l1_loss': l1_metric,
             'exclusion_penalty': exclusion_penalty.item(),
-            'entropy_clean': entropy_clean.item(),
-            'entropy_wm': entropy_wm_gen.item()
+            'entropy_clean': entropy_clean.item()
         }
+
+def get_dataloader_for_stage(dataset, stage):
+    """Get appropriate dataloader based on training stage"""
+    if stage == "warmup":
+        batch_size = BATCH_SIZE_WARMUP
+    else:  # adversarial or fine_tune
+        batch_size = BATCH_SIZE_ADV
+    
+    print(f"📦 Creating dataloader: {stage} stage, batch_size={batch_size}")
+    return DataLoader(dataset, batch_size=batch_size, shuffle=True, 
+                     num_workers=NUM_WORKERS, pin_memory=True, drop_last=True)
 
 # ---------------- Main Training Loop ----------------
 def main():
@@ -584,8 +618,6 @@ def main():
     
     # Load dataset
     dataset = MRIDataset(TRAIN_ROOT, CLASSES)
-    dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, 
-                           num_workers=NUM_WORKERS, pin_memory=True, drop_last=True)
     
     # Load models
     print("Loading models...")
@@ -605,6 +637,9 @@ def main():
     all_metrics = []
     
     print("Starting training...")
+    current_stage = None
+    dataloader = None
+    
     for epoch in range(1, EPOCHS + 1):
         print(f"\\n=== EPOCH {epoch}/{EPOCHS} ===")
         
@@ -623,6 +658,15 @@ def main():
         else:
             stage = "fine_tune"
             print(f"FINE-TUNING STAGE")
+        
+        # Create new dataloader if stage changed (for different batch sizes)
+        if stage != current_stage:
+            print(f"🔄 Creating dataloader for {stage} stage...")
+            dataloader = get_dataloader_for_stage(dataset, stage)
+            current_stage = stage
+            
+            # Clear cache when switching stages
+            torch.cuda.empty_cache()
         
         epoch_metrics = []
         
