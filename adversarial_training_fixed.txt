@@ -1,0 +1,3031 @@
+Starting Fixed Adversarial Watermarking Training...
+Loading models...
+Loading C1 model...
+/teamspace/studios/this_studio/unetMRI/src/watermarking/MRI_Watermark_Embedding_CYCLES_FIXED_ADVERSARIAL.py:237: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(C1_PATH, map_location=DEVICE)
+/teamspace/studios/this_studio/unetMRI/src/watermarking/MRI_Watermark_Embedding_CYCLES_FIXED_ADVERSARIAL.py:259: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(AE_PATH, map_location=DEVICE)
+Starting training...
+\n=== EPOCH 1/10 ===
+WARMUP STAGE - Training C2 normally
+🔄 Creating dataloader for warmup stage...
+📦 Creating dataloader: warmup stage, batch_size=8
+Batch 0: C2_loss=3.147, C1_acc=1.000, C2_acc=0.125
+Batch 10: C2_loss=6.097, C1_acc=1.000, C2_acc=0.250
+Batch 20: C2_loss=12.144, C1_acc=1.000, C2_acc=0.125
+Batch 30: C2_loss=3.693, C1_acc=1.000, C2_acc=0.250
+Batch 40: C2_loss=1.689, C1_acc=1.000, C2_acc=0.250
+Batch 50: C2_loss=1.774, C1_acc=1.000, C2_acc=0.250
+Batch 60: C2_loss=3.131, C1_acc=1.000, C2_acc=0.250
+Batch 70: C2_loss=1.679, C1_acc=1.000, C2_acc=0.375
+Batch 80: C2_loss=2.427, C1_acc=1.000, C2_acc=0.125
+Batch 90: C2_loss=2.611, C1_acc=1.000, C2_acc=0.375
+Batch 100: C2_loss=1.264, C1_acc=1.000, C2_acc=0.250
+Batch 110: C2_loss=1.735, C1_acc=1.000, C2_acc=0.250
+Batch 120: C2_loss=1.056, C1_acc=1.000, C2_acc=0.500
+Batch 130: C2_loss=1.468, C1_acc=1.000, C2_acc=0.250
+Batch 140: C2_loss=1.286, C1_acc=1.000, C2_acc=0.250
+Batch 150: C2_loss=1.379, C1_acc=1.000, C2_acc=0.375
+Batch 160: C2_loss=2.227, C1_acc=0.875, C2_acc=0.125
+Batch 170: C2_loss=1.520, C1_acc=1.000, C2_acc=0.375
+Batch 180: C2_loss=1.256, C1_acc=1.000, C2_acc=0.250
+Batch 190: C2_loss=0.972, C1_acc=1.000, C2_acc=0.500
+Batch 200: C2_loss=2.595, C1_acc=1.000, C2_acc=0.125
+Batch 210: C2_loss=1.272, C1_acc=1.000, C2_acc=0.250
+Batch 220: C2_loss=1.403, C1_acc=1.000, C2_acc=0.375
+Batch 230: C2_loss=1.531, C1_acc=1.000, C2_acc=0.125
+Batch 240: C2_loss=1.058, C1_acc=1.000, C2_acc=0.375
+Batch 250: C2_loss=1.259, C1_acc=1.000, C2_acc=0.500
+Batch 260: C2_loss=1.384, C1_acc=1.000, C2_acc=0.375
+Batch 270: C2_loss=1.039, C1_acc=1.000, C2_acc=0.500
+Batch 280: C2_loss=1.501, C1_acc=1.000, C2_acc=0.250
+Batch 290: C2_loss=1.068, C1_acc=1.000, C2_acc=0.500
+Batch 300: C2_loss=0.696, C1_acc=1.000, C2_acc=0.750
+Batch 310: C2_loss=1.429, C1_acc=1.000, C2_acc=0.625
+Batch 320: C2_loss=0.982, C1_acc=1.000, C2_acc=0.750
+Batch 330: C2_loss=1.601, C1_acc=1.000, C2_acc=0.375
+Batch 340: C2_loss=0.898, C1_acc=1.000, C2_acc=0.625
+Batch 350: C2_loss=1.428, C1_acc=1.000, C2_acc=0.500
+Batch 360: C2_loss=0.977, C1_acc=1.000, C2_acc=0.625
+Batch 370: C2_loss=0.920, C1_acc=1.000, C2_acc=0.625
+Batch 380: C2_loss=0.962, C1_acc=1.000, C2_acc=0.625
+Batch 390: C2_loss=0.866, C1_acc=1.000, C2_acc=0.625
+Batch 400: C2_loss=1.257, C1_acc=1.000, C2_acc=0.500
+Batch 410: C2_loss=1.079, C1_acc=1.000, C2_acc=0.750
+Batch 420: C2_loss=0.845, C1_acc=1.000, C2_acc=0.625
+Batch 430: C2_loss=0.655, C1_acc=1.000, C2_acc=0.875
+Batch 440: C2_loss=0.613, C1_acc=1.000, C2_acc=0.875
+Batch 450: C2_loss=1.206, C1_acc=1.000, C2_acc=0.625
+Batch 460: C2_loss=0.507, C1_acc=1.000, C2_acc=0.875
+Batch 470: C2_loss=0.922, C1_acc=1.000, C2_acc=0.375
+Batch 480: C2_loss=0.895, C1_acc=1.000, C2_acc=0.375
+Batch 490: C2_loss=0.945, C1_acc=1.000, C2_acc=0.625
+Batch 500: C2_loss=0.739, C1_acc=1.000, C2_acc=0.625
+Batch 510: C2_loss=0.749, C1_acc=1.000, C2_acc=0.750
+Batch 520: C2_loss=0.746, C1_acc=1.000, C2_acc=0.750
+Batch 530: C2_loss=1.134, C1_acc=1.000, C2_acc=0.500
+Batch 540: C2_loss=1.940, C1_acc=1.000, C2_acc=0.375
+Batch 550: C2_loss=0.672, C1_acc=1.000, C2_acc=0.875
+Batch 560: C2_loss=1.020, C1_acc=1.000, C2_acc=0.750
+Batch 570: C2_loss=0.768, C1_acc=1.000, C2_acc=0.750
+Batch 580: C2_loss=1.482, C1_acc=1.000, C2_acc=0.375
+Batch 590: C2_loss=0.601, C1_acc=1.000, C2_acc=1.000
+Batch 600: C2_loss=1.068, C1_acc=1.000, C2_acc=0.500
+Batch 610: C2_loss=0.482, C1_acc=1.000, C2_acc=0.750
+Batch 620: C2_loss=1.446, C1_acc=1.000, C2_acc=0.625
+Batch 630: C2_loss=1.392, C1_acc=1.000, C2_acc=0.625
+Batch 640: C2_loss=0.589, C1_acc=1.000, C2_acc=0.750
+Batch 650: C2_loss=0.251, C1_acc=1.000, C2_acc=1.000
+Batch 660: C2_loss=0.948, C1_acc=1.000, C2_acc=0.625
+Batch 670: C2_loss=1.713, C1_acc=1.000, C2_acc=0.500
+Batch 680: C2_loss=1.552, C1_acc=1.000, C2_acc=0.500
+Batch 690: C2_loss=1.081, C1_acc=1.000, C2_acc=0.500
+Batch 700: C2_loss=0.492, C1_acc=1.000, C2_acc=0.750
+Batch 710: C2_loss=1.047, C1_acc=1.000, C2_acc=0.750
+Epoch 1 Summary:
+  Stage: warmup
+\n=== EPOCH 2/10 ===
+WARMUP STAGE - Training C2 normally
+Batch 0: C2_loss=0.720, C1_acc=1.000, C2_acc=0.625
+Batch 10: C2_loss=1.185, C1_acc=1.000, C2_acc=0.500
+Batch 20: C2_loss=1.838, C1_acc=1.000, C2_acc=0.125
+Batch 30: C2_loss=1.142, C1_acc=1.000, C2_acc=0.625
+Batch 40: C2_loss=0.962, C1_acc=1.000, C2_acc=0.500
+Batch 50: C2_loss=0.844, C1_acc=1.000, C2_acc=0.625
+Batch 60: C2_loss=1.341, C1_acc=1.000, C2_acc=0.375
+Batch 70: C2_loss=0.861, C1_acc=1.000, C2_acc=0.625
+Batch 80: C2_loss=0.894, C1_acc=1.000, C2_acc=0.375
+Batch 90: C2_loss=0.779, C1_acc=1.000, C2_acc=0.500
+Batch 100: C2_loss=0.957, C1_acc=1.000, C2_acc=0.375
+Batch 110: C2_loss=1.122, C1_acc=1.000, C2_acc=0.625
+Batch 120: C2_loss=0.805, C1_acc=1.000, C2_acc=0.625
+Batch 130: C2_loss=1.344, C1_acc=1.000, C2_acc=0.375
+Batch 140: C2_loss=1.384, C1_acc=1.000, C2_acc=0.625
+Batch 150: C2_loss=0.900, C1_acc=1.000, C2_acc=0.750
+Batch 160: C2_loss=0.945, C1_acc=1.000, C2_acc=0.500
+Batch 170: C2_loss=1.143, C1_acc=1.000, C2_acc=0.625
+Batch 180: C2_loss=1.372, C1_acc=0.875, C2_acc=0.500
+Batch 190: C2_loss=0.758, C1_acc=1.000, C2_acc=0.625
+Batch 200: C2_loss=0.489, C1_acc=1.000, C2_acc=0.750
+Batch 210: C2_loss=0.911, C1_acc=1.000, C2_acc=0.750
+Batch 220: C2_loss=1.363, C1_acc=1.000, C2_acc=0.250
+Batch 230: C2_loss=1.125, C1_acc=1.000, C2_acc=0.500
+Batch 240: C2_loss=0.916, C1_acc=1.000, C2_acc=0.625
+Batch 250: C2_loss=1.076, C1_acc=1.000, C2_acc=0.500
+Batch 260: C2_loss=1.123, C1_acc=1.000, C2_acc=0.500
+Batch 270: C2_loss=1.165, C1_acc=1.000, C2_acc=0.875
+Batch 280: C2_loss=0.916, C1_acc=1.000, C2_acc=0.750
+Batch 290: C2_loss=0.556, C1_acc=1.000, C2_acc=0.750
+Batch 300: C2_loss=0.608, C1_acc=1.000, C2_acc=0.875
+Batch 310: C2_loss=1.473, C1_acc=1.000, C2_acc=0.125
+Batch 320: C2_loss=0.782, C1_acc=1.000, C2_acc=0.750
+Batch 330: C2_loss=1.182, C1_acc=1.000, C2_acc=0.500
+Batch 340: C2_loss=0.903, C1_acc=1.000, C2_acc=0.625
+Batch 350: C2_loss=0.600, C1_acc=1.000, C2_acc=0.750
+Batch 360: C2_loss=0.821, C1_acc=1.000, C2_acc=0.625
+Batch 370: C2_loss=0.643, C1_acc=1.000, C2_acc=0.625
+Batch 380: C2_loss=0.644, C1_acc=1.000, C2_acc=0.625
+Batch 390: C2_loss=0.835, C1_acc=1.000, C2_acc=0.500
+Batch 400: C2_loss=1.859, C1_acc=1.000, C2_acc=0.375
+Batch 410: C2_loss=0.745, C1_acc=1.000, C2_acc=0.625
+Batch 420: C2_loss=1.517, C1_acc=1.000, C2_acc=0.375
+Batch 430: C2_loss=0.944, C1_acc=1.000, C2_acc=0.750
+Batch 440: C2_loss=1.453, C1_acc=1.000, C2_acc=0.500
+Batch 450: C2_loss=0.915, C1_acc=1.000, C2_acc=0.625
+Batch 460: C2_loss=0.482, C1_acc=1.000, C2_acc=0.875
+Batch 470: C2_loss=0.422, C1_acc=1.000, C2_acc=0.875
+Batch 480: C2_loss=0.568, C1_acc=1.000, C2_acc=0.750
+Batch 490: C2_loss=0.967, C1_acc=1.000, C2_acc=0.500
+Batch 500: C2_loss=0.562, C1_acc=1.000, C2_acc=0.750
+Batch 510: C2_loss=1.085, C1_acc=1.000, C2_acc=0.625
+Batch 520: C2_loss=1.020, C1_acc=1.000, C2_acc=0.625
+Batch 530: C2_loss=0.597, C1_acc=1.000, C2_acc=0.750
+Batch 540: C2_loss=0.669, C1_acc=1.000, C2_acc=0.750
+Batch 550: C2_loss=0.470, C1_acc=1.000, C2_acc=0.875
+Batch 560: C2_loss=0.590, C1_acc=1.000, C2_acc=0.625
+Batch 570: C2_loss=0.965, C1_acc=1.000, C2_acc=0.500
+Batch 580: C2_loss=0.828, C1_acc=1.000, C2_acc=0.750
+Batch 590: C2_loss=0.449, C1_acc=1.000, C2_acc=0.750
+Batch 600: C2_loss=0.868, C1_acc=1.000, C2_acc=0.625
+Batch 610: C2_loss=0.615, C1_acc=1.000, C2_acc=0.875
+Batch 620: C2_loss=0.652, C1_acc=1.000, C2_acc=0.750
+Batch 630: C2_loss=0.350, C1_acc=1.000, C2_acc=1.000
+Batch 640: C2_loss=0.877, C1_acc=1.000, C2_acc=0.625
+Batch 650: C2_loss=0.693, C1_acc=1.000, C2_acc=0.750
+Batch 660: C2_loss=0.966, C1_acc=1.000, C2_acc=0.625
+Batch 670: C2_loss=0.301, C1_acc=1.000, C2_acc=0.875
+Batch 680: C2_loss=0.784, C1_acc=1.000, C2_acc=0.500
+Batch 690: C2_loss=0.525, C1_acc=1.000, C2_acc=0.750
+Batch 700: C2_loss=0.784, C1_acc=1.000, C2_acc=0.500
+Batch 710: C2_loss=0.525, C1_acc=1.000, C2_acc=0.750
+Epoch 2 Summary:
+  Stage: warmup
+\n=== EPOCH 3/10 ===
+WARMUP STAGE - Training C2 normally
+Batch 0: C2_loss=1.217, C1_acc=1.000, C2_acc=0.625
+Batch 10: C2_loss=0.688, C1_acc=1.000, C2_acc=0.625
+Batch 20: C2_loss=1.099, C1_acc=1.000, C2_acc=0.500
+Batch 30: C2_loss=0.309, C1_acc=1.000, C2_acc=0.875
+Batch 40: C2_loss=1.021, C1_acc=1.000, C2_acc=0.750
+Batch 50: C2_loss=0.667, C1_acc=1.000, C2_acc=0.625
+Batch 60: C2_loss=0.724, C1_acc=1.000, C2_acc=0.875
+Batch 70: C2_loss=1.103, C1_acc=1.000, C2_acc=0.625
+Batch 80: C2_loss=0.586, C1_acc=1.000, C2_acc=0.875
+Batch 90: C2_loss=1.162, C1_acc=1.000, C2_acc=0.625
+Batch 100: C2_loss=0.770, C1_acc=1.000, C2_acc=0.625
+Batch 110: C2_loss=1.151, C1_acc=1.000, C2_acc=0.500
+Batch 120: C2_loss=0.412, C1_acc=1.000, C2_acc=0.875
+Batch 130: C2_loss=1.603, C1_acc=1.000, C2_acc=0.375
+Batch 140: C2_loss=0.288, C1_acc=1.000, C2_acc=0.875
+Batch 150: C2_loss=0.603, C1_acc=1.000, C2_acc=1.000
+Batch 160: C2_loss=0.684, C1_acc=1.000, C2_acc=0.625
+Batch 170: C2_loss=0.734, C1_acc=1.000, C2_acc=0.875
+Batch 180: C2_loss=0.662, C1_acc=1.000, C2_acc=0.750
+Batch 190: C2_loss=0.772, C1_acc=1.000, C2_acc=0.500
+Batch 200: C2_loss=0.331, C1_acc=1.000, C2_acc=0.875
+Batch 210: C2_loss=0.831, C1_acc=1.000, C2_acc=0.750
+Batch 220: C2_loss=0.626, C1_acc=1.000, C2_acc=0.750
+Batch 230: C2_loss=1.286, C1_acc=1.000, C2_acc=0.750
+Batch 240: C2_loss=0.590, C1_acc=1.000, C2_acc=0.750
+Batch 250: C2_loss=1.081, C1_acc=1.000, C2_acc=0.500
+Batch 260: C2_loss=0.389, C1_acc=1.000, C2_acc=0.750
+Batch 270: C2_loss=0.384, C1_acc=1.000, C2_acc=0.875
+Batch 280: C2_loss=1.065, C1_acc=1.000, C2_acc=0.375
+Batch 290: C2_loss=0.381, C1_acc=1.000, C2_acc=0.875
+Batch 300: C2_loss=0.675, C1_acc=1.000, C2_acc=0.875
+Batch 310: C2_loss=0.544, C1_acc=1.000, C2_acc=0.750
+Batch 320: C2_loss=0.489, C1_acc=1.000, C2_acc=0.750
+Batch 330: C2_loss=0.926, C1_acc=1.000, C2_acc=0.750
+Batch 340: C2_loss=0.763, C1_acc=1.000, C2_acc=0.750
+Batch 350: C2_loss=0.521, C1_acc=1.000, C2_acc=0.875
+Batch 360: C2_loss=0.399, C1_acc=1.000, C2_acc=0.875
+Batch 370: C2_loss=1.135, C1_acc=1.000, C2_acc=0.625
+Batch 380: C2_loss=0.924, C1_acc=1.000, C2_acc=0.500
+Batch 390: C2_loss=0.542, C1_acc=1.000, C2_acc=0.750
+Batch 400: C2_loss=0.835, C1_acc=1.000, C2_acc=0.750
+Batch 410: C2_loss=0.664, C1_acc=1.000, C2_acc=0.750
+Batch 420: C2_loss=0.283, C1_acc=1.000, C2_acc=0.875
+Batch 430: C2_loss=0.384, C1_acc=1.000, C2_acc=0.875
+Batch 440: C2_loss=0.544, C1_acc=1.000, C2_acc=0.875
+Batch 450: C2_loss=1.335, C1_acc=1.000, C2_acc=0.625
+Batch 460: C2_loss=0.992, C1_acc=1.000, C2_acc=0.500
+Batch 470: C2_loss=0.442, C1_acc=1.000, C2_acc=0.750
+Batch 480: C2_loss=1.342, C1_acc=1.000, C2_acc=0.625
+Batch 490: C2_loss=0.836, C1_acc=1.000, C2_acc=0.750
+Batch 500: C2_loss=0.681, C1_acc=1.000, C2_acc=0.750
+Batch 510: C2_loss=1.086, C1_acc=1.000, C2_acc=0.625
+Batch 520: C2_loss=0.797, C1_acc=1.000, C2_acc=0.750
+Batch 530: C2_loss=0.472, C1_acc=1.000, C2_acc=0.750
+Batch 540: C2_loss=0.422, C1_acc=1.000, C2_acc=0.750
+Batch 550: C2_loss=0.392, C1_acc=1.000, C2_acc=0.875
+Batch 560: C2_loss=0.750, C1_acc=1.000, C2_acc=0.625
+Batch 570: C2_loss=0.515, C1_acc=1.000, C2_acc=0.750
+Batch 580: C2_loss=1.544, C1_acc=1.000, C2_acc=0.500
+Batch 590: C2_loss=0.412, C1_acc=1.000, C2_acc=0.875
+Batch 600: C2_loss=1.177, C1_acc=1.000, C2_acc=0.375
+Batch 610: C2_loss=0.232, C1_acc=1.000, C2_acc=0.875
+Batch 620: C2_loss=1.424, C1_acc=1.000, C2_acc=0.250
+Batch 630: C2_loss=1.093, C1_acc=1.000, C2_acc=0.625
+Batch 640: C2_loss=0.496, C1_acc=1.000, C2_acc=0.875
+Batch 650: C2_loss=0.401, C1_acc=1.000, C2_acc=0.875
+Batch 660: C2_loss=0.868, C1_acc=1.000, C2_acc=0.500
+Batch 670: C2_loss=0.352, C1_acc=1.000, C2_acc=0.875
+Batch 680: C2_loss=0.334, C1_acc=1.000, C2_acc=0.875
+Batch 690: C2_loss=0.434, C1_acc=1.000, C2_acc=0.750
+Batch 700: C2_loss=1.976, C1_acc=1.000, C2_acc=0.375
+Batch 710: C2_loss=0.450, C1_acc=1.000, C2_acc=0.750
+Epoch 3 Summary:
+  Stage: warmup
+\n=== EPOCH 4/10 ===
+WARMUP STAGE - Training C2 normally
+Batch 0: C2_loss=0.290, C1_acc=1.000, C2_acc=0.875
+Batch 10: C2_loss=0.557, C1_acc=1.000, C2_acc=0.625
+Batch 20: C2_loss=0.509, C1_acc=1.000, C2_acc=0.625
+Batch 30: C2_loss=0.548, C1_acc=1.000, C2_acc=0.500
+Batch 40: C2_loss=0.221, C1_acc=1.000, C2_acc=1.000
+Batch 50: C2_loss=0.228, C1_acc=1.000, C2_acc=0.875
+Batch 60: C2_loss=0.300, C1_acc=1.000, C2_acc=0.875
+Batch 70: C2_loss=0.471, C1_acc=1.000, C2_acc=0.750
+Batch 80: C2_loss=0.525, C1_acc=1.000, C2_acc=0.750
+Batch 90: C2_loss=0.555, C1_acc=1.000, C2_acc=0.750
+Batch 100: C2_loss=0.689, C1_acc=1.000, C2_acc=0.750
+Batch 110: C2_loss=0.552, C1_acc=1.000, C2_acc=0.875
+Batch 120: C2_loss=0.832, C1_acc=1.000, C2_acc=0.500
+Batch 130: C2_loss=0.654, C1_acc=1.000, C2_acc=0.750
+Batch 140: C2_loss=0.955, C1_acc=1.000, C2_acc=0.500
+Batch 150: C2_loss=0.881, C1_acc=1.000, C2_acc=0.750
+Batch 160: C2_loss=0.171, C1_acc=1.000, C2_acc=1.000
+Batch 170: C2_loss=1.163, C1_acc=1.000, C2_acc=0.750
+Batch 180: C2_loss=0.120, C1_acc=1.000, C2_acc=1.000
+Batch 190: C2_loss=0.276, C1_acc=1.000, C2_acc=0.875
+Batch 200: C2_loss=0.767, C1_acc=1.000, C2_acc=0.625
+Batch 210: C2_loss=1.244, C1_acc=1.000, C2_acc=0.625
+Batch 220: C2_loss=0.430, C1_acc=1.000, C2_acc=0.750
+Batch 230: C2_loss=0.606, C1_acc=1.000, C2_acc=0.875
+Batch 240: C2_loss=0.795, C1_acc=1.000, C2_acc=0.750
+Batch 250: C2_loss=0.346, C1_acc=1.000, C2_acc=0.875
+Batch 260: C2_loss=2.304, C1_acc=1.000, C2_acc=0.375
+Batch 270: C2_loss=0.629, C1_acc=1.000, C2_acc=0.625
+Batch 280: C2_loss=0.689, C1_acc=1.000, C2_acc=0.500
+Batch 290: C2_loss=0.592, C1_acc=1.000, C2_acc=0.875
+Batch 300: C2_loss=0.378, C1_acc=1.000, C2_acc=1.000
+Batch 310: C2_loss=0.200, C1_acc=1.000, C2_acc=1.000
+Batch 320: C2_loss=0.249, C1_acc=1.000, C2_acc=1.000
+Batch 330: C2_loss=0.524, C1_acc=1.000, C2_acc=0.750
+Batch 340: C2_loss=0.224, C1_acc=1.000, C2_acc=1.000
+Batch 350: C2_loss=0.882, C1_acc=1.000, C2_acc=0.750
+Batch 360: C2_loss=0.932, C1_acc=1.000, C2_acc=0.625
+Batch 370: C2_loss=0.368, C1_acc=1.000, C2_acc=0.875
+Batch 380: C2_loss=0.232, C1_acc=1.000, C2_acc=0.875
+Batch 390: C2_loss=0.891, C1_acc=1.000, C2_acc=0.625
+Batch 400: C2_loss=0.457, C1_acc=1.000, C2_acc=0.875
+Batch 410: C2_loss=0.141, C1_acc=1.000, C2_acc=1.000
+Batch 420: C2_loss=0.593, C1_acc=1.000, C2_acc=0.875
+Batch 430: C2_loss=1.137, C1_acc=1.000, C2_acc=0.625
+Batch 440: C2_loss=0.538, C1_acc=1.000, C2_acc=0.750
+Batch 450: C2_loss=1.000, C1_acc=1.000, C2_acc=0.750
+Batch 460: C2_loss=0.391, C1_acc=1.000, C2_acc=0.750
+Batch 470: C2_loss=0.610, C1_acc=1.000, C2_acc=0.750
+Batch 480: C2_loss=0.514, C1_acc=1.000, C2_acc=0.875
+Batch 490: C2_loss=0.544, C1_acc=1.000, C2_acc=0.750
+Batch 500: C2_loss=0.358, C1_acc=1.000, C2_acc=0.750
+Batch 510: C2_loss=0.504, C1_acc=1.000, C2_acc=0.875
+Batch 520: C2_loss=0.466, C1_acc=1.000, C2_acc=0.750
+Batch 530: C2_loss=0.538, C1_acc=0.875, C2_acc=0.750
+Batch 540: C2_loss=0.349, C1_acc=1.000, C2_acc=0.875
+Batch 550: C2_loss=0.420, C1_acc=1.000, C2_acc=0.875
+Batch 560: C2_loss=0.314, C1_acc=1.000, C2_acc=0.875
+Batch 570: C2_loss=0.658, C1_acc=1.000, C2_acc=0.875
+Batch 580: C2_loss=0.536, C1_acc=1.000, C2_acc=0.750
+Batch 590: C2_loss=0.432, C1_acc=1.000, C2_acc=0.875
+Batch 600: C2_loss=0.093, C1_acc=1.000, C2_acc=1.000
+Batch 610: C2_loss=0.884, C1_acc=1.000, C2_acc=0.875
+Batch 620: C2_loss=0.760, C1_acc=1.000, C2_acc=0.625
+Batch 630: C2_loss=1.676, C1_acc=1.000, C2_acc=0.500
+Batch 640: C2_loss=0.662, C1_acc=1.000, C2_acc=0.750
+Batch 650: C2_loss=0.359, C1_acc=1.000, C2_acc=1.000
+Batch 660: C2_loss=0.635, C1_acc=1.000, C2_acc=0.625
+Batch 670: C2_loss=0.775, C1_acc=1.000, C2_acc=0.750
+Batch 680: C2_loss=0.484, C1_acc=1.000, C2_acc=0.875
+Batch 690: C2_loss=0.882, C1_acc=1.000, C2_acc=0.625
+Batch 700: C2_loss=0.424, C1_acc=1.000, C2_acc=0.625
+Batch 710: C2_loss=1.996, C1_acc=1.000, C2_acc=0.500
+Epoch 4 Summary:
+  Stage: warmup
+\n=== EPOCH 5/10 ===
+WARMUP STAGE - Training C2 normally
+Batch 0: C2_loss=0.764, C1_acc=1.000, C2_acc=0.875
+Batch 10: C2_loss=0.242, C1_acc=1.000, C2_acc=0.875
+Batch 20: C2_loss=0.553, C1_acc=1.000, C2_acc=0.875
+Batch 30: C2_loss=0.435, C1_acc=1.000, C2_acc=0.750
+Batch 40: C2_loss=0.192, C1_acc=1.000, C2_acc=1.000
+Batch 50: C2_loss=0.232, C1_acc=1.000, C2_acc=0.875
+Batch 60: C2_loss=0.421, C1_acc=1.000, C2_acc=0.875
+Batch 70: C2_loss=0.532, C1_acc=1.000, C2_acc=0.750
+Batch 80: C2_loss=0.536, C1_acc=1.000, C2_acc=0.875
+Batch 90: C2_loss=0.280, C1_acc=1.000, C2_acc=1.000
+Batch 100: C2_loss=0.213, C1_acc=1.000, C2_acc=1.000
+Batch 110: C2_loss=1.071, C1_acc=1.000, C2_acc=0.500
+Batch 120: C2_loss=0.234, C1_acc=1.000, C2_acc=0.875
+Batch 130: C2_loss=0.506, C1_acc=1.000, C2_acc=0.750
+Batch 140: C2_loss=0.467, C1_acc=1.000, C2_acc=0.750
+Batch 150: C2_loss=0.351, C1_acc=1.000, C2_acc=0.875
+Batch 160: C2_loss=0.334, C1_acc=1.000, C2_acc=0.875
+Batch 170: C2_loss=0.092, C1_acc=1.000, C2_acc=1.000
+Batch 180: C2_loss=0.746, C1_acc=1.000, C2_acc=0.750
+Batch 190: C2_loss=0.187, C1_acc=1.000, C2_acc=1.000
+Batch 200: C2_loss=0.485, C1_acc=1.000, C2_acc=0.875
+Batch 210: C2_loss=0.474, C1_acc=1.000, C2_acc=0.750
+Batch 220: C2_loss=0.545, C1_acc=1.000, C2_acc=0.750
+Batch 230: C2_loss=0.212, C1_acc=1.000, C2_acc=0.875
+Batch 240: C2_loss=0.144, C1_acc=1.000, C2_acc=1.000
+Batch 250: C2_loss=0.746, C1_acc=1.000, C2_acc=0.625
+Batch 260: C2_loss=0.731, C1_acc=1.000, C2_acc=0.750
+Batch 270: C2_loss=0.503, C1_acc=1.000, C2_acc=0.875
+Batch 280: C2_loss=0.052, C1_acc=1.000, C2_acc=1.000
+Batch 290: C2_loss=0.496, C1_acc=1.000, C2_acc=0.875
+Batch 300: C2_loss=0.155, C1_acc=1.000, C2_acc=1.000
+Batch 310: C2_loss=0.262, C1_acc=1.000, C2_acc=0.875
+Batch 320: C2_loss=0.334, C1_acc=1.000, C2_acc=0.750
+Batch 330: C2_loss=0.262, C1_acc=1.000, C2_acc=0.875
+Batch 340: C2_loss=0.995, C1_acc=1.000, C2_acc=0.625
+Batch 350: C2_loss=0.076, C1_acc=1.000, C2_acc=1.000
+Batch 360: C2_loss=0.229, C1_acc=1.000, C2_acc=1.000
+Batch 370: C2_loss=0.070, C1_acc=1.000, C2_acc=1.000
+Batch 380: C2_loss=0.720, C1_acc=1.000, C2_acc=0.500
+Batch 390: C2_loss=0.161, C1_acc=1.000, C2_acc=1.000
+Batch 400: C2_loss=0.054, C1_acc=1.000, C2_acc=1.000
+Batch 410: C2_loss=1.176, C1_acc=1.000, C2_acc=0.500
+Batch 420: C2_loss=0.458, C1_acc=1.000, C2_acc=0.875
+Batch 430: C2_loss=0.538, C1_acc=1.000, C2_acc=0.750
+Batch 440: C2_loss=0.399, C1_acc=1.000, C2_acc=0.750
+Batch 450: C2_loss=0.452, C1_acc=1.000, C2_acc=0.875
+Batch 460: C2_loss=1.035, C1_acc=1.000, C2_acc=0.875
+Batch 470: C2_loss=0.393, C1_acc=1.000, C2_acc=0.750
+Batch 480: C2_loss=0.396, C1_acc=1.000, C2_acc=0.750
+Batch 490: C2_loss=0.444, C1_acc=1.000, C2_acc=1.000
+Batch 500: C2_loss=0.604, C1_acc=1.000, C2_acc=0.750
+Batch 510: C2_loss=0.372, C1_acc=1.000, C2_acc=0.875
+Batch 520: C2_loss=0.548, C1_acc=1.000, C2_acc=0.750
+Batch 530: C2_loss=0.221, C1_acc=1.000, C2_acc=0.875
+Batch 540: C2_loss=0.323, C1_acc=1.000, C2_acc=0.750
+Batch 550: C2_loss=0.121, C1_acc=1.000, C2_acc=1.000
+Batch 560: C2_loss=0.385, C1_acc=1.000, C2_acc=0.750
+Batch 570: C2_loss=0.375, C1_acc=1.000, C2_acc=0.875
+Batch 580: C2_loss=0.092, C1_acc=1.000, C2_acc=1.000
+Batch 590: C2_loss=0.219, C1_acc=1.000, C2_acc=1.000
+Batch 600: C2_loss=0.131, C1_acc=1.000, C2_acc=1.000
+Batch 610: C2_loss=0.104, C1_acc=1.000, C2_acc=1.000
+Batch 620: C2_loss=0.053, C1_acc=1.000, C2_acc=1.000
+Batch 630: C2_loss=0.232, C1_acc=1.000, C2_acc=0.875
+Batch 640: C2_loss=0.781, C1_acc=1.000, C2_acc=0.750
+Batch 650: C2_loss=0.490, C1_acc=1.000, C2_acc=0.750
+Batch 660: C2_loss=0.182, C1_acc=1.000, C2_acc=0.875
+Batch 670: C2_loss=0.028, C1_acc=1.000, C2_acc=1.000
+Batch 680: C2_loss=0.113, C1_acc=1.000, C2_acc=1.000
+Batch 690: C2_loss=0.322, C1_acc=1.000, C2_acc=1.000
+Batch 700: C2_loss=0.244, C1_acc=1.000, C2_acc=0.875
+Batch 710: C2_loss=1.303, C1_acc=1.000, C2_acc=0.375
+Epoch 5 Summary:
+  Stage: warmup
+  💾 Checkpoint saved
+\n=== EPOCH 6/10 ===
+ADVERSARIAL STAGE - C2 vs Generator
+🔄 Creating dataloader for adversarial stage...
+📦 Creating dataloader: adversarial stage, batch_size=4
+Batch 0: C2_loss=-0.769, Gen_loss=98507.992
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 10: C2_loss=-1.252, Gen_loss=-0.908
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 20: C2_loss=-1.498, Gen_loss=-1.101
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 30: C2_loss=-1.433, Gen_loss=-1.062
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 40: C2_loss=-1.351, Gen_loss=-1.208
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 50: C2_loss=-1.368, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 60: C2_loss=-1.417, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.000, wm=0.500
+  Quality: L1=0.0000
+Batch 70: C2_loss=-1.276, Gen_loss=-1.313
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 80: C2_loss=-1.399, Gen_loss=-1.330
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 90: C2_loss=-1.793, Gen_loss=94412.695
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 100: C2_loss=-1.710, Gen_loss=-1.306
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 110: C2_loss=-1.299, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 120: C2_loss=-1.417, Gen_loss=-1.319
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 130: C2_loss=-1.123, Gen_loss=-1.314
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 140: C2_loss=-1.223, Gen_loss=-1.325
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.250
+  Quality: L1=0.0000
+Batch 150: C2_loss=-1.602, Gen_loss=-1.286
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 160: C2_loss=-1.623, Gen_loss=-1.255
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 170: C2_loss=-1.586, Gen_loss=-1.343
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 180: C2_loss=-1.431, Gen_loss=-1.231
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 190: C2_loss=-1.668, Gen_loss=-1.296
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 200: C2_loss=-1.612, Gen_loss=-1.329
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 210: C2_loss=-1.657, Gen_loss=-1.275
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 220: C2_loss=-1.380, Gen_loss=-1.255
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 230: C2_loss=-1.360, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.250
+  Quality: L1=0.0000
+Batch 240: C2_loss=-1.457, Gen_loss=-1.280
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 250: C2_loss=-1.465, Gen_loss=-1.266
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 260: C2_loss=-1.600, Gen_loss=-1.259
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 270: C2_loss=-1.514, Gen_loss=-1.315
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 280: C2_loss=-1.594, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 290: C2_loss=-1.269, Gen_loss=-1.255
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 300: C2_loss=-1.374, Gen_loss=-1.367
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.000, wm=0.500
+  Quality: L1=0.0000
+Batch 310: C2_loss=-1.409, Gen_loss=-1.338
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.500
+  Quality: L1=0.0000
+Batch 320: C2_loss=-1.557, Gen_loss=-1.337
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.500
+  Quality: L1=0.0000
+Batch 330: C2_loss=-1.696, Gen_loss=-1.181
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 340: C2_loss=-1.637, Gen_loss=-1.295
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 350: C2_loss=-1.633, Gen_loss=-1.266
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 360: C2_loss=-1.615, Gen_loss=-1.217
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 370: C2_loss=-1.481, Gen_loss=-1.300
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 380: C2_loss=-1.546, Gen_loss=-1.300
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 390: C2_loss=-1.363, Gen_loss=-1.355
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.500
+  Quality: L1=0.0000
+Batch 400: C2_loss=-1.719, Gen_loss=-1.239
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 410: C2_loss=-1.594, Gen_loss=-1.340
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 420: C2_loss=-1.785, Gen_loss=-1.258
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 430: C2_loss=-1.229, Gen_loss=-1.354
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.000
+  Quality: L1=0.0000
+Batch 440: C2_loss=-1.874, Gen_loss=-1.280
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 450: C2_loss=-1.499, Gen_loss=-1.333
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 460: C2_loss=-1.666, Gen_loss=-1.216
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 470: C2_loss=-1.571, Gen_loss=-1.262
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 480: C2_loss=-1.776, Gen_loss=-1.187
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 490: C2_loss=-1.630, Gen_loss=-1.147
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 500: C2_loss=-1.570, Gen_loss=-1.301
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 510: C2_loss=-1.644, Gen_loss=-1.317
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.750
+  Quality: L1=0.0000
+Batch 520: C2_loss=-1.572, Gen_loss=-1.244
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 530: C2_loss=-1.643, Gen_loss=-1.241
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 540: C2_loss=-1.519, Gen_loss=-1.322
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 550: C2_loss=-1.741, Gen_loss=-1.295
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 560: C2_loss=-1.603, Gen_loss=-1.308
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 570: C2_loss=-1.107, Gen_loss=-1.283
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.000
+  Quality: L1=0.0000
+Batch 580: C2_loss=-1.622, Gen_loss=-1.321
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 590: C2_loss=-1.592, Gen_loss=-1.344
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 600: C2_loss=-1.575, Gen_loss=-1.254
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 610: C2_loss=-1.706, Gen_loss=-1.267
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 620: C2_loss=-1.442, Gen_loss=-1.257
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 630: C2_loss=-1.457, Gen_loss=-1.276
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 640: C2_loss=-1.602, Gen_loss=-1.274
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 650: C2_loss=-1.622, Gen_loss=-1.281
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 660: C2_loss=-1.583, Gen_loss=-1.122
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 670: C2_loss=-1.299, Gen_loss=-1.334
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.250
+  Quality: L1=0.0000
+Batch 680: C2_loss=-1.812, Gen_loss=-1.290
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 690: C2_loss=-1.730, Gen_loss=-1.340
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 700: C2_loss=-1.590, Gen_loss=-1.293
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.500
+  Quality: L1=0.0000
+Batch 710: C2_loss=-1.378, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.250
+  Quality: L1=0.0000
+Batch 720: C2_loss=-1.908, Gen_loss=-1.302
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 730: C2_loss=-1.570, Gen_loss=-1.304
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 740: C2_loss=-1.688, Gen_loss=-1.169
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 750: C2_loss=-1.399, Gen_loss=-1.277
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 760: C2_loss=-1.557, Gen_loss=-1.335
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 770: C2_loss=-1.463, Gen_loss=-1.270
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.250
+  Quality: L1=0.0000
+Batch 780: C2_loss=-1.638, Gen_loss=-1.313
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 790: C2_loss=-1.521, Gen_loss=-1.255
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 800: C2_loss=-1.756, Gen_loss=-1.268
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 810: C2_loss=-1.422, Gen_loss=-1.304
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 820: C2_loss=-1.998, Gen_loss=-1.263
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 830: C2_loss=-1.799, Gen_loss=-1.186
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 840: C2_loss=-1.749, Gen_loss=-1.276
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 850: C2_loss=-1.626, Gen_loss=-1.306
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=1.000
+  Quality: L1=0.0000
+Batch 860: C2_loss=-1.768, Gen_loss=-1.287
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 870: C2_loss=-1.443, Gen_loss=-1.008
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 880: C2_loss=-1.802, Gen_loss=-1.200
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 890: C2_loss=-1.735, Gen_loss=-1.297
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 900: C2_loss=-1.530, Gen_loss=-1.239
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 910: C2_loss=-1.715, Gen_loss=-1.265
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 920: C2_loss=-1.568, Gen_loss=-1.320
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 930: C2_loss=-1.829, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 940: C2_loss=-1.378, Gen_loss=-1.318
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.750
+  Quality: L1=0.0000
+Batch 950: C2_loss=-1.426, Gen_loss=-1.176
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 960: C2_loss=-1.709, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 970: C2_loss=-1.835, Gen_loss=82828.297
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 980: C2_loss=-1.408, Gen_loss=-1.366
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.500
+  Quality: L1=0.0000
+Batch 990: C2_loss=-1.546, Gen_loss=-1.245
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1000: C2_loss=-1.592, Gen_loss=-1.251
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1010: C2_loss=-1.446, Gen_loss=-1.343
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 1020: C2_loss=-1.654, Gen_loss=-1.328
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1030: C2_loss=-1.508, Gen_loss=-1.254
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 1040: C2_loss=-1.694, Gen_loss=-1.294
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1050: C2_loss=-1.586, Gen_loss=-1.287
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 1060: C2_loss=-1.503, Gen_loss=-1.321
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.250
+  Quality: L1=0.0000
+Batch 1070: C2_loss=-1.747, Gen_loss=-1.244
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1080: C2_loss=-1.543, Gen_loss=-1.304
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 1090: C2_loss=-1.821, Gen_loss=-1.258
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1100: C2_loss=-1.725, Gen_loss=-1.330
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1110: C2_loss=-1.605, Gen_loss=-1.250
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1120: C2_loss=-1.564, Gen_loss=-1.296
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1130: C2_loss=-1.743, Gen_loss=89158.266
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1140: C2_loss=-1.606, Gen_loss=-1.255
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1150: C2_loss=-1.557, Gen_loss=-1.323
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1160: C2_loss=-1.707, Gen_loss=-1.329
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1170: C2_loss=-1.904, Gen_loss=-1.228
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1180: C2_loss=-1.628, Gen_loss=-1.187
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1190: C2_loss=-1.405, Gen_loss=-1.271
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1200: C2_loss=-1.428, Gen_loss=-1.360
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.250
+  Quality: L1=0.0000
+Batch 1210: C2_loss=-1.715, Gen_loss=-1.263
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1220: C2_loss=-1.578, Gen_loss=-1.319
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1230: C2_loss=-1.600, Gen_loss=-1.286
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1240: C2_loss=-1.694, Gen_loss=-1.314
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1250: C2_loss=-1.662, Gen_loss=-1.318
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1260: C2_loss=-1.873, Gen_loss=-1.267
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1270: C2_loss=-1.735, Gen_loss=-1.314
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1280: C2_loss=-1.755, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1290: C2_loss=-1.880, Gen_loss=-1.243
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1300: C2_loss=-1.350, Gen_loss=-1.267
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1310: C2_loss=-1.971, Gen_loss=-1.199
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1320: C2_loss=-1.919, Gen_loss=-1.241
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1330: C2_loss=-1.565, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1340: C2_loss=-1.663, Gen_loss=-1.314
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1350: C2_loss=-1.593, Gen_loss=-1.312
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1360: C2_loss=-1.745, Gen_loss=-1.262
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1370: C2_loss=-1.741, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1380: C2_loss=-1.719, Gen_loss=-1.290
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1390: C2_loss=-1.819, Gen_loss=-1.327
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1400: C2_loss=-1.475, Gen_loss=-1.323
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 1410: C2_loss=-1.450, Gen_loss=-1.319
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 1420: C2_loss=-1.495, Gen_loss=-1.307
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Epoch 6 Summary:
+  Stage: adversarial
+  C1 Performance: clean=0.998, wm=0.998
+  C2 Performance: clean=0.777, wm=0.780
+  Quality: L1=0.0000
+  ⚠️  C2 is performing too well on clean images
+\n=== EPOCH 7/10 ===
+ADVERSARIAL STAGE - C2 vs Generator
+Batch 0: C2_loss=-1.780, Gen_loss=-1.283
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 10: C2_loss=-1.760, Gen_loss=-1.193
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 20: C2_loss=-1.642, Gen_loss=-1.351
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 30: C2_loss=-1.772, Gen_loss=-1.259
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 40: C2_loss=-1.766, Gen_loss=-1.275
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 50: C2_loss=-1.632, Gen_loss=-1.270
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 60: C2_loss=-1.753, Gen_loss=-1.138
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 70: C2_loss=-1.755, Gen_loss=-1.290
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=1.000
+  Quality: L1=0.0000
+Batch 80: C2_loss=-1.564, Gen_loss=-1.258
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 90: C2_loss=-1.986, Gen_loss=-1.286
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 100: C2_loss=-1.657, Gen_loss=-1.284
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.750
+  Quality: L1=0.0000
+Batch 110: C2_loss=-1.782, Gen_loss=-1.186
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 120: C2_loss=-1.547, Gen_loss=-1.241
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 130: C2_loss=-1.806, Gen_loss=-1.262
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 140: C2_loss=-1.539, Gen_loss=-1.168
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 150: C2_loss=-1.484, Gen_loss=-1.357
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 160: C2_loss=-1.657, Gen_loss=-1.279
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 170: C2_loss=-1.246, Gen_loss=-1.314
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.250
+  Quality: L1=0.0000
+Batch 180: C2_loss=-1.539, Gen_loss=-1.226
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 190: C2_loss=-1.539, Gen_loss=-1.345
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 200: C2_loss=-1.413, Gen_loss=-1.330
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.250
+  Quality: L1=0.0000
+Batch 210: C2_loss=-1.836, Gen_loss=-1.240
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 220: C2_loss=-1.635, Gen_loss=-1.248
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 230: C2_loss=-1.588, Gen_loss=-1.222
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 240: C2_loss=-1.598, Gen_loss=-1.300
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 250: C2_loss=-1.637, Gen_loss=-1.059
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 260: C2_loss=-1.553, Gen_loss=-1.300
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 270: C2_loss=-1.570, Gen_loss=-1.343
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 280: C2_loss=-1.524, Gen_loss=-1.338
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 290: C2_loss=-1.471, Gen_loss=-1.326
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.500
+  Quality: L1=0.0000
+Batch 300: C2_loss=-1.623, Gen_loss=-1.328
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 310: C2_loss=-1.761, Gen_loss=-1.274
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 320: C2_loss=-1.817, Gen_loss=-1.233
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 330: C2_loss=-1.682, Gen_loss=-1.330
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 340: C2_loss=-1.595, Gen_loss=-1.316
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 350: C2_loss=-1.668, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 360: C2_loss=-1.379, Gen_loss=-1.336
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.500
+  Quality: L1=0.0000
+Batch 370: C2_loss=-1.700, Gen_loss=-1.277
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 380: C2_loss=-1.817, Gen_loss=-1.257
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 390: C2_loss=-1.597, Gen_loss=-1.295
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 400: C2_loss=-1.610, Gen_loss=-1.314
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 410: C2_loss=-1.581, Gen_loss=-1.331
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 420: C2_loss=-1.528, Gen_loss=-1.346
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 430: C2_loss=-1.818, Gen_loss=-1.238
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 440: C2_loss=-1.637, Gen_loss=-1.243
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 450: C2_loss=-1.495, Gen_loss=-1.264
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 460: C2_loss=-1.592, Gen_loss=-1.284
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 470: C2_loss=-1.302, Gen_loss=-1.358
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 480: C2_loss=-1.515, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 490: C2_loss=-1.752, Gen_loss=-1.285
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 500: C2_loss=-1.466, Gen_loss=-1.281
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 510: C2_loss=-1.728, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 520: C2_loss=-1.572, Gen_loss=-1.270
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 530: C2_loss=-1.522, Gen_loss=-1.327
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 540: C2_loss=-1.913, Gen_loss=-1.234
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 550: C2_loss=-1.507, Gen_loss=-1.268
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 560: C2_loss=-1.573, Gen_loss=-1.328
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.750
+  Quality: L1=0.0000
+Batch 570: C2_loss=-1.563, Gen_loss=-1.263
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 580: C2_loss=-1.501, Gen_loss=-1.330
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 590: C2_loss=-1.769, Gen_loss=-1.285
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 600: C2_loss=-1.726, Gen_loss=-1.320
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 610: C2_loss=-1.414, Gen_loss=-1.334
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 620: C2_loss=-1.797, Gen_loss=-1.227
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 630: C2_loss=-1.379, Gen_loss=-1.354
+  C1: clean=0.750, wm=0.750
+  C2: clean=0.000, wm=0.000
+  Quality: L1=0.0000
+Batch 640: C2_loss=-1.384, Gen_loss=-1.341
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 650: C2_loss=-1.565, Gen_loss=-1.330
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 660: C2_loss=-1.757, Gen_loss=-1.246
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 670: C2_loss=-1.589, Gen_loss=-1.259
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 680: C2_loss=-1.749, Gen_loss=-1.306
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 690: C2_loss=-1.770, Gen_loss=-1.283
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 700: C2_loss=-1.510, Gen_loss=-1.296
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 710: C2_loss=-1.726, Gen_loss=-1.252
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 720: C2_loss=-1.760, Gen_loss=-1.227
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 730: C2_loss=-1.552, Gen_loss=-1.300
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 740: C2_loss=-1.647, Gen_loss=-1.325
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 750: C2_loss=-1.628, Gen_loss=-1.271
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 760: C2_loss=-1.660, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 770: C2_loss=-1.691, Gen_loss=-1.322
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 780: C2_loss=-1.846, Gen_loss=-1.290
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 790: C2_loss=-1.793, Gen_loss=-1.214
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 800: C2_loss=-1.941, Gen_loss=-1.264
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 810: C2_loss=-1.244, Gen_loss=-1.313
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.000, wm=0.250
+  Quality: L1=0.0000
+Batch 820: C2_loss=-1.820, Gen_loss=-1.292
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 830: C2_loss=-1.582, Gen_loss=-1.277
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 840: C2_loss=-1.595, Gen_loss=-1.296
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 850: C2_loss=-1.786, Gen_loss=-1.275
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 860: C2_loss=-1.608, Gen_loss=-1.307
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 870: C2_loss=-1.741, Gen_loss=-1.187
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 880: C2_loss=-1.697, Gen_loss=-1.165
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 890: C2_loss=-1.702, Gen_loss=-1.174
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 900: C2_loss=-1.485, Gen_loss=-1.262
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 910: C2_loss=-1.716, Gen_loss=-1.296
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 920: C2_loss=-1.473, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 930: C2_loss=-1.648, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 940: C2_loss=-1.670, Gen_loss=-1.284
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 950: C2_loss=-1.545, Gen_loss=-1.289
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 960: C2_loss=-1.428, Gen_loss=-1.276
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 970: C2_loss=-1.769, Gen_loss=-1.239
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 980: C2_loss=-1.628, Gen_loss=-1.314
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 990: C2_loss=-1.652, Gen_loss=-1.301
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1000: C2_loss=-1.662, Gen_loss=-1.315
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1010: C2_loss=-1.721, Gen_loss=-1.247
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 1020: C2_loss=-1.638, Gen_loss=-1.330
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1030: C2_loss=-1.598, Gen_loss=-1.331
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1040: C2_loss=-1.594, Gen_loss=-1.261
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1050: C2_loss=-1.410, Gen_loss=-1.335
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 1060: C2_loss=-1.572, Gen_loss=-1.308
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1070: C2_loss=-1.573, Gen_loss=-1.247
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1080: C2_loss=-1.635, Gen_loss=-1.187
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1090: C2_loss=-1.888, Gen_loss=-1.301
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1100: C2_loss=-1.733, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1110: C2_loss=-1.739, Gen_loss=-1.267
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1120: C2_loss=-1.734, Gen_loss=-1.262
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1130: C2_loss=-1.789, Gen_loss=-1.332
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1140: C2_loss=-1.638, Gen_loss=-1.335
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1150: C2_loss=-1.681, Gen_loss=-1.344
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1160: C2_loss=-1.395, Gen_loss=-1.308
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1170: C2_loss=-1.615, Gen_loss=-1.298
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1180: C2_loss=-1.425, Gen_loss=-1.345
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 1190: C2_loss=-1.692, Gen_loss=-1.239
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1200: C2_loss=-1.121, Gen_loss=-1.336
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.250
+  Quality: L1=0.0000
+Batch 1210: C2_loss=-1.614, Gen_loss=-1.309
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1220: C2_loss=-1.570, Gen_loss=-1.259
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1230: C2_loss=-1.719, Gen_loss=-1.297
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1240: C2_loss=-1.691, Gen_loss=-1.327
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1250: C2_loss=-1.522, Gen_loss=-1.317
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 1260: C2_loss=-1.595, Gen_loss=-1.306
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 1270: C2_loss=-1.629, Gen_loss=-1.236
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1280: C2_loss=-1.753, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1290: C2_loss=-1.440, Gen_loss=-1.339
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.250
+  Quality: L1=0.0000
+Batch 1300: C2_loss=-1.600, Gen_loss=-1.264
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1310: C2_loss=-1.625, Gen_loss=-1.336
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 1320: C2_loss=-1.785, Gen_loss=-1.265
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1330: C2_loss=-1.710, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=1.000
+  Quality: L1=0.0000
+Batch 1340: C2_loss=-1.420, Gen_loss=-1.338
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 1350: C2_loss=-1.775, Gen_loss=-1.198
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1360: C2_loss=-1.787, Gen_loss=-1.303
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1370: C2_loss=-1.620, Gen_loss=-1.271
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1380: C2_loss=-1.462, Gen_loss=-1.280
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1390: C2_loss=-1.617, Gen_loss=-1.267
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1400: C2_loss=-1.582, Gen_loss=-1.292
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1410: C2_loss=-1.800, Gen_loss=-1.273
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1420: C2_loss=-1.686, Gen_loss=-1.315
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Epoch 7 Summary:
+  Stage: adversarial
+  C1 Performance: clean=0.998, wm=0.998
+  C2 Performance: clean=0.824, wm=0.822
+  Quality: L1=0.0000
+  ⚠️  C2 is performing too well on clean images
+\n=== EPOCH 8/10 ===
+ADVERSARIAL STAGE - C2 vs Generator
+Batch 0: C2_loss=-1.188, Gen_loss=-1.324
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.250
+  Quality: L1=0.0000
+Batch 10: C2_loss=-1.553, Gen_loss=-1.227
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 20: C2_loss=-1.535, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 30: C2_loss=-1.582, Gen_loss=-1.321
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.500
+  Quality: L1=0.0000
+Batch 40: C2_loss=-1.698, Gen_loss=-1.302
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 50: C2_loss=-1.632, Gen_loss=-1.272
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 60: C2_loss=-1.795, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 70: C2_loss=-1.863, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 80: C2_loss=-1.575, Gen_loss=-1.225
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 90: C2_loss=-1.575, Gen_loss=-1.349
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 100: C2_loss=-1.698, Gen_loss=-1.286
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 110: C2_loss=-1.481, Gen_loss=-1.328
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 120: C2_loss=-1.623, Gen_loss=-1.299
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 130: C2_loss=-1.652, Gen_loss=-1.199
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 140: C2_loss=-1.576, Gen_loss=-1.322
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 150: C2_loss=-1.387, Gen_loss=-1.272
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 160: C2_loss=-1.715, Gen_loss=-1.264
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 170: C2_loss=-1.541, Gen_loss=-1.283
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 180: C2_loss=-1.702, Gen_loss=-1.151
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 190: C2_loss=-1.406, Gen_loss=-1.308
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.250
+  Quality: L1=0.0000
+Batch 200: C2_loss=-1.527, Gen_loss=-1.272
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 210: C2_loss=-1.642, Gen_loss=-1.272
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 220: C2_loss=-1.722, Gen_loss=-1.253
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 230: C2_loss=-1.698, Gen_loss=-1.289
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 240: C2_loss=-1.707, Gen_loss=-1.322
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 250: C2_loss=-1.707, Gen_loss=-1.198
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 260: C2_loss=-1.549, Gen_loss=-1.232
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 270: C2_loss=-1.671, Gen_loss=-1.283
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 280: C2_loss=-1.540, Gen_loss=-1.317
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 290: C2_loss=-1.580, Gen_loss=-1.333
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 300: C2_loss=-1.594, Gen_loss=-1.294
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 310: C2_loss=-1.599, Gen_loss=-1.284
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 320: C2_loss=-1.586, Gen_loss=-1.243
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 330: C2_loss=-1.644, Gen_loss=-1.262
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 340: C2_loss=-1.509, Gen_loss=-1.314
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 350: C2_loss=-1.641, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 360: C2_loss=-1.633, Gen_loss=-1.303
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 370: C2_loss=-1.799, Gen_loss=-1.311
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 380: C2_loss=-1.587, Gen_loss=-1.323
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 390: C2_loss=-1.456, Gen_loss=-1.281
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 400: C2_loss=-1.421, Gen_loss=-1.299
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 410: C2_loss=-1.706, Gen_loss=-1.178
+  C1: clean=0.750, wm=0.750
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 420: C2_loss=-1.732, Gen_loss=-1.254
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 430: C2_loss=-1.378, Gen_loss=-1.320
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.250
+  Quality: L1=0.0000
+Batch 440: C2_loss=-1.614, Gen_loss=-1.285
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 450: C2_loss=-1.555, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 460: C2_loss=-1.876, Gen_loss=-1.218
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 470: C2_loss=-1.436, Gen_loss=-1.349
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 480: C2_loss=-1.782, Gen_loss=-1.306
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 490: C2_loss=-1.688, Gen_loss=-1.229
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 500: C2_loss=-1.670, Gen_loss=-1.218
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 510: C2_loss=-1.634, Gen_loss=-1.286
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 520: C2_loss=-1.692, Gen_loss=-1.251
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 530: C2_loss=-1.612, Gen_loss=-1.318
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 540: C2_loss=-1.795, Gen_loss=-1.246
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 550: C2_loss=-1.836, Gen_loss=-1.243
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 560: C2_loss=-1.656, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 570: C2_loss=-1.650, Gen_loss=-1.280
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 580: C2_loss=-1.706, Gen_loss=-1.278
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 590: C2_loss=-1.684, Gen_loss=-1.280
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 600: C2_loss=-1.789, Gen_loss=-1.284
+  C1: clean=0.750, wm=0.750
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 610: C2_loss=-1.558, Gen_loss=-1.239
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 620: C2_loss=-1.667, Gen_loss=-1.294
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 630: C2_loss=-1.649, Gen_loss=-1.243
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 640: C2_loss=-1.669, Gen_loss=-1.282
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 650: C2_loss=-1.701, Gen_loss=-1.294
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 660: C2_loss=-1.630, Gen_loss=-1.238
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 670: C2_loss=-1.697, Gen_loss=-1.216
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 680: C2_loss=-1.601, Gen_loss=-1.265
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 690: C2_loss=-1.450, Gen_loss=-1.274
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 700: C2_loss=-1.566, Gen_loss=-1.307
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 710: C2_loss=-1.579, Gen_loss=-1.251
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 720: C2_loss=-1.674, Gen_loss=75380.781
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 730: C2_loss=-1.444, Gen_loss=-1.282
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 740: C2_loss=-1.730, Gen_loss=-1.292
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 750: C2_loss=-1.747, Gen_loss=-1.261
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 760: C2_loss=-1.573, Gen_loss=-1.280
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 770: C2_loss=-1.517, Gen_loss=-1.259
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 780: C2_loss=-1.652, Gen_loss=-1.298
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 790: C2_loss=-1.665, Gen_loss=-1.257
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 800: C2_loss=-1.609, Gen_loss=-1.249
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 810: C2_loss=-1.732, Gen_loss=-1.249
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 820: C2_loss=-1.556, Gen_loss=-1.303
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 830: C2_loss=-1.785, Gen_loss=-1.289
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 840: C2_loss=-1.836, Gen_loss=-1.275
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 850: C2_loss=-1.647, Gen_loss=-1.259
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 860: C2_loss=-1.686, Gen_loss=-1.238
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 870: C2_loss=-1.638, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 880: C2_loss=-1.375, Gen_loss=-1.315
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 890: C2_loss=-1.621, Gen_loss=-1.317
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 900: C2_loss=-1.580, Gen_loss=-1.277
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 910: C2_loss=-1.625, Gen_loss=-1.287
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=1.000
+  Quality: L1=0.0000
+Batch 920: C2_loss=-1.711, Gen_loss=-1.295
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 930: C2_loss=-1.714, Gen_loss=-1.219
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 940: C2_loss=-1.571, Gen_loss=-1.293
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 950: C2_loss=-1.652, Gen_loss=-1.296
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 960: C2_loss=-1.616, Gen_loss=-1.324
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.500
+  Quality: L1=0.0000
+Batch 970: C2_loss=-1.578, Gen_loss=-1.303
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 980: C2_loss=-1.641, Gen_loss=-1.262
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 990: C2_loss=-1.681, Gen_loss=-1.295
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1000: C2_loss=-1.387, Gen_loss=-1.302
+  C1: clean=0.750, wm=0.750
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 1010: C2_loss=-1.630, Gen_loss=-1.268
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 1020: C2_loss=-1.657, Gen_loss=-1.293
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1030: C2_loss=-1.568, Gen_loss=-1.298
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1040: C2_loss=-1.727, Gen_loss=-1.277
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1050: C2_loss=-1.622, Gen_loss=-1.222
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1060: C2_loss=-1.576, Gen_loss=-1.297
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1070: C2_loss=-1.730, Gen_loss=-1.293
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1080: C2_loss=-1.570, Gen_loss=-1.295
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 1090: C2_loss=-1.690, Gen_loss=-1.258
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1100: C2_loss=-1.630, Gen_loss=-1.238
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1110: C2_loss=-1.722, Gen_loss=-1.312
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 1120: C2_loss=-1.763, Gen_loss=-1.239
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1130: C2_loss=-1.570, Gen_loss=-1.352
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1140: C2_loss=-1.758, Gen_loss=-1.269
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=1.000
+  Quality: L1=0.0000
+Batch 1150: C2_loss=-1.735, Gen_loss=-1.313
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 1160: C2_loss=-1.665, Gen_loss=-1.327
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1170: C2_loss=-1.454, Gen_loss=-1.255
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1180: C2_loss=-1.875, Gen_loss=-1.286
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1190: C2_loss=-1.872, Gen_loss=-1.259
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1200: C2_loss=-1.788, Gen_loss=-1.261
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1210: C2_loss=-1.719, Gen_loss=-1.271
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1220: C2_loss=-1.840, Gen_loss=-1.278
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1230: C2_loss=-1.761, Gen_loss=-1.266
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1240: C2_loss=-1.577, Gen_loss=-1.319
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1250: C2_loss=-1.686, Gen_loss=-1.263
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1260: C2_loss=-1.616, Gen_loss=-1.239
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1270: C2_loss=-1.271, Gen_loss=-1.302
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.500
+  Quality: L1=0.0000
+Batch 1280: C2_loss=-1.725, Gen_loss=-1.304
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1290: C2_loss=-1.683, Gen_loss=-1.289
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1300: C2_loss=-1.407, Gen_loss=-1.353
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 1310: C2_loss=-1.782, Gen_loss=-1.297
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1320: C2_loss=-1.666, Gen_loss=-1.241
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1330: C2_loss=-1.729, Gen_loss=-1.309
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1340: C2_loss=-1.736, Gen_loss=-1.235
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1350: C2_loss=-1.489, Gen_loss=-1.257
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1360: C2_loss=-1.653, Gen_loss=-1.251
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1370: C2_loss=-1.613, Gen_loss=-1.286
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1380: C2_loss=-1.724, Gen_loss=-1.252
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1390: C2_loss=-1.565, Gen_loss=-1.278
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 1400: C2_loss=-1.806, Gen_loss=-1.260
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1410: C2_loss=-1.619, Gen_loss=-1.285
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1420: C2_loss=-1.649, Gen_loss=-1.248
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Epoch 8 Summary:
+  Stage: adversarial
+  C1 Performance: clean=0.998, wm=0.998
+  C2 Performance: clean=0.851, wm=0.853
+  Quality: L1=0.0000
+  ⚠️  C2 is performing too well on clean images
+\n=== EPOCH 9/10 ===
+ADVERSARIAL STAGE - C2 vs Generator
+Batch 0: C2_loss=-1.716, Gen_loss=-1.229
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 10: C2_loss=-1.685, Gen_loss=-1.283
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 20: C2_loss=-1.824, Gen_loss=-1.228
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 30: C2_loss=-1.591, Gen_loss=-1.237
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 40: C2_loss=-1.575, Gen_loss=-1.289
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 50: C2_loss=-1.754, Gen_loss=-1.247
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 60: C2_loss=-1.491, Gen_loss=-1.303
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 70: C2_loss=-1.518, Gen_loss=-1.278
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.500
+  Quality: L1=0.0000
+Batch 80: C2_loss=-1.773, Gen_loss=-1.281
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 90: C2_loss=-1.705, Gen_loss=-1.299
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 100: C2_loss=-1.577, Gen_loss=-1.339
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 110: C2_loss=-1.617, Gen_loss=-1.297
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 120: C2_loss=-1.620, Gen_loss=-1.271
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 130: C2_loss=-1.704, Gen_loss=-1.284
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 140: C2_loss=-1.381, Gen_loss=-1.301
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 150: C2_loss=-1.665, Gen_loss=-1.303
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 160: C2_loss=-1.507, Gen_loss=-1.309
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 170: C2_loss=-1.716, Gen_loss=-1.315
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 180: C2_loss=-1.828, Gen_loss=-1.276
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 190: C2_loss=-1.628, Gen_loss=-1.240
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 200: C2_loss=-1.712, Gen_loss=-1.287
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 210: C2_loss=-1.809, Gen_loss=-1.246
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 220: C2_loss=-1.766, Gen_loss=-1.202
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 230: C2_loss=-1.723, Gen_loss=-1.266
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 240: C2_loss=-1.648, Gen_loss=-1.242
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 250: C2_loss=-1.768, Gen_loss=-1.278
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 260: C2_loss=-1.731, Gen_loss=-1.239
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 270: C2_loss=-1.672, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 280: C2_loss=-1.860, Gen_loss=-1.263
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 290: C2_loss=-1.629, Gen_loss=-1.226
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 300: C2_loss=-1.734, Gen_loss=-1.222
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 310: C2_loss=-1.639, Gen_loss=-1.275
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 320: C2_loss=-1.753, Gen_loss=-1.256
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 330: C2_loss=-1.580, Gen_loss=-1.311
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 340: C2_loss=-1.828, Gen_loss=-1.255
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 350: C2_loss=-1.653, Gen_loss=-1.238
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 360: C2_loss=-1.651, Gen_loss=-1.316
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 370: C2_loss=-1.763, Gen_loss=-1.246
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 380: C2_loss=-1.528, Gen_loss=65456.605
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 390: C2_loss=-1.656, Gen_loss=-1.321
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 400: C2_loss=-1.686, Gen_loss=-1.317
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 410: C2_loss=-1.810, Gen_loss=-1.302
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 420: C2_loss=-1.376, Gen_loss=-1.275
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 430: C2_loss=-1.585, Gen_loss=-1.256
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 440: C2_loss=-1.380, Gen_loss=-1.331
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 450: C2_loss=-1.606, Gen_loss=-1.307
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 460: C2_loss=-1.489, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 470: C2_loss=-1.456, Gen_loss=-1.301
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 480: C2_loss=-1.563, Gen_loss=-1.282
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 490: C2_loss=-1.634, Gen_loss=-1.252
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 500: C2_loss=-1.741, Gen_loss=-1.207
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 510: C2_loss=-1.714, Gen_loss=-1.217
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 520: C2_loss=-1.666, Gen_loss=-1.299
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 530: C2_loss=-1.525, Gen_loss=-1.329
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.750
+  Quality: L1=0.0000
+Batch 540: C2_loss=-1.274, Gen_loss=-1.261
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.250
+  Quality: L1=0.0000
+Batch 550: C2_loss=-1.719, Gen_loss=-1.262
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 560: C2_loss=-1.532, Gen_loss=62194.230
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 570: C2_loss=-1.682, Gen_loss=-1.301
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 580: C2_loss=-1.821, Gen_loss=-1.241
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 590: C2_loss=-1.611, Gen_loss=-1.333
+  C1: clean=0.750, wm=0.750
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 600: C2_loss=-1.635, Gen_loss=-1.261
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 610: C2_loss=-1.752, Gen_loss=-1.245
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 620: C2_loss=-1.658, Gen_loss=-1.271
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 630: C2_loss=-1.852, Gen_loss=-1.284
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 640: C2_loss=-1.774, Gen_loss=-1.236
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 650: C2_loss=-1.823, Gen_loss=-1.303
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 660: C2_loss=-1.560, Gen_loss=-1.200
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 670: C2_loss=-1.663, Gen_loss=-1.292
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 680: C2_loss=-1.701, Gen_loss=-1.262
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 690: C2_loss=-1.826, Gen_loss=-1.311
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 700: C2_loss=-1.736, Gen_loss=-1.277
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 710: C2_loss=-1.898, Gen_loss=-1.230
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 720: C2_loss=-1.546, Gen_loss=-1.274
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 730: C2_loss=-1.825, Gen_loss=-1.255
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 740: C2_loss=-1.617, Gen_loss=-1.276
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 750: C2_loss=-1.721, Gen_loss=-1.302
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 760: C2_loss=-1.677, Gen_loss=-1.294
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 770: C2_loss=-1.712, Gen_loss=-1.156
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 780: C2_loss=-1.410, Gen_loss=-1.347
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 790: C2_loss=-1.592, Gen_loss=-1.297
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 800: C2_loss=-1.503, Gen_loss=-1.311
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 810: C2_loss=-1.575, Gen_loss=-1.278
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 820: C2_loss=-1.778, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 830: C2_loss=-1.739, Gen_loss=-1.285
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 840: C2_loss=-1.566, Gen_loss=-1.268
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 850: C2_loss=-1.681, Gen_loss=-1.294
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 860: C2_loss=-1.616, Gen_loss=-1.220
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 870: C2_loss=-1.673, Gen_loss=-1.289
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 880: C2_loss=-1.598, Gen_loss=-1.290
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 890: C2_loss=-1.763, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 900: C2_loss=-1.651, Gen_loss=-1.221
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 910: C2_loss=-1.729, Gen_loss=-1.313
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 920: C2_loss=-1.747, Gen_loss=-1.283
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 930: C2_loss=-1.947, Gen_loss=-1.301
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 940: C2_loss=-1.475, Gen_loss=-1.250
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 950: C2_loss=-1.865, Gen_loss=-1.247
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 960: C2_loss=-1.360, Gen_loss=-1.300
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 970: C2_loss=-1.746, Gen_loss=-1.275
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 980: C2_loss=-1.608, Gen_loss=-1.343
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 990: C2_loss=-1.606, Gen_loss=-1.212
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1000: C2_loss=-1.711, Gen_loss=-1.279
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1010: C2_loss=-1.649, Gen_loss=-1.270
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1020: C2_loss=-1.565, Gen_loss=-1.251
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1030: C2_loss=-1.572, Gen_loss=-1.331
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 1040: C2_loss=-1.678, Gen_loss=-1.309
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1050: C2_loss=-1.756, Gen_loss=-1.273
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1060: C2_loss=-1.743, Gen_loss=-1.308
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1070: C2_loss=-1.955, Gen_loss=-1.264
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1080: C2_loss=-1.744, Gen_loss=-1.311
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1090: C2_loss=-1.758, Gen_loss=-1.264
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1100: C2_loss=-1.650, Gen_loss=-1.308
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1110: C2_loss=-1.616, Gen_loss=-1.326
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 1120: C2_loss=-1.761, Gen_loss=-1.294
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1130: C2_loss=-1.365, Gen_loss=-1.356
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.250
+  Quality: L1=0.0000
+Batch 1140: C2_loss=-1.650, Gen_loss=-1.305
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1150: C2_loss=-1.712, Gen_loss=-1.298
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1160: C2_loss=-1.636, Gen_loss=-1.264
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1170: C2_loss=-1.535, Gen_loss=-1.251
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1180: C2_loss=-1.748, Gen_loss=-1.270
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1190: C2_loss=-1.709, Gen_loss=-1.286
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1200: C2_loss=-1.496, Gen_loss=-1.255
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1210: C2_loss=-1.741, Gen_loss=-1.298
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1220: C2_loss=-1.732, Gen_loss=-1.275
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1230: C2_loss=-1.648, Gen_loss=-1.263
+  C1: clean=0.750, wm=0.750
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1240: C2_loss=-1.728, Gen_loss=-1.258
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1250: C2_loss=-1.759, Gen_loss=-1.289
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1260: C2_loss=-1.732, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1270: C2_loss=-1.835, Gen_loss=-1.209
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1280: C2_loss=-1.752, Gen_loss=-1.303
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1290: C2_loss=-1.745, Gen_loss=-1.270
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1300: C2_loss=-1.683, Gen_loss=-1.305
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1310: C2_loss=-1.623, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1320: C2_loss=-1.762, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1330: C2_loss=-1.641, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1340: C2_loss=-1.708, Gen_loss=-1.306
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1350: C2_loss=-1.654, Gen_loss=-1.226
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1360: C2_loss=-1.634, Gen_loss=-1.270
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1370: C2_loss=-1.619, Gen_loss=-1.294
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 1380: C2_loss=-1.501, Gen_loss=-1.297
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 1390: C2_loss=-1.783, Gen_loss=-1.313
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 1400: C2_loss=-1.637, Gen_loss=-1.281
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1410: C2_loss=-1.642, Gen_loss=-1.317
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 1420: C2_loss=-1.554, Gen_loss=-1.267
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Epoch 9 Summary:
+  Stage: adversarial
+  C1 Performance: clean=0.998, wm=0.998
+  C2 Performance: clean=0.875, wm=0.872
+  Quality: L1=0.0000
+  ⚠️  C2 is performing too well on clean images
+\n=== EPOCH 10/10 ===
+ADVERSARIAL STAGE - C2 vs Generator
+Batch 0: C2_loss=-1.832, Gen_loss=-1.295
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 10: C2_loss=-1.627, Gen_loss=-1.283
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 20: C2_loss=-1.775, Gen_loss=-1.215
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 30: C2_loss=-1.768, Gen_loss=-1.270
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 40: C2_loss=-1.834, Gen_loss=-1.277
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 50: C2_loss=-1.679, Gen_loss=-1.302
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 60: C2_loss=-1.772, Gen_loss=-1.253
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 70: C2_loss=-1.610, Gen_loss=-1.290
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 80: C2_loss=-1.684, Gen_loss=-1.315
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 90: C2_loss=-1.699, Gen_loss=-1.279
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 100: C2_loss=-1.723, Gen_loss=-1.259
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 110: C2_loss=-1.767, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 120: C2_loss=-1.612, Gen_loss=-1.274
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 130: C2_loss=-1.719, Gen_loss=-1.285
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 140: C2_loss=-1.702, Gen_loss=-1.294
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 150: C2_loss=-1.673, Gen_loss=-1.282
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 160: C2_loss=-1.736, Gen_loss=-1.300
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 170: C2_loss=-1.584, Gen_loss=-1.263
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 180: C2_loss=-1.702, Gen_loss=-1.261
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 190: C2_loss=-1.685, Gen_loss=-1.318
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 200: C2_loss=-1.644, Gen_loss=-1.233
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 210: C2_loss=-1.805, Gen_loss=-1.261
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 220: C2_loss=-1.475, Gen_loss=-1.264
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 230: C2_loss=-1.782, Gen_loss=-1.304
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 240: C2_loss=-1.671, Gen_loss=-1.344
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 250: C2_loss=-1.550, Gen_loss=-1.325
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 260: C2_loss=-1.749, Gen_loss=-1.233
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 270: C2_loss=-1.258, Gen_loss=-1.313
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0000
+Batch 280: C2_loss=-1.815, Gen_loss=-1.239
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 290: C2_loss=-1.555, Gen_loss=-1.335
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 300: C2_loss=-1.635, Gen_loss=-1.277
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 310: C2_loss=-1.733, Gen_loss=-1.286
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 320: C2_loss=-1.703, Gen_loss=-1.307
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 330: C2_loss=-1.861, Gen_loss=56777.062
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 340: C2_loss=-1.519, Gen_loss=-1.237
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 350: C2_loss=-1.764, Gen_loss=-1.288
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 360: C2_loss=-1.771, Gen_loss=-1.252
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 370: C2_loss=-1.687, Gen_loss=-1.243
+  C1: clean=0.750, wm=0.750
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 380: C2_loss=-1.654, Gen_loss=-1.221
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 390: C2_loss=-1.478, Gen_loss=-1.302
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 400: C2_loss=-1.619, Gen_loss=-1.246
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 410: C2_loss=-1.745, Gen_loss=-1.316
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 420: C2_loss=-1.669, Gen_loss=-1.269
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 430: C2_loss=-1.717, Gen_loss=-1.279
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 440: C2_loss=-1.989, Gen_loss=-1.231
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 450: C2_loss=-1.605, Gen_loss=-1.255
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 460: C2_loss=-1.566, Gen_loss=-1.297
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 470: C2_loss=-1.657, Gen_loss=-1.265
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 480: C2_loss=-1.631, Gen_loss=-1.271
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 490: C2_loss=-1.667, Gen_loss=-1.325
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 500: C2_loss=-1.776, Gen_loss=-1.281
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 510: C2_loss=-1.707, Gen_loss=-1.292
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 520: C2_loss=-1.623, Gen_loss=-1.261
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 530: C2_loss=-1.712, Gen_loss=-1.260
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 540: C2_loss=-1.696, Gen_loss=-1.258
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 550: C2_loss=-1.682, Gen_loss=-1.310
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 560: C2_loss=-1.591, Gen_loss=-1.316
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 570: C2_loss=-1.571, Gen_loss=-1.166
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 580: C2_loss=-1.655, Gen_loss=-1.241
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 590: C2_loss=-1.644, Gen_loss=-1.200
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.750
+  Quality: L1=0.0000
+Batch 600: C2_loss=-1.666, Gen_loss=-1.290
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 610: C2_loss=-1.660, Gen_loss=-1.321
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 620: C2_loss=-1.722, Gen_loss=-1.305
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 630: C2_loss=-1.747, Gen_loss=-1.246
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 640: C2_loss=-1.783, Gen_loss=-1.303
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 650: C2_loss=-1.367, Gen_loss=-1.331
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.250, wm=0.250
+  Quality: L1=0.0000
+Batch 660: C2_loss=-1.720, Gen_loss=-1.304
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 670: C2_loss=-1.648, Gen_loss=-1.291
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.500
+  Quality: L1=0.0000
+Batch 680: C2_loss=-1.686, Gen_loss=-1.257
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 690: C2_loss=-1.678, Gen_loss=-1.313
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 700: C2_loss=-1.688, Gen_loss=-1.283
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.750
+  Quality: L1=0.0000
+Batch 710: C2_loss=-1.708, Gen_loss=-1.209
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 720: C2_loss=-1.779, Gen_loss=-1.266
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 730: C2_loss=-1.648, Gen_loss=-1.292
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 740: C2_loss=-1.693, Gen_loss=-1.282
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 750: C2_loss=-1.666, Gen_loss=-1.294
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=1.000
+  Quality: L1=0.0000
+Batch 760: C2_loss=-1.729, Gen_loss=-1.265
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
+Batch 770: C2_loss=-1.657, Gen_loss=-1.280
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0000
+Batch 780: C2_loss=-1.779, Gen_loss=-1.232
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=1.000
+  Quality: L1=0.0000
