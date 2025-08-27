@@ -740,10 +740,18 @@ def main():
                 intensity *= 1.05
                 print(f"  📈 Increased intensity to {intensity:.3f}")
     
-    # Save final results
+    # Save final results with comprehensive fieldnames to handle all training stages
     results_file = os.path.join(CSV_ROOT, "final_training_results.csv")
+    
+    # Define comprehensive fieldnames for all possible metrics from different stages
+    all_fieldnames = [
+        'epoch', 'stage', 'batch', 'loss_c2', 'loss_gen', 
+        'acc_c1_clean', 'acc_c1_wm', 'acc_c2_clean', 'acc_c2_wm',
+        'l1_loss', 'exclusion_penalty', 'entropy_clean'
+    ]
+    
     with open(results_file, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=all_metrics[0].keys())
+        writer = csv.DictWriter(f, fieldnames=all_fieldnames, extrasaction='ignore')
         writer.writeheader()
         writer.writerows(all_metrics)
     
