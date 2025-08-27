@@ -1,0 +1,2 @@
+loss_c2,acc_c1_clean,acc_c2_clean,acc_c1_wm,acc_c2_wm,epoch,stage,intensity,mask_fraction
+1.6149536395857649,0.9978991596638656,0.4693627450980392,0.0,0.0,1,warmup,0.1,0.15
