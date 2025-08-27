@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 FIXED Adversarial Watermarking Pipeline:
 - Proper adversarial training for C2 classifier
@@ -25,7 +24,7 @@ from torch.fft import fft2, ifft2
 # Get project root directory (three levels up from current file)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# ====== IMPORT YOUR LOCAL MODULES =====
+# ====== IMPORTING LOCAL MODULES =====
 sys.path.append(os.path.join(PROJECT_ROOT, "src", "models"))
 from efficientnet_cbam import EfficientNetB3_CBAM_Bottleneck
 from autoencoder import Encoder, Decoder
@@ -48,6 +47,9 @@ os.makedirs(C2_SAVE_DIR, exist_ok=True)
 CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 CLASS2IDX = {c:i for i,c in enumerate(CLASSES)}
 
+# Please update these hyperparams based on your computation power.
+
+
 # Training hyperparams
 EPOCHS = 3
 BATCH_SIZE_WARMUP = 8     # Warmup stage - can handle larger batches
@@ -55,7 +57,7 @@ BATCH_SIZE_ADV = 4        # Adversarial/Fine-tune stages - memory intensive
 NUM_WORKERS = 8  
 AMP = True
 
-# Critical: Adversarial training stages - ADJUSTED for 3-epoch training
+# Critical: Adversarial training stages - i am using 3 epochs
 C2_WARMUP_EPOCHS = 1      # Train C2 normally first (epoch 1)
 ADVERSARIAL_EPOCHS = 2    # Then adversarial training (epochs 2-3)
 FINE_TUNE_EPOCHS = 25     # Final fine-tuning
