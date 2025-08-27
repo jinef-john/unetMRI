@@ -471,6 +471,9 @@ class AdversarialTrainer:
     
     def train_step_adversarial(self, batch, intensity, mask_fraction):
         """CRITICAL: Proper adversarial training step"""
+        # Clear GPU cache to prevent OOM
+        torch.cuda.empty_cache()
+        
         img, labels, fnames, cls_names = batch
         img = img.to(DEVICE)
         labels = labels.to(DEVICE)
@@ -589,7 +592,7 @@ def main():
     c1 = load_c1_frozen()
     encoder, decoder = load_autoencoder_frozen()
     c2 = build_c2()
-    watermark_gen = WatermarkGeneratorMiniUNet()
+    watermark_gen = WatermarkGeneratorMiniUNet().to(DEVICE)  # Move to GPU!
     
     # Setup trainer
     trainer = AdversarialTrainer(c1, c2, encoder, decoder, watermark_gen)
@@ -604,6 +607,9 @@ def main():
     print("Starting training...")
     for epoch in range(1, EPOCHS + 1):
         print(f"\\n=== EPOCH {epoch}/{EPOCHS} ===")
+        
+        # Clear GPU cache at start of each epoch
+        torch.cuda.empty_cache()
         
         # Determine training stage
         if epoch <= C2_WARMUP_EPOCHS:
