@@ -1,0 +1,654 @@
+Starting Fixed Adversarial Watermarking Training...
+Loading models...
+Loading C1 model...
+/teamspace/studios/this_studio/unetMRI/src/watermarking/MRI_Watermark_Embedding_CYCLES_FIXED_ADVERSARIAL.py:243: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(C1_PATH, map_location=DEVICE)
+/teamspace/studios/this_studio/unetMRI/src/watermarking/MRI_Watermark_Embedding_CYCLES_FIXED_ADVERSARIAL.py:265: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(AE_PATH, map_location=DEVICE)
+Starting training...
+\n=== EPOCH 1/5 ===
+WARMUP STAGE - Training C2 normally
+🔄 Creating dataloader for warmup stage...
+📦 Creating dataloader: warmup stage, batch_size=64
+Batch 0: C2_loss=4.106, C1_acc=1.000, C2_acc=0.281
+Batch 10: C2_loss=1.489, C1_acc=1.000, C2_acc=0.406
+Batch 20: C2_loss=1.100, C1_acc=1.000, C2_acc=0.500
+Batch 30: C2_loss=1.081, C1_acc=1.000, C2_acc=0.594
+Batch 40: C2_loss=0.741, C1_acc=1.000, C2_acc=0.656
+Batch 50: C2_loss=0.948, C1_acc=1.000, C2_acc=0.641
+Batch 60: C2_loss=0.759, C1_acc=1.000, C2_acc=0.703
+Batch 70: C2_loss=0.640, C1_acc=1.000, C2_acc=0.781
+Batch 80: C2_loss=0.784, C1_acc=1.000, C2_acc=0.703
+Epoch 1 Summary:
+  Stage: warmup
+  C1 Performance: clean=0.998
+  C2 Performance: clean=0.581
+\n=== EPOCH 2/5 ===
+ADVERSARIAL STAGE - C2 vs Generator
+🔄 Creating dataloader for adversarial stage...
+📦 Creating dataloader: adversarial stage, batch_size=16
+Batch 0: C2_loss=3.854, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.625
+  Quality: L1=0.0004
+Batch 10: C2_loss=6.708, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.438, wm=0.438
+  Quality: L1=0.0002
+Batch 20: C2_loss=4.899, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.562, wm=0.625
+  Quality: L1=0.0002
+Batch 30: C2_loss=4.807, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.438, wm=0.625
+  Quality: L1=0.0002
+Batch 40: C2_loss=4.806, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.562
+  Quality: L1=0.0002
+Batch 50: C2_loss=12.803, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.375, wm=0.438
+  Quality: L1=0.0002
+Batch 60: C2_loss=4.442, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0002
+Batch 70: C2_loss=4.133, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.625, wm=0.812
+  Quality: L1=0.0002
+Batch 80: C2_loss=6.797, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.312, wm=0.250
+  Quality: L1=0.0002
+Batch 90: C2_loss=4.304, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.562
+  Quality: L1=0.0002
+Batch 100: C2_loss=3.951, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.625, wm=0.688
+  Quality: L1=0.0002
+Batch 110: C2_loss=2.916, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.812
+  Quality: L1=0.0002
+Batch 120: C2_loss=6.298, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.500
+  Quality: L1=0.0001
+Batch 130: C2_loss=4.653, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.562
+  Quality: L1=0.0001
+Batch 140: C2_loss=2.305, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.875
+  Quality: L1=0.0001
+Batch 150: C2_loss=4.832, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.750
+  Quality: L1=0.0002
+Batch 160: C2_loss=3.194, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.812
+  Quality: L1=0.0001
+Batch 170: C2_loss=4.857, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.688
+  Quality: L1=0.0001
+Batch 180: C2_loss=6.910, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.438
+  Quality: L1=0.0002
+Batch 190: C2_loss=4.834, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.562, wm=0.625
+  Quality: L1=0.0001
+Batch 200: C2_loss=4.464, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.688
+  Quality: L1=0.0001
+Batch 210: C2_loss=2.330, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.688
+  Quality: L1=0.0001
+Batch 220: C2_loss=9.032, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.438, wm=0.562
+  Quality: L1=0.0001
+Batch 230: C2_loss=3.760, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.938, wm=0.688
+  Quality: L1=0.0001
+Batch 240: C2_loss=2.144, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 250: C2_loss=3.698, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.688
+  Quality: L1=0.0001
+Batch 260: C2_loss=3.888, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.812
+  Quality: L1=0.0001
+Batch 270: C2_loss=2.714, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.875
+  Quality: L1=0.0001
+Batch 280: C2_loss=4.570, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.688
+  Quality: L1=0.0001
+Batch 290: C2_loss=5.072, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.562
+  Quality: L1=0.0001
+Batch 300: C2_loss=2.958, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0002
+Batch 310: C2_loss=5.301, Gen_loss=0.000
+  C1: clean=0.938, wm=0.938
+  C2: clean=0.562, wm=0.438
+  Quality: L1=0.0001
+Batch 320: C2_loss=2.925, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.812
+  Quality: L1=0.0001
+Batch 330: C2_loss=4.116, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 340: C2_loss=3.496, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.688
+  Quality: L1=0.0001
+Batch 350: C2_loss=2.495, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Epoch 2 Summary:
+  Stage: adversarial
+  C1 Performance: clean=0.998, wm=0.998
+  C2 Performance: clean=0.651, wm=0.661
+  Quality: L1=0.0002
+  Watermark Signal: intensity=0.300, entropy_clean=0.492
+  ⚠️  C2 is performing too well on clean images
+\n=== EPOCH 3/5 ===
+ADVERSARIAL STAGE - C2 vs Generator
+Batch 0: C2_loss=3.051, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.750
+  Quality: L1=0.0001
+Batch 10: C2_loss=5.736, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.625, wm=0.375
+  Quality: L1=0.0001
+Batch 20: C2_loss=4.199, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.688
+  Quality: L1=0.0001
+Batch 30: C2_loss=2.931, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.812
+  Quality: L1=0.0001
+Batch 40: C2_loss=3.183, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.625
+  Quality: L1=0.0001
+Batch 50: C2_loss=5.099, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.625
+  Quality: L1=0.0001
+Batch 60: C2_loss=3.490, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.625, wm=0.812
+  Quality: L1=0.0001
+Batch 70: C2_loss=3.225, Gen_loss=214146.031
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.688
+  Quality: L1=0.0001
+Batch 80: C2_loss=2.695, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.812
+  Quality: L1=0.0001
+Batch 90: C2_loss=2.057, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.938, wm=0.875
+  Quality: L1=0.0001
+Batch 100: C2_loss=2.688, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.938
+  Quality: L1=0.0001
+Batch 110: C2_loss=4.703, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.625, wm=0.625
+  Quality: L1=0.0001
+Batch 120: C2_loss=5.514, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 130: C2_loss=3.526, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 140: C2_loss=2.173, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Batch 150: C2_loss=5.529, Gen_loss=201715.125
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.562
+  Quality: L1=0.0001
+Batch 160: C2_loss=4.395, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.500, wm=0.562
+  Quality: L1=0.0001
+Batch 170: C2_loss=3.200, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 180: C2_loss=7.240, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.438, wm=0.375
+  Quality: L1=0.0001
+Batch 190: C2_loss=3.689, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.625, wm=0.625
+  Quality: L1=0.0001
+Batch 200: C2_loss=3.346, Gen_loss=201273.719
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.750
+  Quality: L1=0.0001
+Batch 210: C2_loss=1.420, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.938, wm=0.875
+  Quality: L1=0.0001
+Batch 220: C2_loss=1.911, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 230: C2_loss=3.289, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.688
+  Quality: L1=0.0001
+Batch 240: C2_loss=1.962, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 250: C2_loss=3.630, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.688
+  Quality: L1=0.0001
+Batch 260: C2_loss=1.608, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.812
+  Quality: L1=0.0001
+Batch 270: C2_loss=4.185, Gen_loss=0.000
+  C1: clean=0.938, wm=0.938
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 280: C2_loss=3.077, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Batch 290: C2_loss=3.193, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.938
+  Quality: L1=0.0001
+Batch 300: C2_loss=2.592, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.812
+  Quality: L1=0.0001
+Batch 310: C2_loss=2.551, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 320: C2_loss=3.481, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.812
+  Quality: L1=0.0001
+Batch 330: C2_loss=2.771, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.625
+  Quality: L1=0.0001
+Batch 340: C2_loss=4.011, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.688
+  Quality: L1=0.0001
+Batch 350: C2_loss=2.776, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Epoch 3 Summary:
+  Stage: adversarial
+  C1 Performance: clean=0.998, wm=0.998
+  C2 Performance: clean=0.749, wm=0.751
+  Quality: L1=0.0001
+  Watermark Signal: intensity=0.300, entropy_clean=0.341
+  ⚠️  C2 is performing too well on clean images
+  ⚠️  C2 clean accuracy too high (0.749) - adversarial training needs strengthening
+  📊 C2 Distinction Score: 0.002 (target: >0.5)
+  🚨 C2 cannot distinguish watermarked from clean! Increasing watermark strength...
+\n=== EPOCH 4/5 ===
+ADVERSARIAL STAGE - C2 vs Generator
+Batch 0: C2_loss=3.237, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.750
+  Quality: L1=0.0001
+Batch 10: C2_loss=4.231, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 20: C2_loss=3.169, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.938
+  Quality: L1=0.0001
+Batch 30: C2_loss=2.151, Gen_loss=208871.172
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.938, wm=0.812
+  Quality: L1=0.0001
+Batch 40: C2_loss=2.283, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.875
+  Quality: L1=0.0001
+Batch 50: C2_loss=1.661, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.938, wm=0.875
+  Quality: L1=0.0001
+Batch 60: C2_loss=5.091, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.750
+  Quality: L1=0.0001
+Batch 70: C2_loss=1.449, Gen_loss=238228.109
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Batch 80: C2_loss=4.907, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.625, wm=0.688
+  Quality: L1=0.0001
+Batch 90: C2_loss=2.461, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.812
+  Quality: L1=0.0001
+Batch 100: C2_loss=2.304, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 110: C2_loss=2.699, Gen_loss=0.000
+  C1: clean=0.938, wm=0.938
+  C2: clean=0.875, wm=0.812
+  Quality: L1=0.0001
+Batch 120: C2_loss=2.141, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.938
+  Quality: L1=0.0001
+Batch 130: C2_loss=1.535, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.938, wm=1.000
+  Quality: L1=0.0001
+Batch 140: C2_loss=2.769, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Batch 150: C2_loss=3.943, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 160: C2_loss=1.015, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.938
+  Quality: L1=0.0001
+Batch 170: C2_loss=2.814, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 180: C2_loss=4.070, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.750
+  Quality: L1=0.0001
+Batch 190: C2_loss=2.269, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 200: C2_loss=1.667, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 210: C2_loss=2.877, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.688
+  Quality: L1=0.0001
+Batch 220: C2_loss=3.485, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 230: C2_loss=3.628, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.812
+  Quality: L1=0.0001
+Batch 240: C2_loss=1.031, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.938, wm=0.938
+  Quality: L1=0.0001
+Batch 250: C2_loss=2.201, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.812
+  Quality: L1=0.0001
+Batch 260: C2_loss=1.882, Gen_loss=221889.625
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.812
+  Quality: L1=0.0001
+Batch 270: C2_loss=5.099, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.688
+  Quality: L1=0.0001
+Batch 280: C2_loss=2.618, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.875
+  Quality: L1=0.0001
+Batch 290: C2_loss=3.012, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 300: C2_loss=1.459, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=1.000, wm=0.938
+  Quality: L1=0.0001
+Batch 310: C2_loss=3.017, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Batch 320: C2_loss=2.081, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 330: C2_loss=3.121, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.750
+  Quality: L1=0.0001
+Batch 340: C2_loss=2.848, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.688
+  Quality: L1=0.0001
+Batch 350: C2_loss=2.276, Gen_loss=0.000
+  C1: clean=0.938, wm=0.938
+  C2: clean=0.875, wm=0.750
+  Quality: L1=0.0001
+Epoch 4 Summary:
+  Stage: adversarial
+  C1 Performance: clean=0.998, wm=0.998
+  C2 Performance: clean=0.806, wm=0.808
+  Quality: L1=0.0001
+  Watermark Signal: intensity=0.360, entropy_clean=0.267
+  ⚠️  C2 is performing too well on clean images
+  ⚠️  C2 clean accuracy too high (0.806) - adversarial training needs strengthening
+  📊 C2 Distinction Score: 0.003 (target: >0.5)
+  🚨 C2 cannot distinguish watermarked from clean! Increasing watermark strength...
+\n=== EPOCH 5/5 ===
+ADVERSARIAL STAGE - C2 vs Generator
+Batch 0: C2_loss=2.066, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.875
+  Quality: L1=0.0001
+Batch 10: C2_loss=1.895, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.812
+  Quality: L1=0.0001
+Batch 20: C2_loss=1.873, Gen_loss=0.000
+  C1: clean=0.938, wm=0.938
+  C2: clean=0.812, wm=0.938
+  Quality: L1=0.0001
+Batch 30: C2_loss=4.253, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.875
+  Quality: L1=0.0001
+Batch 40: C2_loss=2.863, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.688
+  Quality: L1=0.0001
+Batch 50: C2_loss=3.377, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 60: C2_loss=3.587, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Batch 70: C2_loss=3.527, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 80: C2_loss=1.881, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.938
+  Quality: L1=0.0001
+Batch 90: C2_loss=1.525, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.938
+  Quality: L1=0.0001
+Batch 100: C2_loss=2.355, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 110: C2_loss=2.225, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.625, wm=0.750
+  Quality: L1=0.0001
+Batch 120: C2_loss=1.291, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Batch 130: C2_loss=2.685, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 140: C2_loss=3.113, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 150: C2_loss=2.356, Gen_loss=282487.219
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Batch 160: C2_loss=3.175, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.688, wm=0.688
+  Quality: L1=0.0001
+Batch 170: C2_loss=1.079, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.938, wm=0.875
+  Quality: L1=0.0001
+Batch 180: C2_loss=1.149, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Batch 190: C2_loss=1.490, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.938
+  Quality: L1=0.0001
+Batch 200: C2_loss=1.902, Gen_loss=0.000
+  C1: clean=0.938, wm=0.938
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 210: C2_loss=2.830, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 220: C2_loss=2.378, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 230: C2_loss=1.697, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.938
+  Quality: L1=0.0001
+Batch 240: C2_loss=2.029, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.750
+  Quality: L1=0.0001
+Batch 250: C2_loss=1.391, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.938
+  Quality: L1=0.0001
+Batch 260: C2_loss=2.914, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.750
+  Quality: L1=0.0001
+Batch 270: C2_loss=4.857, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.750, wm=0.688
+  Quality: L1=0.0001
+Batch 280: C2_loss=2.023, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 290: C2_loss=4.917, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.625, wm=0.625
+  Quality: L1=0.0001
+Batch 300: C2_loss=1.972, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.875
+  Quality: L1=0.0001
+Batch 310: C2_loss=1.197, Gen_loss=246042.625
+  C1: clean=0.938, wm=0.938
+  C2: clean=0.938, wm=0.875
+  Quality: L1=0.0001
+Batch 320: C2_loss=0.931, Gen_loss=254957.094
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.938
+  Quality: L1=0.0001
+Batch 330: C2_loss=1.273, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.875, wm=0.938
+  Quality: L1=0.0001
+Batch 340: C2_loss=2.309, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.812
+  Quality: L1=0.0001
+Batch 350: C2_loss=2.317, Gen_loss=0.000
+  C1: clean=1.000, wm=1.000
+  C2: clean=0.812, wm=0.875
+  Quality: L1=0.0001
+Epoch 5 Summary:
+  Stage: adversarial
+  C1 Performance: clean=0.998, wm=0.998
+  C2 Performance: clean=0.835, wm=0.846
+  Quality: L1=0.0001
+  Watermark Signal: intensity=0.432, entropy_clean=0.202
+  ⚠️  C2 is performing too well on clean images
+  💾 Checkpoint saved
+  ⚠️  C2 clean accuracy too high (0.835) - adversarial training needs strengthening
+  📊 C2 Distinction Score: 0.011 (target: >0.5)
+  🚨 C2 cannot distinguish watermarked from clean! Increasing watermark strength...
+\n🎉 Training completed! Results saved to /teamspace/studios/this_studio/unetMRI/output/csv_logs_FIXED/final_training_results.csv
+\nFinal Performance:
+  C1: clean=0.998, wm=0.998
+  C2: clean=0.835, wm=0.846
+\n❌ Goals not fully achieved - check parameters and continue training

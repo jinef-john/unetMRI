@@ -1,9 +1,17 @@
 """
-FIXED Adversarial Watermarking Pipeline:
-- Proper adversarial training for C2 classifier
+BALANCED Adversarial Watermarking Pipeline:
+- CONTROLLED MISCLASSIFICATION LOSS: Forces moderate confusion on clean images  
+- DETECTION INCENTIVE: Ensures C2 can still detect watermarks effectively
+- REDUCED FOOLING PRESSURE: Generator creates subtle watermarks, not total disguise
 - C1 frozen as performance ceiling
 - U2Net brain exclusion 
 - Frequency domain watermarking in latent space
+
+Key Balance: Explicit adversarial behavior without overdrive:
+- C2 on clean images: moderate confusion (~40% accuracy)
+- C2 on watermarked: strong detection (~80% accuracy)  
+- Generator: subtle fooling + quality preservation
+Target: C2 distinction score >0.4 (clean=0.4, watermarked=0.8)
 """
 
 import os, sys, csv, glob, time, math, random, pathlib
@@ -70,11 +78,13 @@ LR_C2_WARMUP = 1e-3
 LR_C2_ADV = 5e-4
 LR_GEN = 1e-3
 
-# Loss weights - CRITICAL for proper adversarial balance  
-ALPHA_CLEAN_ENTROPY = 3.0    # Force C2 to fail on clean (reduced for better balance)
-BETA_WM_CE = 3.0             # C2 accuracy on watermarked (INCREASED - primary focus)
-GAMMA_RECONSTRUCTION = 0.05  # Image quality preservation (reduced to allow stronger watermarks)
-DELTA_EXCLUSION = 5.0        # Brain exclusion penalty (reduced for stronger signal)
+# Loss weights - BALANCED for controlled adversarial behavior  
+ALPHA_CLEAN_MISCLASSIFY = 2.5  # Force C2 to MISCLASSIFY clean images (moderate confusion, not total failure)
+BETA_WM_CE = 3.0               # C2 accuracy on watermarked (success on watermarked)
+GAMMA_RECONSTRUCTION = 0.05    # Image quality preservation 
+DELTA_EXCLUSION = 5.0          # Brain exclusion penalty
+EPSILON_FOOLING = 0.8          # Generator adversarial loss (moderate fooling, not overdrive)
+ZETA_WM_DETECTION = 1.5        # NEW: Incentivize C2 to still detect watermarks
 
 # Watermark parameters - INCREASED for better C2 detection
 INTENSITY_INIT = 0.3        # Increased from 0.1 to make watermark more detectable
@@ -549,12 +559,35 @@ class AdversarialTrainer:
         logits_c2_clean = self.c2(clean_norm_noisy)
         logits_c2_wm = self.c2(wm_norm)
         
-        # C2 loss: High entropy on clean (fail), Low entropy on watermarked (succeed)
-        entropy_clean = entropy_from_logits(logits_c2_clean)
+        # NEW ADVERSARIAL LOSS: Explicit misclassification on clean images
+        # Force C2 to predict WRONG labels on clean images (4-class problem)
+        # Strategy: Randomly assign different labels to create maximum confusion
+        wrong_labels = torch.randint(0, len(CLASSES), labels.shape, device=labels.device)
+        # Ensure wrong labels are actually different from correct labels
+        mask = wrong_labels == labels
+        while mask.any():
+            wrong_labels[mask] = torch.randint(0, len(CLASSES), (mask.sum(),), device=labels.device)
+            mask = wrong_labels == labels
+        
+        # Debug: Check label ranges
+        if torch.any(labels < 0) or torch.any(labels >= len(CLASSES)):
+            print(f"⚠️  Invalid original labels: min={labels.min()}, max={labels.max()}")
+        if torch.any(wrong_labels < 0) or torch.any(wrong_labels >= len(CLASSES)):
+            print(f"⚠️  Invalid wrong labels: min={wrong_labels.min()}, max={wrong_labels.max()}")
+            
+        misclassify_loss_clean = F.cross_entropy(logits_c2_clean, wrong_labels)
+        
+        # Standard cross-entropy for watermarked images (C2 should succeed here)
         ce_wm = F.cross_entropy(logits_c2_wm, labels)
         
-        # BALANCED: Entropy maximization on clean + Cross-entropy minimization on watermarked
-        loss_c2 = ALPHA_CLEAN_ENTROPY * entropy_clean + BETA_WM_CE * ce_wm
+        # NEW: Additional incentive for C2 to detect watermarks correctly
+        # This balances the misclassify loss to prevent total failure
+        detection_incentive = -F.cross_entropy(logits_c2_wm, labels)  # Negative CE = reward for correct detection
+        
+        # BALANCED ADVERSARIAL: Misclassify clean + Classify watermarked correctly + Detection incentive
+        loss_c2 = (ALPHA_CLEAN_MISCLASSIFY * misclassify_loss_clean + 
+                   BETA_WM_CE * ce_wm + 
+                   ZETA_WM_DETECTION * detection_incentive)
         loss_c2.backward()
         self.c2_optimizer.step()
         
@@ -571,8 +604,16 @@ class AdversarialTrainer:
         # Generator losses
         logits_c2_wm_gen = self.c2(wm_norm_gen)
         
-        # Generator losses - Focus on quality, not fooling C2 on watermarked images
-        # C2 should be able to detect watermarked images (that's the goal!)
+        # ADVERSARIAL GENERATOR LOSS: Create watermarks that fool C2 into wrong classification
+        # This forces generator to create "clean-like" watermarks that C2 misclassifies
+        # Use the same wrong_labels strategy as C2 training
+        gen_wrong_labels = torch.randint(0, len(CLASSES), labels.shape, device=labels.device)
+        mask = gen_wrong_labels == labels
+        while mask.any():
+            gen_wrong_labels[mask] = torch.randint(0, len(CLASSES), (mask.sum(),), device=labels.device)
+            mask = gen_wrong_labels == labels
+        
+        fooling_loss = F.cross_entropy(logits_c2_wm_gen, gen_wrong_labels)
         
         # Quality preservation (main generator objective)
         l1_loss = F.l1_loss(wm_img_gen, clean_img)
@@ -580,8 +621,10 @@ class AdversarialTrainer:
         # Exclusion penalty
         exclusion_penalty = self.compute_exclusion_penalty(wm_latent, brain_mask, intensity)
         
-        # Total generator loss - NO adversarial component against C2
-        loss_gen = GAMMA_RECONSTRUCTION * l1_loss + DELTA_EXCLUSION * exclusion_penalty
+        # Total generator loss - WITH adversarial fooling component
+        loss_gen = (GAMMA_RECONSTRUCTION * l1_loss + 
+                   DELTA_EXCLUSION * exclusion_penalty +
+                   EPSILON_FOOLING * fooling_loss)
         
         loss_gen.backward()
         self.gen_optimizer.step()
@@ -622,7 +665,9 @@ class AdversarialTrainer:
             'acc_c2_wm': acc_c2_wm,
             'l1_loss': l1_metric,
             'exclusion_penalty': exclusion_penalty.item(),
-            'entropy_clean': entropy_clean.item()
+            'misclassify_loss': misclassify_loss_clean.item(),
+            'detection_incentive': detection_incentive.item(),
+            'fooling_loss': fooling_loss.item()
         }
 
 def get_dataloader_for_stage(dataset, stage):
@@ -712,6 +757,7 @@ def main():
                     print(f"  C1: clean={metrics['acc_c1_clean']:.3f}, wm={metrics['acc_c1_wm']:.3f}")
                     print(f"  C2: clean={metrics['acc_c2_clean']:.3f}, wm={metrics['acc_c2_wm']:.3f}")
                     print(f"  Quality: L1={metrics['l1_loss']:.4f}")
+                    print(f"  Losses: Misclassify={metrics['misclassify_loss']:.3f}, Detection={metrics['detection_incentive']:.3f}, Fooling={metrics['fooling_loss']:.3f}")
         
         # Epoch summary
         avg_metrics = {}
