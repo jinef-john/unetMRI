@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 FIXED Adversarial Watermarking Pipeline:
 - Proper adversarial training for C2 classifier
@@ -25,7 +24,7 @@ from torch.fft import fft2, ifft2
 # Get project root directory (three levels up from current file)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# ====== IMPORT YOUR LOCAL MODULES =====
+# ====== IMPORTING LOCAL MODULES =====
 sys.path.append(os.path.join(PROJECT_ROOT, "src", "models"))
 from efficientnet_cbam import EfficientNetB3_CBAM_Bottleneck
 from autoencoder import Encoder, Decoder
@@ -47,6 +46,9 @@ os.makedirs(C2_SAVE_DIR, exist_ok=True)
 
 CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 CLASS2IDX = {c:i for i,c in enumerate(CLASSES)}
+
+# Please update these hyperparams based on your computation power.
+# For exampele
 
 # Training hyperparams
 EPOCHS = 3
