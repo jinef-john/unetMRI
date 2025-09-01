@@ -48,22 +48,21 @@ CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 CLASS2IDX = {c:i for i,c in enumerate(CLASSES)}
 
 # Please update these hyperparams based on your computation power.
-<<<<<<< HEAD
 # For exampele
-=======
 
->>>>>>> dab4034f06efd087893cccf5aec635324ed32744
+# Please update these hyperparams based on your computation power.
+
 
 # Training hyperparams
-EPOCHS = 3
-BATCH_SIZE_WARMUP = 8     # Warmup stage - can handle larger batches
-BATCH_SIZE_ADV = 4        # Adversarial/Fine-tune stages - memory intensive  
-NUM_WORKERS = 8  
+EPOCHS = 5                # Increased to see more adversarial training
+BATCH_SIZE_WARMUP = 64     # Warmup stage - can handle larger batches
+BATCH_SIZE_ADV = 16        # Adversarial/Fine-tune stages - memory intensive
+NUM_WORKERS = 16
 AMP = True
 
-# Critical: Adversarial training stages - i am using 3 epochs
+# Critical: Adversarial training stages - extended for better learning
 C2_WARMUP_EPOCHS = 1      # Train C2 normally first (epoch 1)
-ADVERSARIAL_EPOCHS = 2    # Then adversarial training (epochs 2-3)
+ADVERSARIAL_EPOCHS = 4    # Then adversarial training (epochs 2-5) - INCREASED
 FINE_TUNE_EPOCHS = 25     # Final fine-tuning
 
 # Learning rates
@@ -72,14 +71,15 @@ LR_C2_ADV = 5e-4
 LR_GEN = 1e-3
 
 # Loss weights - CRITICAL for proper adversarial balance  
-ALPHA_CLEAN_ENTROPY = 5.0    # Force C2 to fail on clean (INCREASED for stronger effect)
-BETA_WM_CE = 1.0             # C2 accuracy on watermarked
-GAMMA_RECONSTRUCTION = 0.1   # Image quality preservation
-DELTA_EXCLUSION = 10.0       # Brain exclusion penalty
+ALPHA_CLEAN_ENTROPY = 3.0    # Force C2 to fail on clean (reduced for better balance)
+BETA_WM_CE = 3.0             # C2 accuracy on watermarked (INCREASED - primary focus)
+GAMMA_RECONSTRUCTION = 0.05  # Image quality preservation (reduced to allow stronger watermarks)
+DELTA_EXCLUSION = 5.0        # Brain exclusion penalty (reduced for stronger signal)
 
-# Watermark parameters
-INTENSITY_INIT = 0.1
+# Watermark parameters - INCREASED for better C2 detection
+INTENSITY_INIT = 0.3        # Increased from 0.1 to make watermark more detectable
 MASK_FRAC_INIT = 0.15
+INTENSITY_SCALE = 2.0       # Additional scaling for frequency domain embedding
 
 # ---------------- Dataset ----------------
 class MRIDataset(Dataset):
@@ -407,30 +407,44 @@ class AdversarialTrainer:
         return latents, skip64s, clean_img
     
     def generate_watermark(self, img, labels, intensity):
-        """Generate conditional watermark"""
+        """Generate conditional watermark with stronger class-specific patterns"""
         wm_latent, wm_skip = self.watermark_gen(img, intensity)
         
-        # Add class-conditional bias
+        # Add stronger class-conditional bias for better detection
         class_bias = self.class_embed(labels).view(labels.size(0), -1, 1, 1)
         class_bias = class_bias.expand(-1, -1, 32, 32)
         
-        wm_latent_cond = wm_latent + 0.3 * class_bias
+        # CRITICAL: Increase class-conditional component for better C2 detection
+        wm_latent_cond = wm_latent + 0.5 * class_bias  # Increased from 0.3 to 0.5
         return wm_latent_cond, wm_skip
     
-    def embed_watermark_frequency_domain(self, latents, skip64s, wm_latent, wm_skip, exclusion_mask):
-        """Embed watermark in frequency domain with exclusion"""
+    def embed_watermark_frequency_domain(self, latents, skip64s, wm_latent, wm_skip, exclusion_mask, intensity_scale=2.0):
+        """Embed watermark in frequency domain with exclusion and stronger signal"""
         # Resize exclusion mask
         exclusion_lat = F.interpolate(exclusion_mask, size=(32, 32), mode='nearest')
         exclusion_skip = F.interpolate(exclusion_mask, size=(64, 64), mode='nearest')
         
-        # Frequency domain embedding in latent space
+        # CRITICAL FIX: DUAL DOMAIN EMBEDDING
+        # 1. Frequency domain embedding (subtle but persistent)
         latent_freq = fft2(latents)
         wm_latent_masked = wm_latent * exclusion_lat
-        latent_freq_wm = latent_freq + wm_latent_masked
-        latents_wm = ifft2(latent_freq_wm).real
+        latent_freq_wm = latent_freq + (wm_latent_masked * intensity_scale)
+        latents_freq_wm = ifft2(latent_freq_wm).real
         
-        # Skip64 stays clean for now (can be enabled later)
-        skip64s_wm = skip64s
+        # 2. SPATIAL DOMAIN EMBEDDING (stronger for detection)
+        # Add direct spatial watermark for C2 to detect
+        spatial_wm = wm_latent_masked * intensity_scale * 0.5  # Scale for spatial domain
+        latents_wm = latents_freq_wm + spatial_wm
+        
+        # Skip64 embedding - also add watermark for better detection
+        skip_freq = fft2(skip64s)
+        wm_skip_masked = wm_skip * exclusion_skip
+        skip_freq_wm = skip_freq + (wm_skip_masked * intensity_scale * 0.5)  # Lighter on skip
+        skip64s_wm = ifft2(skip_freq_wm).real
+        
+        # Add spatial component to skip as well
+        spatial_skip = wm_skip_masked * intensity_scale * 0.3
+        skip64s_wm = skip64s_wm + spatial_skip
         
         return latents_wm, skip64s_wm
     
@@ -503,9 +517,9 @@ class AdversarialTrainer:
         # Generate watermark
         wm_latent, wm_skip = self.generate_watermark(img, labels, intensity)
         
-        # Embed watermark with exclusion
+        # Embed watermark with exclusion and stronger signal
         latents_wm, skip64s_wm = self.embed_watermark_frequency_domain(
-            latents, skip64s, wm_latent, wm_skip, allow_mask)
+            latents, skip64s, wm_latent, wm_skip, allow_mask, INTENSITY_SCALE)
         
         # Decode watermarked image
         with torch.no_grad():
@@ -517,10 +531,10 @@ class AdversarialTrainer:
         
         # === CRITICAL: PROPER ADVERSARIAL TRAINING ===
         # 
-        # FIXED STRATEGY:
+        # IMPROVED STRATEGY:
         # 1. C2 should FAIL on clean images (entropy → max, accuracy → 0.25 for 4 classes)
         # 2. C2 should SUCCEED on watermarked images (entropy → min, accuracy → 1.0)
-        # 3. Generator focuses on quality preservation, NOT fooling C2
+        # 3. Add slight noise to clean images to help C2 learn the distinction
         #
         # This creates the desired conditional behavior where C2 can detect 
         # watermarks but fails on clean images due to adversarial training
@@ -528,14 +542,18 @@ class AdversarialTrainer:
         # Step 1: Update C2 to distinguish watermarked from clean
         self.c2_optimizer.zero_grad()
         
-        logits_c2_clean = self.c2(clean_norm)
+        # Add small noise to clean images to help C2 distinguish
+        clean_noise = torch.randn_like(clean_norm) * 0.01  # Very small noise
+        clean_norm_noisy = clean_norm + clean_noise
+        
+        logits_c2_clean = self.c2(clean_norm_noisy)
         logits_c2_wm = self.c2(wm_norm)
         
         # C2 loss: High entropy on clean (fail), Low entropy on watermarked (succeed)
         entropy_clean = entropy_from_logits(logits_c2_clean)
         ce_wm = F.cross_entropy(logits_c2_wm, labels)
         
-        # FIXED: Positive sign to MAXIMIZE entropy on clean (make C2 fail)
+        # BALANCED: Entropy maximization on clean + Cross-entropy minimization on watermarked
         loss_c2 = ALPHA_CLEAN_ENTROPY * entropy_clean + BETA_WM_CE * ce_wm
         loss_c2.backward()
         self.c2_optimizer.step()
@@ -543,10 +561,10 @@ class AdversarialTrainer:
         # Step 2: Update Generator to fool C2 while preserving quality
         self.gen_optimizer.zero_grad()
         
-        # Re-generate watermark (with gradients)
+        # Re-generate watermark (with gradients) and stronger embedding
         wm_latent, wm_skip = self.generate_watermark(img, labels, intensity)
         latents_wm, skip64s_wm = self.embed_watermark_frequency_domain(
-            latents, skip64s, wm_latent, wm_skip, allow_mask)
+            latents, skip64s, wm_latent, wm_skip, allow_mask, INTENSITY_SCALE)
         wm_img_gen = self.decoder(latents_wm, skip64s_wm).clamp(0, 1)
         wm_norm_gen = self.norm_c1(wm_img_gen)
         
@@ -713,14 +731,20 @@ def main():
             print(f"  C1 Performance: clean={avg_metrics['acc_c1_clean']:.3f}, wm={avg_metrics['acc_c1_wm']:.3f}")
             print(f"  C2 Performance: clean={avg_metrics['acc_c2_clean']:.3f}, wm={avg_metrics['acc_c2_wm']:.3f}")
             print(f"  Quality: L1={avg_metrics['l1_loss']:.4f}")
+            print(f"  Watermark Signal: intensity={intensity:.3f}, entropy_clean={avg_metrics.get('entropy_clean', 0):.3f}")
             
             # Check if we're achieving adversarial goals
-            if avg_metrics['acc_c2_clean'] < 0.5 and avg_metrics['acc_c2_wm'] > 0.9:
+            if avg_metrics['acc_c2_clean'] < 0.4 and avg_metrics['acc_c2_wm'] > 0.8:
                 print("  ✅ ADVERSARIAL GOALS ACHIEVED!")
-            elif avg_metrics['acc_c2_clean'] > 0.7:
+            elif avg_metrics['acc_c2_clean'] > 0.6:
                 print("  ⚠️  C2 is performing too well on clean images")
-            elif avg_metrics['acc_c2_wm'] < 0.8:
-                print("  ⚠️  C2 is not performing well enough on watermarked images")
+            elif avg_metrics['acc_c2_wm'] < 0.7:
+                print("  ⚠️  C2 is not detecting watermarks well enough")
+            else:
+                print("  🔄 Training in progress...")
+        else:
+            print(f"  C1 Performance: clean={avg_metrics['acc_c1_clean']:.3f}")
+            print(f"  C2 Performance: clean={avg_metrics['acc_c2_clean']:.3f}")
         
         # Save checkpoint
         if epoch % 5 == 0:
@@ -736,15 +760,26 @@ def main():
             torch.save(checkpoint, os.path.join(C2_SAVE_DIR, f"checkpoint_epoch_{epoch}.pth"))
             print(f"  💾 Checkpoint saved")
         
-        # Dynamic parameter adjustment
-        if stage == "adversarial" and epoch > C2_WARMUP_EPOCHS + 5:
-            # Adjust intensity based on performance
-            if avg_metrics['acc_c1_wm'] < 0.85:  # C1 performance dropping
-                intensity *= 0.95
-                print(f"  📉 Reduced intensity to {intensity:.3f}")
-            elif avg_metrics['acc_c2_clean'] > 0.6:  # C2 too good on clean
-                intensity *= 1.05
-                print(f"  📈 Increased intensity to {intensity:.3f}")
+        # Dynamic parameter adjustment with focus on C2 watermark detection
+        if stage == "adversarial" and epoch > C2_WARMUP_EPOCHS + 1:
+            # CRITICAL: Adjust intensity based on C2's ability to detect watermarks
+            if avg_metrics['acc_c2_wm'] < 0.7:  # C2 can't detect watermarks well enough
+                intensity *= 1.1  # Increase intensity to make watermarks more detectable
+                print(f"  📈 C2 watermark detection too low ({avg_metrics['acc_c2_wm']:.3f}), increased intensity to {intensity:.3f}")
+            elif avg_metrics['acc_c2_wm'] > 0.95 and avg_metrics['acc_c1_wm'] < 0.85:  # Too strong, hurting quality
+                intensity *= 0.95  # Reduce intensity to preserve quality
+                print(f"  📉 Watermark too strong (C1 wm: {avg_metrics['acc_c1_wm']:.3f}), reduced intensity to {intensity:.3f}")
+            elif avg_metrics['acc_c2_clean'] > 0.6:  # C2 too good on clean (not confused enough)
+                # This means adversarial training isn't working - maybe increase learning rate
+                print(f"  ⚠️  C2 clean accuracy too high ({avg_metrics['acc_c2_clean']:.3f}) - adversarial training needs strengthening")
+            
+            # Also track if C2 is learning the distinction properly
+            c2_distinction = avg_metrics['acc_c2_wm'] - avg_metrics['acc_c2_clean']
+            print(f"  📊 C2 Distinction Score: {c2_distinction:.3f} (target: >0.5)")
+            
+            if c2_distinction < 0.3:  # Not enough distinction
+                print(f"  🚨 C2 cannot distinguish watermarked from clean! Increasing watermark strength...")
+                intensity *= 1.2
     
     # Save final results with comprehensive fieldnames to handle all training stages
     results_file = os.path.join(CSV_ROOT, "final_training_results.csv")
