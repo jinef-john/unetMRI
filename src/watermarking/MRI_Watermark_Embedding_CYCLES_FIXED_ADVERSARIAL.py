@@ -48,7 +48,11 @@ CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 CLASS2IDX = {c:i for i,c in enumerate(CLASSES)}
 
 # Please update these hyperparams based on your computation power.
+<<<<<<< HEAD
 # For exampele
+=======
+
+>>>>>>> dab4034f06efd087893cccf5aec635324ed32744
 
 # Training hyperparams
 EPOCHS = 3
@@ -57,7 +61,7 @@ BATCH_SIZE_ADV = 4        # Adversarial/Fine-tune stages - memory intensive
 NUM_WORKERS = 8  
 AMP = True
 
-# Critical: Adversarial training stages - ADJUSTED for 3-epoch training
+# Critical: Adversarial training stages - i am using 3 epochs
 C2_WARMUP_EPOCHS = 1      # Train C2 normally first (epoch 1)
 ADVERSARIAL_EPOCHS = 2    # Then adversarial training (epochs 2-3)
 FINE_TUNE_EPOCHS = 25     # Final fine-tuning
