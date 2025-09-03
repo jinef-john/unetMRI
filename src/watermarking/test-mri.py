@@ -1,17 +1,9 @@
 """
-BALANCED Adversarial Watermarking Pipeline:
-- CONTROLLED MISCLASSIFICATION LOSS: Forces moderate confusion on clean images  
-- DETECTION INCENTIVE: Ensures C2 can still detect watermarks effectively
-- REDUCED FOOLING PRESSURE: Generator creates subtle watermarks, not total disguise
-- C1 frozen as performance ceiling
-- U2Net brain exclusion 
-- Frequency domain watermarking in latent space
-
-Key Balance: Explicit adversarial behavior without overdrive:
-- C2 on clean images: moderate confusion (~40% accuracy)
-- C2 on watermarked: strong detection (~80% accuracy)  
-- Generator: subtle fooling + quality preservation
-Target: C2 distinction score >0.4 (clean=0.4, watermarked=0.8)
+FIXED Adversarial Watermarking Pipeline:
+- Mode-detection based training instead of confused classifier
+- Clean images: random class predictions via entropy maximization
+- Watermarked images: correct predictions via detectable watermark signal
+- C2 learns to detect watermark presence, then classify accordingly
 """
 
 import os, sys, csv, glob, time, math, random, pathlib
@@ -29,7 +21,7 @@ from collections import deque
 from skimage.metrics import structural_similarity as ssim
 from torch.fft import fft2, ifft2
 
-# Get project root directory (three levels up from current file)
+# Get project root directory
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # ====== IMPORTING LOCAL MODULES =====
@@ -55,40 +47,33 @@ os.makedirs(C2_SAVE_DIR, exist_ok=True)
 CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 CLASS2IDX = {c:i for i,c in enumerate(CLASSES)}
 
-# Please update these hyperparams based on your computation power.
-# For exampele
-
-# Please update these hyperparams based on your computation power.
-
-# Updated hyperparameters for stable training
-ALPHA_CLEAN = 3.0    # Increased to ensure strong confusion on clean images
-BETA_WM = 4.0        # Increased to ensure strong detection on watermarked images
-GAMMA_RECONSTRUCTION = 0.05  # Image quality preservation
-DELTA_EXCLUSION = 5.0        # Brain exclusion penalty
-EPSILON_FOOLING = 0.8        # Generator adversarial loss (moderate fooling)
-
 # Training hyperparams
-EPOCHS = 5                # Increased significantly for proper convergence
-BATCH_SIZE_WARMUP = 64     # Warmup stage - can handle larger batches
-BATCH_SIZE_ADV = 16        # Adversarial/Fine-tune stages - memory intensive
+EPOCHS = 15                # Increased for mode-based training
+BATCH_SIZE_WARMUP = 64
+BATCH_SIZE_ADV = 16
 NUM_WORKERS = 16
 AMP = True
 
-# Critical: Adversarial training stages
-C2_WARMUP_EPOCHS = 2       # Extended warmup for better C2 initialization
-ADVERSARIAL_EPOCHS = 3    # Extended adversarial training
-FINE_TUNE_EPOCHS = 0       # Not needed with proper adversarial training
+C2_WARMUP_EPOCHS = 1
+ADVERSARIAL_EPOCHS = 14   # Extended for mode learning
+FINE_TUNE_EPOCHS = 25
 
-# Learning rates - reduced for stability
-LR_C2_WARMUP = 5e-4
-LR_C2_ADV = 2e-4
-LR_GEN = 5e-4
+LR_C2_WARMUP = 1e-3
+LR_C2_ADV = 5e-4
+LR_GEN = 1e-3
+
+# Loss weights - optimized for mode detection
+ALPHA_MODE_DETECTION = 2.0   # Mode detection strength
+ALPHA_ENTROPY_MAX = 3.0      # Entropy maximization for clean
+BETA_CLASS_WM = 1.5          # Correct classification for watermarked
+GAMMA_RECONSTRUCTION = 0.1   # Image quality
+DELTA_EXCLUSION = 5.0        # Brain exclusion
+EPSILON_DETECTION_GEN = 2.0  # Generator detectability
 
 # Watermark parameters
-INTENSITY_INIT = 0.3
+INTENSITY_INIT = 0.5        # Increased for better detection
 MASK_FRAC_INIT = 0.15
-INTENSITY_SCALE = 2.0
-
+INTENSITY_SCALE = 2.5
 
 # ---------------- Dataset ----------------
 class MRIDataset(Dataset):
@@ -119,7 +104,7 @@ class MRIDataset(Dataset):
         label = self.labels[idx]
         
         from PIL import Image
-        img = Image.open(img_path).convert('L')  # Grayscale
+        img = Image.open(img_path).convert('L')
         img = self.transform(img)
         
         fname = os.path.basename(img_path)
@@ -165,7 +150,7 @@ class WatermarkGeneratorMiniUNet(nn.Module):
             nn.ReLU(inplace=True)
         )
         
-        # Decoder paths for latent and skip
+        # Decoder paths
         self.up1 = nn.ConvTranspose2d(256, 128, 2, stride=2)
         self.dec1 = nn.Sequential(
             nn.Conv2d(256, 128, 3, padding=1),
@@ -192,25 +177,25 @@ class WatermarkGeneratorMiniUNet(nn.Module):
         
     def forward(self, x, intensity=1.0):
         # Encoder
-        e1 = self.enc1(x)  # 512x512 -> 512x512
-        p1 = self.pool1(e1)  # 512x512 -> 256x256
+        e1 = self.enc1(x)
+        p1 = self.pool1(e1)
         
-        e2 = self.enc2(p1)  # 256x256 -> 256x256
-        p2 = self.pool2(e2)  # 256x256 -> 128x128
+        e2 = self.enc2(p1)
+        p2 = self.pool2(e2)
         
         # Bottleneck
-        b = self.bottleneck(p2)  # 128x128
+        b = self.bottleneck(p2)
         
         # Decoder
-        u1 = self.up1(b)  # 128x128 -> 256x256
-        d1 = self.dec1(torch.cat([u1, e2], dim=1))  # 256x256
+        u1 = self.up1(b)
+        d1 = self.dec1(torch.cat([u1, e2], dim=1))
         
-        u2 = self.up2(d1)  # 256x256 -> 512x512
-        d2 = self.dec2(torch.cat([u2, e1], dim=1))  # 512x512
+        u2 = self.up2(d1)
+        d2 = self.dec2(torch.cat([u2, e1], dim=1))
         
         # Generate watermarks
-        wm_full = self.out_latent(d2)  # 512x512
-        wm_skip_full = self.out_skip(d2)  # 512x512
+        wm_full = self.out_latent(d2)
+        wm_skip_full = self.out_skip(d2)
         
         # Resize to target dimensions
         wm_latent = F.interpolate(wm_full, size=(32, 32), mode='bilinear', align_corners=False)
@@ -222,14 +207,29 @@ class WatermarkGeneratorMiniUNet(nn.Module):
         
         return wm_latent, wm_skip
 
+# ---------------- Mode Detector Model ----------------
+class ModeDetector(nn.Module):
+    """C2 that first detects watermark presence (0=clean, 1=wm) then classifies."""
+    def __init__(self, num_classes):
+        super().__init__()
+        self.backbone = EfficientNetB3_CBAM_Bottleneck(num_classes=num_classes)
+        # backbone’s final feature map channels
+        feat_dim = self.backbone.base.classifier[1].in_features
+        self.mode_head  = nn.Linear(feat_dim, 2)
+        self.class_head = nn.Linear(feat_dim, num_classes)
+
+    def forward(self, x):
+        feats = self.backbone.forward_features(x)
+        feats = F.adaptive_avg_pool2d(feats, 1).flatten(1)
+        return self.mode_head(feats), self.class_head(feats)
+
 # ---------------- Model Loading Functions ----------------
 def load_c1_frozen():
     """Load frozen C1 model"""
     print("Loading C1 model...")
-    # Create model with 1-channel input for MRI (grayscale)
     c1 = EfficientNetB3_CBAM_Bottleneck(num_classes=len(CLASSES)).to(DEVICE)
     
-    # Modify first layer to accept 1-channel input instead of 3-channel
+    # Modify first layer for 1-channel input
     first_conv = c1.base.features[0][0]
     c1.base.features[0][0] = nn.Conv2d(1, first_conv.out_channels, 
                                        kernel_size=first_conv.kernel_size,
@@ -237,31 +237,12 @@ def load_c1_frozen():
                                        padding=first_conv.padding, 
                                        bias=False)
     
-    # Modify features1 first layer as well
-    first_conv1 = c1.features1[0][0]
-    c1.features1[0][0] = nn.Conv2d(1, first_conv1.out_channels, 
-                                   kernel_size=first_conv1.kernel_size,
-                                   stride=first_conv1.stride, 
-                                   padding=first_conv1.padding, 
-                                   bias=False)
-    
-    # Move to device after architecture modification
-    c1 = c1.to(DEVICE)
-    
-    # Load state dict and handle DataParallel prefix mismatch
+    # Load weights
     checkpoint = torch.load(C1_PATH, map_location=DEVICE)
-    if isinstance(checkpoint, dict) and 'state_dict' in checkpoint:
-        state_dict = checkpoint['state_dict']
-    else:
-        state_dict = checkpoint
+    state_dict = checkpoint['state_dict'] if 'state_dict' in checkpoint else checkpoint
     
-    # Remove 'module.' prefix if present (from DataParallel training)
-    if any(key.startswith('module.') for key in state_dict.keys()):
-        new_state_dict = {}
-        for key, value in state_dict.items():
-            new_key = key.replace('module.', '') if key.startswith('module.') else key
-            new_state_dict[new_key] = value
-        state_dict = new_state_dict
+    # Handle DataParallel prefix
+    state_dict = {k.replace('module.', ''): v for k, v in state_dict.items()}
     
     c1.load_state_dict(state_dict)
     c1.eval()
@@ -272,29 +253,14 @@ def load_c1_frozen():
 def load_autoencoder_frozen():
     """Load frozen autoencoder"""
     checkpoint = torch.load(AE_PATH, map_location=DEVICE)
-    if isinstance(checkpoint, dict) and 'state_dict' in checkpoint:
-        state_dict = checkpoint['state_dict']
-    else:
-        state_dict = checkpoint
-    
-    # Remove 'module.' prefix if present (from DataParallel training)
-    if any(key.startswith('module.') for key in state_dict.keys()):
-        new_state_dict = {}
-        for key, value in state_dict.items():
-            new_key = key.replace('module.', '') if key.startswith('module.') else key
-            new_state_dict[new_key] = value
-        state_dict = new_state_dict
+    state_dict = checkpoint['state_dict'] if 'state_dict' in checkpoint else checkpoint
+    state_dict = {k.replace('module.', ''): v for k, v in state_dict.items()}
     
     encoder = Encoder()
     decoder = Decoder()
     
-    # Load encoder weights
-    encoder_state = {k.replace('encoder.', ''): v for k, v in state_dict.items() if k.startswith('encoder.')}
-    encoder.load_state_dict(encoder_state, strict=False)
-    
-    # Load decoder weights  
-    decoder_state = {k.replace('decoder.', ''): v for k, v in state_dict.items() if k.startswith('decoder.')}
-    decoder.load_state_dict(decoder_state, strict=False)
+    encoder.load_state_dict({k.replace('encoder.', ''): v for k, v in state_dict.items() if k.startswith('encoder.')}, strict=False)
+    decoder.load_state_dict({k.replace('decoder.', ''): v for k, v in state_dict.items() if k.startswith('decoder.')}, strict=False)
     
     encoder.eval().requires_grad_(False)
     decoder.eval().requires_grad_(False)
@@ -302,25 +268,8 @@ def load_autoencoder_frozen():
     return encoder.to(DEVICE), decoder.to(DEVICE)
 
 def build_c2():
-    """Build C2 classifier for adversarial training"""
-    c2 = EfficientNetB3_CBAM_Bottleneck(num_classes=len(CLASSES))
-    
-    # Modify first layer to accept 1-channel input instead of 3-channel
-    first_conv = c2.base.features[0][0]
-    c2.base.features[0][0] = nn.Conv2d(1, first_conv.out_channels, 
-                                       kernel_size=first_conv.kernel_size,
-                                       stride=first_conv.stride, 
-                                       padding=first_conv.padding, 
-                                       bias=False)
-    
-    # Modify features1 first layer as well
-    first_conv1 = c2.features1[0][0]
-    c2.features1[0][0] = nn.Conv2d(1, first_conv1.out_channels, 
-                                   kernel_size=first_conv1.kernel_size,
-                                   stride=first_conv1.stride, 
-                                   padding=first_conv1.padding, 
-                                   bias=False)
-    
+    """Build mode detector C2"""
+    c2 = ModeDetector(num_classes=len(CLASSES))
     return c2.to(DEVICE)
 
 # ---------------- U2Net Mask Loading ----------------
@@ -337,7 +286,7 @@ def load_u2net_mask_batch(fnames, classes, size_512=(512,512)):
     
     return masks
 
-# ---------------- Key Utility Functions ----------------
+# ---------------- Utility Functions ----------------
 def sobel_energy_map(img):
     """Compute Sobel edge energy for maskability"""
     img_np = img.detach().cpu().numpy()
@@ -358,7 +307,6 @@ def quantile_binary(maskability, exclusion_mask, target_fraction=0.15):
     valid_region = maskability * exclusion_mask
     batch_size = maskability.shape[0]
     binary_masks = torch.zeros_like(maskability)
-    fractions = []
     
     for b in range(batch_size):
         valid_vals = valid_region[b][valid_region[b] > 0]
@@ -366,18 +314,16 @@ def quantile_binary(maskability, exclusion_mask, target_fraction=0.15):
             threshold = torch.quantile(valid_vals, 1 - target_fraction)
             binary_mask = (maskability[b] >= threshold) & (exclusion_mask[b] > 0)
             binary_masks[b] = binary_mask.float()
-            fractions.append(binary_mask.sum().item() / binary_mask.numel())
-        else:
-            fractions.append(0.0)
     
-    return binary_masks, fractions
+    return binary_masks, []
 
-def entropy_from_logits(logits):
-    """Compute entropy from logits"""
-    probs = F.softmax(logits, dim=1) + 1e-12
-    return -(probs * torch.log(probs)).sum(dim=1).mean()
+def compute_exclusion_penalty(self, watermark, brain_mask, intensity):
+    """Penalty for watermarking in critical regions"""
+    brain_mask_resized = F.interpolate(brain_mask, size=watermark.shape[-2:], mode='nearest')
+    penalty = torch.sum(torch.abs(watermark) * brain_mask_resized) * intensity
+    return penalty
 
-# ---------------- CRITICAL: Fixed Adversarial Training ----------------
+# ---------------- Fixed Adversarial Trainer ----------------
 class AdversarialTrainer:
     def __init__(self, c1, c2, encoder, decoder, watermark_gen):
         self.c1 = c1
@@ -386,13 +332,9 @@ class AdversarialTrainer:
         self.decoder = decoder
         self.watermark_gen = watermark_gen
         
-        # Normalizations
         self.norm_c1 = transforms.Normalize(mean=[0.5], std=[0.5])
-        
-        # Class embedding for conditional watermarking
         self.class_embed = nn.Embedding(len(CLASSES), 1024).to(DEVICE)
         
-        # Optimizers
         self.c2_optimizer = None
         self.gen_optimizer = None
         self.setup_optimizers(stage="warmup")
@@ -410,58 +352,40 @@ class AdversarialTrainer:
     def run_encoder_decoder(self, img):
         """Run encoder-decoder pipeline"""
         with torch.no_grad():
-            img_norm = (img - 0.5) / 0.5  # Normalize to [-1, 1]
+            img_norm = (img - 0.5) / 0.5
             latents, skip64s = self.encoder(img_norm)
             clean_img = self.decoder(latents, skip64s).clamp(0, 1)
         return latents, skip64s, clean_img
     
     def generate_watermark(self, img, labels, intensity):
-        """Generate conditional watermark with stronger class-specific patterns"""
+        """Generate conditional watermark"""
         wm_latent, wm_skip = self.watermark_gen(img, intensity)
         
-        # Add stronger class-conditional bias for better detection
+        # Strong class conditioning
         class_bias = self.class_embed(labels).view(labels.size(0), -1, 1, 1)
         class_bias = class_bias.expand(-1, -1, 32, 32)
+        wm_latent_cond = wm_latent + class_bias
         
-        # CRITICAL: Increase class-conditional component for better C2 detection
-        wm_latent_cond = wm_latent + 0.5 * class_bias  # Increased from 0.3 to 0.5
         return wm_latent_cond, wm_skip
     
     def embed_watermark_frequency_domain(self, latents, skip64s, wm_latent, wm_skip, exclusion_mask, intensity_scale=2.0):
-        """Embed watermark in frequency domain with exclusion and stronger signal"""
-        # Resize exclusion mask
+        """Embed watermark in frequency domain with exclusion"""
         exclusion_lat = F.interpolate(exclusion_mask, size=(32, 32), mode='nearest')
         exclusion_skip = F.interpolate(exclusion_mask, size=(64, 64), mode='nearest')
         
-        # CRITICAL FIX: DUAL DOMAIN EMBEDDING
-        # 1. Frequency domain embedding (subtle but persistent)
+        # Frequency domain embedding
         latent_freq = fft2(latents)
         wm_latent_masked = wm_latent * exclusion_lat
         latent_freq_wm = latent_freq + (wm_latent_masked * intensity_scale)
-        latents_freq_wm = ifft2(latent_freq_wm).real
+        latents_wm = ifft2(latent_freq_wm).real
         
-        # 2. SPATIAL DOMAIN EMBEDDING (stronger for detection)
-        # Add direct spatial watermark for C2 to detect
-        spatial_wm = wm_latent_masked * intensity_scale * 0.5  # Scale for spatial domain
-        latents_wm = latents_freq_wm + spatial_wm
-        
-        # Skip64 embedding - also add watermark for better detection
+        # Skip64 embedding
         skip_freq = fft2(skip64s)
         wm_skip_masked = wm_skip * exclusion_skip
-        skip_freq_wm = skip_freq + (wm_skip_masked * intensity_scale * 0.5)  # Lighter on skip
+        skip_freq_wm = skip_freq + (wm_skip_masked * intensity_scale * 0.5)
         skip64s_wm = ifft2(skip_freq_wm).real
         
-        # Add spatial component to skip as well
-        spatial_skip = wm_skip_masked * intensity_scale * 0.3
-        skip64s_wm = skip64s_wm + spatial_skip
-        
         return latents_wm, skip64s_wm
-    
-    def compute_exclusion_penalty(self, watermark, brain_mask, intensity):
-        """Penalty for watermarking in critical regions"""
-        brain_mask_resized = F.interpolate(brain_mask, size=watermark.shape[-2:], mode='nearest')
-        penalty = torch.sum(torch.abs(watermark) * brain_mask_resized) * intensity
-        return penalty
     
     def train_step_warmup(self, batch, intensity):
         """Warmup training - train C2 normally on clean data"""
@@ -471,13 +395,19 @@ class AdversarialTrainer:
         
         # Get clean reconstruction
         latents, skip64s, clean_img = self.run_encoder_decoder(img)
-        
-        # Normalize for classifier
         clean_norm = self.norm_c1(clean_img)
         
-        # Train C2 on clean images normally
-        logits_c2 = self.c2(clean_norm)
-        loss_c2 = F.cross_entropy(logits_c2, labels)
+        # Train mode detector on clean images
+        mode_logits, class_logits = self.c2(clean_norm)
+        
+        # Mode detection: all should be "clean" (0)
+        mode_targets = torch.zeros(len(img), dtype=torch.long, device=DEVICE)
+        mode_loss = F.cross_entropy(mode_logits, mode_targets)
+        
+        # Class prediction: normal training
+        class_loss = F.cross_entropy(class_logits, labels)
+        
+        loss_c2 = mode_loss + class_loss
         
         self.c2_optimizer.zero_grad()
         loss_c2.backward()
@@ -485,27 +415,20 @@ class AdversarialTrainer:
         
         # Metrics
         with torch.no_grad():
-            acc_c2 = (logits_c2.argmax(1) == labels).float().mean().item()
-            
-            # C1 performance
-            logits_c1 = self.c1(clean_norm)
-            acc_c1 = (logits_c1.argmax(1) == labels).float().mean().item()
-            
-            # Clear intermediate tensors
-            del latents, skip64s, clean_img, clean_norm, logits_c1, logits_c2
+            mode_acc = (mode_logits.argmax(1) == mode_targets).float().mean().item()
+            class_acc = (class_logits.argmax(1) == labels).float().mean().item()
         
         return {
             'loss_c2': loss_c2.item(),
-            'acc_c1_clean': acc_c1,
-            'acc_c2_clean': acc_c2,
-            'acc_c1_wm': 0.0,  # No watermarked images in warmup
-            'acc_c2_wm': 0.0
+            'mode_acc': mode_acc,
+            'class_acc': class_acc,
+            'stage': 'warmup'
         }
     
     def train_step_adversarial(self, batch, intensity, mask_fraction):
-        """CORRECTED adversarial training step - fixed sign error and instability"""
-        # Clear GPU cache to prevent OOM
+        """Fixed adversarial training with mode detection"""
         torch.cuda.empty_cache()
+        
         img, labels, fnames, cls_names = batch
         img = img.to(DEVICE)
         labels = labels.to(DEVICE)
@@ -516,53 +439,67 @@ class AdversarialTrainer:
         # Generate exclusion masks
         u2_masks = load_u2net_mask_batch(fnames, cls_names).to(DEVICE)
         brain_mask = (u2_masks > 0.5).float()
-        exclusion_mask = (1.0 - brain_mask)  # Allow embedding outside brain
+        exclusion_mask = (1.0 - brain_mask)
         
-        # Maskability based on edge energy
+        # Maskability
         maskability = sobel_energy_map(img)
         allow_mask, _ = quantile_binary(maskability, exclusion_mask, mask_fraction)
         
         # Generate watermark
         wm_latent, wm_skip = self.generate_watermark(img, labels, intensity)
-        
-        # Embed watermark with exclusion and stronger signal
         latents_wm, skip64s_wm = self.embed_watermark_frequency_domain(
             latents, skip64s, wm_latent, wm_skip, allow_mask, INTENSITY_SCALE)
-        wm_img = self.decoder(latents_wm, skip64s_wm).clamp(0, 1)
         
-        # Normalize for classifiers
+        with torch.no_grad():
+            wm_img = self.decoder(latents_wm, skip64s_wm).clamp(0, 1)
+        
         clean_norm = self.norm_c1(clean_img)
         wm_norm = self.norm_c1(wm_img)
         
-        # --- CRITICAL FIX: C2 Loss Calculation ---
-        # Step 1: Train C2 (detector)
+        # Create combined batch for efficient training
+        combined_imgs = torch.cat([clean_norm, wm_norm])
+        combined_labels = torch.cat([labels, labels])
+        
+        # Shuffle to prevent ordering bias
+        perm = torch.randperm(len(combined_imgs))
+        combined_imgs = combined_imgs[perm]
+        combined_labels = combined_labels[perm]
+        
+        # Determine which are clean vs watermarked after shuffling
+        clean_mask = perm < len(clean_norm)
+        wm_mask = ~clean_mask
+        
+        # === Step 1: Train C2 (Mode Detector) ===
         self.c2_optimizer.zero_grad()
         
-        # Get C2 predictions
-        logits_c2_clean = self.c2(clean_norm)
-        logits_c2_wm = self.c2(wm_norm)
+        mode_logits, class_logits = self.c2(combined_imgs)
         
-        # For clean images: MAXIMIZE entropy (create confusion)
-        # This is the CORRECT way to maximize entropy (create confusion on clean images)
-        probs_clean = F.softmax(logits_c2_clean, dim=1)
-        log_probs_clean = F.log_softmax(logits_c2_clean, dim=1)
-        entropy_clean = -torch.sum(probs_clean * log_probs_clean, dim=1)
-        confusion_loss = torch.mean(entropy_clean)  # POSITIVE to maximize entropy
+        # Mode detection targets
+        mode_targets = torch.zeros(len(combined_imgs), dtype=torch.long, device=DEVICE)
+        mode_targets[wm_mask] = 1  # 1 = watermarked
         
-        # For watermarked images: MINIMIZE cross-entropy (create detection)
-        detection_loss = F.cross_entropy(logits_c2_wm, labels)
+        mode_loss = F.cross_entropy(mode_logits, mode_targets)
         
-        # Properly balanced loss - FIXED SIGN ERRORS
-        loss_c2 = ALPHA_CLEAN * confusion_loss + BETA_WM * detection_loss
+        # Class prediction strategy
+        # Clean images: maximize entropy (random predictions)
+        clean_probs = F.softmax(class_logits[clean_mask], dim=1)
+        clean_entropy = -(clean_probs * torch.log(clean_probs + 1e-8)).sum(dim=1).mean()
+        
+        # Watermarked images: correct predictions
+        wm_class_loss = F.cross_entropy(class_logits[wm_mask], combined_labels[wm_mask])
+        
+        # Total C2 loss
+        loss_c2 = (mode_loss - 
+                   ALPHA_ENTROPY_MAX * clean_entropy + 
+                   BETA_CLASS_WM * wm_class_loss)
         
         loss_c2.backward()
-        torch.nn.utils.clip_grad_norm_(self.c2.parameters(), max_norm=1.0)  # Prevent gradient explosion
         self.c2_optimizer.step()
         
-        # Step 2: Update Generator to fool C2 while preserving quality
+        # === Step 2: Train Generator ===
         self.gen_optimizer.zero_grad()
         
-        # Re-generate watermark (with gradients) and stronger embedding
+        # Regenerate with gradients
         wm_latent, wm_skip = self.generate_watermark(img, labels, intensity)
         latents_wm, skip64s_wm = self.embed_watermark_frequency_domain(
             latents, skip64s, wm_latent, wm_skip, allow_mask, INTENSITY_SCALE)
@@ -570,38 +507,30 @@ class AdversarialTrainer:
         wm_norm_gen = self.norm_c1(wm_img_gen)
         
         # Generator losses
-        logits_c2_wm_gen = self.c2(wm_norm_gen)
+        mode_logits_gen, class_logits_gen = self.c2(wm_norm_gen)
         
-        # ADVERSARIAL GENERATOR LOSS: Create watermarks that fool C2 into wrong classification
-        gen_wrong_labels = torch.randint(0, len(CLASSES), labels.shape, device=labels.device)
-        mask = gen_wrong_labels == labels
-        while mask.any():
-            gen_wrong_labels[mask] = torch.randint(0, len(CLASSES), (mask.sum(),), device=labels.device)
-            mask = gen_wrong_labels == labels
+        # Ensure watermarks are detectable
+        detection_loss = F.cross_entropy(mode_logits_gen, torch.ones(len(img), device=DEVICE))
         
-        fooling_loss = F.cross_entropy(logits_c2_wm_gen, gen_wrong_labels)
+        # Ensure correct classification for watermarked
+        class_loss = F.cross_entropy(class_logits_gen, labels)
         
-        # Quality preservation (main generator objective)
+        # Quality preservation
         l1_loss = F.l1_loss(wm_img_gen, clean_img)
         
         # Exclusion penalty
-        exclusion_penalty = self.compute_exclusion_penalty(wm_latent, brain_mask, intensity)
+        exclusion_penalty = torch.sum(torch.abs(wm_latent) * 
+                                    F.interpolate(brain_mask, size=(32, 32), mode='nearest')) * intensity
         
-        # Total generator loss - WITH adversarial fooling component
-        loss_gen = (GAMMA_RECONSTRUCTION * l1_loss +
-                    DELTA_EXCLUSION * exclusion_penalty +
-                    EPSILON_FOOLING * fooling_loss)
+        loss_gen = (EPSILON_DETECTION_GEN * detection_loss + 
+                   0.5 * class_loss + 
+                   GAMMA_RECONSTRUCTION * l1_loss + 
+                   DELTA_EXCLUSION * exclusion_penalty)
         
         loss_gen.backward()
-        torch.nn.utils.clip_grad_norm_(self.watermark_gen.parameters(), max_norm=1.0)  # Prevent gradient explosion
         self.gen_optimizer.step()
         
-        # Clear gradients and cache after each adversarial step
-        self.c2_optimizer.zero_grad()
-        self.gen_optimizer.zero_grad()
-        torch.cuda.empty_cache()
-        
-        # Metrics
+        # === Metrics ===
         with torch.no_grad():
             # C1 performance (quality check)
             logits_c1_clean = self.c1(clean_norm)
@@ -609,35 +538,38 @@ class AdversarialTrainer:
             acc_c1_clean = (logits_c1_clean.argmax(1) == labels).float().mean().item()
             acc_c1_wm = (logits_c1_wm.argmax(1) == labels).float().mean().item()
             
-            # C2 performance
-            acc_c2_clean = (logits_c2_clean.argmax(1) == labels).float().mean().item()
-            acc_c2_wm = (logits_c2_wm.argmax(1) == labels).float().mean().item()
+            # Mode detection accuracy
+            mode_preds = mode_logits.argmax(1)
+            mode_acc_clean = (mode_preds[clean_mask] == 0).float().mean().item()
+            mode_acc_wm = (mode_preds[wm_mask] == 1).float().mean().item()
             
-            # Quality metrics
-            l1_val = l1_loss.item()
+            # Class accuracy
+            class_preds = class_logits.argmax(1)
+            class_acc_clean = (class_preds[clean_mask] == combined_labels[clean_mask]).float().mean().item()
+            class_acc_wm = (class_preds[wm_mask] == combined_labels[wm_mask]).float().mean().item()
+            
+            # Quality
+            l1_metric = F.l1_loss(wm_img_gen, clean_img).item()
         
-        # Return metrics - FIXED KEY NAMES TO MATCH ACTUAL LOSSES
         return {
             'loss_c2': loss_c2.item(),
             'loss_gen': loss_gen.item(),
             'acc_c1_clean': acc_c1_clean,
             'acc_c1_wm': acc_c1_wm,
-            'acc_c2_clean': acc_c2_clean,
-            'acc_c2_wm': acc_c2_wm,
-            'l1_loss': l1_val,
-            'misclassify_loss': confusion_loss.item(),
-            'wm_detection_loss': detection_loss.item(),
-            'fooling_loss': fooling_loss.item(),
-            'exclusion_penalty': exclusion_penalty.item()
+            'mode_acc_clean': mode_acc_clean,
+            'mode_acc_wm': mode_acc_wm,
+            'class_acc_clean': class_acc_clean,
+            'class_acc_wm': class_acc_wm,
+            'l1_loss': l1_metric,
+            'clean_entropy': clean_entropy.item(),
+            'stage': 'adversarial'
         }
-
-
 
 def get_dataloader_for_stage(dataset, stage):
     """Get appropriate dataloader based on training stage"""
     if stage == "warmup":
         batch_size = BATCH_SIZE_WARMUP
-    else:  # adversarial or fine_tune
+    else:
         batch_size = BATCH_SIZE_ADV
     
     print(f"📦 Creating dataloader: {stage} stage, batch_size={batch_size}")
@@ -646,7 +578,7 @@ def get_dataloader_for_stage(dataset, stage):
 
 # ---------------- Main Training Loop ----------------
 def main():
-    print("Starting Fixed Adversarial Watermarking Training...")
+    print("Starting Fixed Mode-Based Adversarial Watermarking Training...")
     
     # Load dataset
     dataset = MRIDataset(TRAIN_ROOT, CLASSES)
@@ -656,7 +588,7 @@ def main():
     c1 = load_c1_frozen()
     encoder, decoder = load_autoencoder_frozen()
     c2 = build_c2()
-    watermark_gen = WatermarkGeneratorMiniUNet().to(DEVICE)  # Move to GPU!
+    watermark_gen = WatermarkGeneratorMiniUNet().to(DEVICE)
     
     # Setup trainer
     trainer = AdversarialTrainer(c1, c2, encoder, decoder, watermark_gen)
@@ -673,31 +605,24 @@ def main():
     dataloader = None
     
     for epoch in range(1, EPOCHS + 1):
-        print(f"\\n=== EPOCH {epoch}/{EPOCHS} ===")
-        
-        # Clear GPU cache at start of each epoch
+        print(f"\n=== EPOCH {epoch}/{EPOCHS} ===")
         torch.cuda.empty_cache()
         
         # Determine training stage
         if epoch <= C2_WARMUP_EPOCHS:
             stage = "warmup"
             trainer.setup_optimizers("warmup")
-            print(f"WARMUP STAGE - Training C2 normally")
-        elif epoch <= C2_WARMUP_EPOCHS + ADVERSARIAL_EPOCHS:
+            print(f"WARMUP STAGE - Training mode detector normally")
+        else:
             stage = "adversarial"
             trainer.setup_optimizers("adversarial")
-            print(f"ADVERSARIAL STAGE - C2 vs Generator")
-        else:
-            stage = "fine_tune"
-            print(f"FINE-TUNING STAGE")
+            print(f"ADVERSARIAL STAGE - Mode detector vs Generator")
         
-        # Create new dataloader if stage changed (for different batch sizes)
+        # Create new dataloader if stage changed
         if stage != current_stage:
             print(f"🔄 Creating dataloader for {stage} stage...")
             dataloader = get_dataloader_for_stage(dataset, stage)
             current_stage = stage
-            
-            # Clear cache when switching stages
             torch.cuda.empty_cache()
         
         epoch_metrics = []
@@ -714,14 +639,13 @@ def main():
             if batch_idx % 10 == 0:
                 if stage == "warmup":
                     print(f"Batch {batch_idx}: C2_loss={metrics['loss_c2']:.3f}, "
-                          f"C1_acc={metrics['acc_c1_clean']:.3f}, C2_acc={metrics['acc_c2_clean']:.3f}")
+                          f"mode_acc={metrics['mode_acc']:.3f}, class_acc={metrics['class_acc']:.3f}")
                 else:
                     print(f"Batch {batch_idx}: C2_loss={metrics['loss_c2']:.3f}, Gen_loss={metrics['loss_gen']:.3f}")
                     print(f"  C1: clean={metrics['acc_c1_clean']:.3f}, wm={metrics['acc_c1_wm']:.3f}")
-                    print(f"  C2: clean={metrics['acc_c2_clean']:.3f}, wm={metrics['acc_c2_wm']:.3f}")
-                    print(f"  Quality: L1={metrics['l1_loss']:.4f}")
-                    # print(f"  Losses: Misclassify={metrics['misclassify_loss']:.3f}, Detection={metrics['detection_incentive']:.3f}, Fooling={metrics['fooling_loss']:.3f}")
-                    print(f"  Losses: Misclassify={metrics['misclassify_loss']:.3f}, Detection={metrics['wm_detection_loss']:.3f}, Fooling={metrics['fooling_loss']:.3f}")
+                    print(f"  Mode: clean={metrics['mode_acc_clean']:.3f}, wm={metrics['mode_acc_wm']:.3f}")
+                    print(f"  Class: clean={metrics['class_acc_clean']:.3f}, wm={metrics['class_acc_wm']:.3f}")
+                    print(f"  Quality: L1={metrics['l1_loss']:.4f}, Entropy={metrics['clean_entropy']:.3f}")
         
         # Epoch summary
         avg_metrics = {}
@@ -739,22 +663,21 @@ def main():
         print(f"  Stage: {stage}")
         if stage != "warmup":
             print(f"  C1 Performance: clean={avg_metrics['acc_c1_clean']:.3f}, wm={avg_metrics['acc_c1_wm']:.3f}")
-            print(f"  C2 Performance: clean={avg_metrics['acc_c2_clean']:.3f}, wm={avg_metrics['acc_c2_wm']:.3f}")
+            print(f"  Mode Detection: clean={avg_metrics['mode_acc_clean']:.3f}, wm={avg_metrics['mode_acc_wm']:.3f}")
+            print(f"  Class Accuracy: clean={avg_metrics['class_acc_clean']:.3f}, wm={avg_metrics['class_acc_wm']:.3f}")
             print(f"  Quality: L1={avg_metrics['l1_loss']:.4f}")
-            print(f"  Watermark Signal: intensity={intensity:.3f}, entropy_clean={avg_metrics.get('entropy_clean', 0):.3f}")
+            print(f"  Clean Entropy: {avg_metrics['clean_entropy']:.3f}")
             
-            # Check if we're achieving adversarial goals
-            if avg_metrics['acc_c2_clean'] < 0.4 and avg_metrics['acc_c2_wm'] > 0.8:
-                print("  ✅ ADVERSARIAL GOALS ACHIEVED!")
-            elif avg_metrics['acc_c2_clean'] > 0.6:
-                print("  ⚠️  C2 is performing too well on clean images")
-            elif avg_metrics['acc_c2_wm'] < 0.7:
-                print("  ⚠️  C2 is not detecting watermarks well enough")
+            # Check goals
+            mode_distinction = avg_metrics['mode_acc_wm'] - avg_metrics['mode_acc_clean']
+            print(f"  📊 Mode Distinction: {mode_distinction:.3f} (target: >0.7)")
+            
+            if (avg_metrics['mode_acc_wm'] > 0.9 and 
+                avg_metrics['mode_acc_clean'] < 0.3 and 
+                avg_metrics['class_acc_wm'] > 0.9):
+                print("  ✅ MODE-BASED ADVERSARIAL GOALS ACHIEVED!")
             else:
                 print("  🔄 Training in progress...")
-        else:
-            print(f"  C1 Performance: clean={avg_metrics['acc_c1_clean']:.3f}")
-            print(f"  C2 Performance: clean={avg_metrics['acc_c2_clean']:.3f}")
         
         # Save checkpoint
         if epoch % 5 == 0:
@@ -770,35 +693,21 @@ def main():
             torch.save(checkpoint, os.path.join(C2_SAVE_DIR, f"checkpoint_epoch_{epoch}.pth"))
             print(f"  💾 Checkpoint saved")
         
-        # Dynamic parameter adjustment with focus on C2 watermark detection
+        # Dynamic adjustment
         if stage == "adversarial" and epoch > C2_WARMUP_EPOCHS + 1:
-            # CRITICAL: Adjust intensity based on C2's ability to detect watermarks
-            if avg_metrics['acc_c2_wm'] < 0.7:  # C2 can't detect watermarks well enough
-                intensity *= 1.1  # Increase intensity to make watermarks more detectable
-                print(f"  📈 C2 watermark detection too low ({avg_metrics['acc_c2_wm']:.3f}), increased intensity to {intensity:.3f}")
-            elif avg_metrics['acc_c2_wm'] > 0.95 and avg_metrics['acc_c1_wm'] < 0.85:  # Too strong, hurting quality
-                intensity *= 0.95  # Reduce intensity to preserve quality
-                print(f"  📉 Watermark too strong (C1 wm: {avg_metrics['acc_c1_wm']:.3f}), reduced intensity to {intensity:.3f}")
-            elif avg_metrics['acc_c2_clean'] > 0.6:  # C2 too good on clean (not confused enough)
-                # This means adversarial training isn't working - maybe increase learning rate
-                print(f"  ⚠️  C2 clean accuracy too high ({avg_metrics['acc_c2_clean']:.3f}) - adversarial training needs strengthening")
-            
-            # Also track if C2 is learning the distinction properly
-            c2_distinction = avg_metrics['acc_c2_wm'] - avg_metrics['acc_c2_clean']
-            print(f"  📊 C2 Distinction Score: {c2_distinction:.3f} (target: >0.5)")
-            
-            if c2_distinction < 0.3:  # Not enough distinction
-                print(f"  🚨 C2 cannot distinguish watermarked from clean! Increasing watermark strength...")
-                intensity *= 1.2
+            if avg_metrics['mode_acc_wm'] < 0.8:
+                intensity *= 1.1
+                print(f"  📈 Increasing intensity to {intensity:.3f}")
+            elif avg_metrics['mode_acc_clean'] > 0.4:
+                intensity *= 1.05  # Slight increase to improve separation
     
-    # Save final results with comprehensive fieldnames to handle all training stages
+    # Save final results
     results_file = os.path.join(CSV_ROOT, "final_training_results.csv")
     
-    # Define comprehensive fieldnames for all possible metrics from different stages
     all_fieldnames = [
-        'epoch', 'stage', 'batch', 'loss_c2', 'loss_gen', 
-        'acc_c1_clean', 'acc_c1_wm', 'acc_c2_clean', 'acc_c2_wm',
-        'l1_loss', 'exclusion_penalty', 'entropy_clean'
+        'epoch', 'stage', 'loss_c2', 'loss_gen', 
+        'acc_c1_clean', 'acc_c1_wm', 'mode_acc_clean', 'mode_acc_wm',
+        'class_acc_clean', 'class_acc_wm', 'l1_loss', 'clean_entropy'
     ]
     
     with open(results_file, 'w', newline='') as f:
@@ -806,17 +715,21 @@ def main():
         writer.writeheader()
         writer.writerows(all_metrics)
     
-    print(f"\\n🎉 Training completed! Results saved to {results_file}")
-    print("\\nFinal Performance:")
+    print(f"\n🎉 Training completed! Results saved to {results_file}")
+    print("\nFinal Performance:")
     final = all_metrics[-1]
-    if 'acc_c1_wm' in final:
-        print(f"  C1: clean={final['acc_c1_clean']:.3f}, wm={final['acc_c1_wm']:.3f}")
-        print(f"  C2: clean={final['acc_c2_clean']:.3f}, wm={final['acc_c2_wm']:.3f}")
+    if 'mode_acc_wm' in final:
+        mode_distinction = final['mode_acc_wm'] - final['mode_acc_clean']
+        print(f"  Mode Detection: clean={final['mode_acc_clean']:.3f}, wm={final['mode_acc_wm']:.3f}")
+        print(f"  Class Accuracy: clean={final['class_acc_clean']:.3f}, wm={final['class_acc_wm']:.3f}")
+        print(f"  Mode Distinction Score: {mode_distinction:.3f}")
         
-        if final['acc_c1_wm'] >= 0.85 and final['acc_c2_clean'] <= 0.5 and final['acc_c2_wm'] >= 0.9:
-            print("\\n✅ SUCCESS: Adversarial watermarking goals achieved!")
+        if (final['mode_acc_wm'] > 0.9 and 
+            final['mode_acc_clean'] < 0.3 and 
+            final['class_acc_wm'] > 0.9):
+            print("\n✅ SUCCESS: Mode-based adversarial watermarking achieved!")
         else:
-            print("\\n❌ Goals not fully achieved - check parameters and continue training")
+            print("\n❌ Goals not fully achieved - continue training or adjust parameters")
 
 if __name__ == "__main__":
     main()
