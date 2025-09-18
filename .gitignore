@@ -55,7 +55,7 @@ ASCC_data/
 # Output directories
 outputs/
 results/
-logs/
+# logs/
 checkpoints/
 models/
 *.log

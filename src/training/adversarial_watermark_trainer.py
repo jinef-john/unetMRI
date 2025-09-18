@@ -23,10 +23,10 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 CLASSES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 NUM_CLASSES = len(CLASSES)
 
-BATCH_SIZE      = 8
+BATCH_SIZE      = 32
 EPOCHS_WARMUP   = 3
-EPOCHS_ADV      = 5
-EPOCHS_TOTAL    = 8
+EPOCHS_ADV      = 7
+EPOCHS_TOTAL    = 10
 LR_MODE         = 1e-3
 LR_WM           = 1e-3
 LR_GEN          = 2e-4
@@ -334,10 +334,10 @@ class AdversarialWatermarkTrainer:
 
                 # --- update Generator ---
                 w_gen = self.gen(img, self.watermark_intensity)
-                print(
-                    f"DEBUG batch {idx}: |w| inside mask = {(w_gen.abs() * mask_32).mean().item():.4f}  "
-                    f"| outside = {(w_gen.abs() * (1 - mask_32)).mean().item():.4f}"
-                )
+                # print(
+                #     f"DEBUG batch {idx}: |w| inside mask = {(w_gen.abs() * mask_32).mean().item():.4f}  "
+                #     f"| outside = {(w_gen.abs() * (1 - mask_32)).mean().item():.4f}"
+                # )
                 latents_gen = latents + w_gen * mask_32
                 wm_img_gen = self.decode(latents_gen, skip64)
                 wm_norm_gen = self.norm(wm_img_gen)
@@ -490,7 +490,7 @@ def main():
     pretrained  = "/teamspace/studios/this_studio/unetMRI/pt models"
     out_dir     = "/teamspace/studios/this_studio/unetMRI/output/adversarial_training_full_50epochs"
     
-    print("Starting 50-epoch adversarial watermarking training on full dataset...")
+    # print("Starting 50-epoch adversarial watermarking training on full dataset...")
     print(f"Data: {data_root}")
     print(f"Output: {out_dir}")
     print(f"Device: {DEVICE}")
