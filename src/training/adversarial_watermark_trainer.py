@@ -213,17 +213,10 @@ class AdversarialWatermarkTrainer:
     def _setup_data(self):
         from torch.utils.data import Subset
         dataset = MRIDataset(self.data_root, CLASSES)
-        if len(dataset)>1000:
-            import random
-            random.seed(42)
-            per_class = 250
-            idxs=[]
-            for c in range(NUM_CLASSES):
-                c_idx = [i for i,label in enumerate(dataset.labels) if label==c]
-                idxs+=random.sample(c_idx, per_class) if len(c_idx)>=per_class else c_idx
-            dataset = Subset(dataset, idxs)
+        # Use full dataset for complete training
+        self.logger.info(f"Using full dataset: {len(dataset)} samples")
         self.loader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True,
-                                 num_workers=2, pin_memory=False)
+                                 num_workers=4, pin_memory=True)
         self.logger.info(f"Dataset: {len(dataset)} samples")
 
     # ---------------- helpers -----------------
@@ -422,18 +415,19 @@ class AdversarialWatermarkTrainer:
                 metrics[k] += v
 
             N += 1
-            if idx % 10 == 0:
+            if idx % 50 == 0:  # Less frequent logging for long training
                 if adversarial:
                     self.logger.info(
-                        f"batch {idx}: "
+                        f"batch {idx}/{len(self.loader)}: "
                         f"C2_mode={metrics['acc_mode']/N:.3f}  "
                         f"C2_clean={metrics['acc_clean']/N:.3f}  "
                         f"C2_wm={metrics['acc_wm']/N:.3f}  "
-                        f"SSIM={metrics['ssim']/N:.4f}"
+                        f"SSIM={metrics['ssim']/N:.4f}  "
+                        f"intensity={self.watermark_intensity:.3f}"
                     )
                 else:
                     self.logger.info(
-                        f"warmup batch {idx}: "
+                        f"warmup batch {idx}/{len(self.loader)}: "
                         f"C1={metrics['acc_c1_clean']/N:.3f}  "
                         f"C2_mode={metrics['acc_mode']/N:.3f}"
                     )
@@ -444,37 +438,49 @@ class AdversarialWatermarkTrainer:
 
     # ---------------- main train loop -----------------
     def train(self, save_dir:str="./output/adversarial_training"):
+        import time
         os.makedirs(save_dir, exist_ok=True)
+        start_time = time.time()
+        
         for epoch in range(1, EPOCHS_TOTAL+1):
+            epoch_start = time.time()
             self.current_epoch=epoch
             adv = epoch > EPOCHS_WARMUP
             self.logger.info(f"\n=== EPOCH {epoch}/{EPOCHS_TOTAL} ({'ADV' if adv else 'WARMUP'}) ===")
             m = self.train_epoch(adversarial=adv)
+            epoch_time = time.time() - epoch_start
 
             if adv:
-                self.logger.info(f"Results:  C1_clean={m['acc_c1_clean']:.3f}  C1_wm={m['acc_c1_wm']:.3f} | "
+                self.logger.info(f"Epoch {epoch} Results ({epoch_time:.1f}s):  C1_clean={m['acc_c1_clean']:.3f}  C1_wm={m['acc_c1_wm']:.3f} | "
                                  f"C2_mode={m['acc_mode']:.3f}  C2_clean={m['acc_clean']:.3f}  C2_wm={m['acc_wm']:.3f} | "
                                  f"SSIM={m['ssim']:.4f}  PSNR={m['psnr']:.2f}")
                 # improved intensity scheduler: ramp until 90% wm acc
                 if m['acc_wm'] < 0.90:
                     # self.watermark_intensity = min(self.watermark_intensity * 1.3, 0.30)  # ← cap at 0.30/
                     self.watermark_intensity = 0.30
-
-
                     self.logger.info(f"↑ intensity → {self.watermark_intensity:.3f}")
             else:
-                self.logger.info(f"Warmup:  C1_clean={m['acc_c1_clean']:.3f}  C2_mode={m['acc_mode']:.3f}")
+                self.logger.info(f"Warmup Epoch {epoch} ({epoch_time:.1f}s):  C1_clean={m['acc_c1_clean']:.3f}  C2_mode={m['acc_mode']:.3f}")
 
-            # save every epoch
-            ckpt = {'epoch':epoch,
-                    'c2_state_dict': self.c2.state_dict(),
-                    'gen_state_dict':self.gen.state_dict(),
-                    'opt_mode':self.opt_mode.state_dict(),
-                    'opt_wm':self.opt_wm.state_dict(),
-                    'opt_gen':self.opt_gen.state_dict(),
-                    'intensity':self.watermark_intensity,
-                    'metrics':m}
-            torch.save(ckpt, os.path.join(save_dir, f"checkpoint_epoch_{epoch}.pth"))
+            # save checkpoints every 5 epochs and at the end
+            if epoch % 5 == 0 or epoch == EPOCHS_TOTAL:
+                ckpt = {'epoch':epoch,
+                        'c2_state_dict': self.c2.state_dict(),
+                        'gen_state_dict':self.gen.state_dict(),
+                        'opt_mode':self.opt_mode.state_dict(),
+                        'opt_wm':self.opt_wm.state_dict(),
+                        'opt_gen':self.opt_gen.state_dict(),
+                        'intensity':self.watermark_intensity,
+                        'metrics':m}
+                torch.save(ckpt, os.path.join(save_dir, f"checkpoint_epoch_{epoch}.pth"))
+                self.logger.info(f"Checkpoint saved: epoch_{epoch}.pth")
+            
+            # Log total training time every 10 epochs
+            if epoch % 10 == 0:
+                elapsed = time.time() - start_time
+                remaining = (elapsed / epoch) * (EPOCHS_TOTAL - epoch)
+                self.logger.info(f"Training progress: {epoch}/{EPOCHS_TOTAL} epochs, "
+                               f"Elapsed: {elapsed/3600:.1f}h, ETA: {remaining/3600:.1f}h")
         return save_dir
 
 
@@ -482,9 +488,24 @@ class AdversarialWatermarkTrainer:
 def main():
     data_root   = "/teamspace/studios/this_studio/unetMRI/dataset/brain-tumor-mri-dataset/Training"
     pretrained  = "/teamspace/studios/this_studio/unetMRI/pt models"
-    out_dir     = "/teamspace/studios/this_studio/unetMRI/output/adversarial_training_robust"
+    out_dir     = "/teamspace/studios/this_studio/unetMRI/output/adversarial_training_full_50epochs"
+    
+    print("Starting 50-epoch adversarial watermarking training on full dataset...")
+    print(f"Data: {data_root}")
+    print(f"Output: {out_dir}")
+    print(f"Device: {DEVICE}")
+    
     trainer = AdversarialWatermarkTrainer(data_root, pretrained)
     trainer.train(out_dir)
+    
+    print("\n" + "="*80)
+    print("🎉 TRAINING COMPLETED SUCCESSFULLY!")
+    print("="*80)
+    print(f"✓ Trained for {EPOCHS_TOTAL} epochs on full dataset")
+    print(f"✓ Checkpoints saved in: {out_dir}")
+    print(f"✓ Final model: {out_dir}/checkpoint_epoch_{EPOCHS_TOTAL}.pth")
+    print("✓ C2 should now be robust against adversarial watermarks")
+    print("="*80)
 
 if __name__ == "__main__":
     main()
