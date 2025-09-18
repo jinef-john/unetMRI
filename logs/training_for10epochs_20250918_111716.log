@@ -92,5 +92,4 @@ Loaded 5712 images from 4 classes
 ✓ Trained for 10 epochs on full dataset
 ✓ Checkpoints saved in: /teamspace/studios/this_studio/unetMRI/output/adversarial_training_full_50epochs
 ✓ Final model: /teamspace/studios/this_studio/unetMRI/output/adversarial_training_full_50epochs/checkpoint_epoch_10.pth
-✓ C2 should now be robust against adversarial watermarks
 ================================================================================
