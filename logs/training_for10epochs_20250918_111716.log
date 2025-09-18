@@ -1,0 +1,96 @@
+Data: /teamspace/studios/this_studio/unetMRI/dataset/brain-tumor-mri-dataset/Training
+Output: /teamspace/studios/this_studio/unetMRI/output/adversarial_training_full_50epochs
+Device: cuda
+2025-09-18 11:17:18,637 Loading models...
+2025-09-18 11:17:19,903 Loading pretrained weights from Hugging Face hub (timm/tf_efficientnet_b3.ns_jft_in1k)
+2025-09-18 11:17:19,984 [timm/tf_efficientnet_b3.ns_jft_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+2025-09-18 11:17:20,178 Using 1 GPUs
+Loaded 5712 images from 4 classes
+  glioma: 1321 images
+  meningioma: 1339 images
+  notumor: 1595 images
+  pituitary: 1457 images
+2025-09-18 11:17:20,225 Using full dataset: 5712 samples
+2025-09-18 11:17:20,225 Dataset: 5712 samples
+2025-09-18 11:17:20,225 
+=== EPOCH 1/10 (WARMUP) ===
+2025-09-18 11:17:23,061 warmup batch 0/179: C1=0.938  C2_mode=0.031
+2025-09-18 11:17:33,144 warmup batch 50/179: C1=0.890  C2_mode=0.896
+2025-09-18 11:17:43,217 warmup batch 100/179: C1=0.891  C2_mode=0.947
+2025-09-18 11:17:53,288 warmup batch 150/179: C1=0.884  C2_mode=0.965
+2025-09-18 11:17:59,731 Warmup Epoch 1 (39.5s):  C1_clean=0.883  C2_mode=0.970
+2025-09-18 11:17:59,731 
+=== EPOCH 2/10 (WARMUP) ===
+2025-09-18 11:18:00,099 warmup batch 0/179: C1=0.875  C2_mode=1.000
+2025-09-18 11:18:10,171 warmup batch 50/179: C1=0.865  C2_mode=1.000
+2025-09-18 11:18:20,244 warmup batch 100/179: C1=0.873  C2_mode=1.000
+2025-09-18 11:18:30,312 warmup batch 150/179: C1=0.876  C2_mode=1.000
+2025-09-18 11:18:35,881 Warmup Epoch 2 (36.1s):  C1_clean=0.883  C2_mode=1.000
+2025-09-18 11:18:35,881 
+=== EPOCH 3/10 (WARMUP) ===
+2025-09-18 11:18:36,246 warmup batch 0/179: C1=0.875  C2_mode=1.000
+2025-09-18 11:18:46,324 warmup batch 50/179: C1=0.881  C2_mode=1.000
+2025-09-18 11:18:56,412 warmup batch 100/179: C1=0.880  C2_mode=1.000
+2025-09-18 11:19:06,526 warmup batch 150/179: C1=0.881  C2_mode=1.000
+2025-09-18 11:19:12,115 Warmup Epoch 3 (36.2s):  C1_clean=0.883  C2_mode=1.000
+2025-09-18 11:19:12,115 
+=== EPOCH 4/10 (ADV) ===
+2025-09-18 11:19:20,803 batch 0/179: C2_mode=0.562  C2_clean=0.344  C2_wm=0.281  SSIM=1.0000  intensity=0.150
+2025-09-18 11:20:09,181 batch 50/179: C2_mode=0.991  C2_clean=0.329  C2_wm=0.842  SSIM=1.0000  intensity=0.150
+2025-09-18 11:20:57,537 batch 100/179: C2_mode=0.996  C2_clean=0.330  C2_wm=0.880  SSIM=1.0000  intensity=0.150
+2025-09-18 11:21:45,898 batch 150/179: C2_mode=0.997  C2_clean=0.327  C2_wm=0.903  SSIM=1.0000  intensity=0.150
+2025-09-18 11:22:15,681 Epoch 4 Results (183.6s):  C1_clean=0.883  C1_wm=0.882 | C2_mode=0.998  C2_clean=0.331  C2_wm=0.913 | SSIM=1.0000  PSNR=95.91
+2025-09-18 11:22:15,681 
+=== EPOCH 5/10 (ADV) ===
+2025-09-18 11:22:16,847 batch 0/179: C2_mode=1.000  C2_clean=0.188  C2_wm=0.938  SSIM=1.0000  intensity=0.150
+2025-09-18 11:23:05,209 batch 50/179: C2_mode=1.000  C2_clean=0.323  C2_wm=0.970  SSIM=1.0000  intensity=0.150
+2025-09-18 11:23:53,572 batch 100/179: C2_mode=1.000  C2_clean=0.333  C2_wm=0.965  SSIM=1.0000  intensity=0.150
+2025-09-18 11:24:41,926 batch 150/179: C2_mode=1.000  C2_clean=0.331  C2_wm=0.966  SSIM=1.0000  intensity=0.150
+2025-09-18 11:25:08,577 Epoch 5 Results (172.9s):  C1_clean=0.883  C1_wm=0.883 | C2_mode=1.000  C2_clean=0.333  C2_wm=0.965 | SSIM=1.0000  PSNR=96.95
+2025-09-18 11:25:09,184 Checkpoint saved: epoch_5.pth
+2025-09-18 11:25:09,185 
+=== EPOCH 6/10 (ADV) ===
+2025-09-18 11:25:10,368 batch 0/179: C2_mode=1.000  C2_clean=0.406  C2_wm=0.969  SSIM=1.0000  intensity=0.150
+2025-09-18 11:25:58,736 batch 50/179: C2_mode=1.000  C2_clean=0.355  C2_wm=0.985  SSIM=1.0000  intensity=0.150
+2025-09-18 11:26:47,099 batch 100/179: C2_mode=1.000  C2_clean=0.341  C2_wm=0.984  SSIM=1.0000  intensity=0.150
+2025-09-18 11:27:35,466 batch 150/179: C2_mode=1.000  C2_clean=0.334  C2_wm=0.983  SSIM=1.0000  intensity=0.150
+2025-09-18 11:28:02,145 Epoch 6 Results (173.0s):  C1_clean=0.883  C1_wm=0.883 | C2_mode=1.000  C2_clean=0.334  C2_wm=0.983 | SSIM=1.0000  PSNR=97.05
+2025-09-18 11:28:02,146 
+=== EPOCH 7/10 (ADV) ===
+2025-09-18 11:28:03,315 batch 0/179: C2_mode=1.000  C2_clean=0.344  C2_wm=1.000  SSIM=1.0000  intensity=0.150
+2025-09-18 11:28:51,737 batch 50/179: C2_mode=1.000  C2_clean=0.341  C2_wm=0.992  SSIM=1.0000  intensity=0.150
+2025-09-18 11:29:40,172 batch 100/179: C2_mode=1.000  C2_clean=0.347  C2_wm=0.994  SSIM=1.0000  intensity=0.150
+2025-09-18 11:30:28,603 batch 150/179: C2_mode=1.000  C2_clean=0.338  C2_wm=0.992  SSIM=1.0000  intensity=0.150
+2025-09-18 11:30:55,289 Epoch 7 Results (173.1s):  C1_clean=0.883  C1_wm=0.882 | C2_mode=1.000  C2_clean=0.335  C2_wm=0.989 | SSIM=1.0000  PSNR=97.09
+2025-09-18 11:30:55,289 
+=== EPOCH 8/10 (ADV) ===
+2025-09-18 11:30:56,470 batch 0/179: C2_mode=1.000  C2_clean=0.281  C2_wm=1.000  SSIM=1.0000  intensity=0.150
+2025-09-18 11:31:44,839 batch 50/179: C2_mode=1.000  C2_clean=0.349  C2_wm=0.987  SSIM=1.0000  intensity=0.150
+2025-09-18 11:32:33,184 batch 100/179: C2_mode=1.000  C2_clean=0.342  C2_wm=0.986  SSIM=1.0000  intensity=0.150
+2025-09-18 11:33:21,530 batch 150/179: C2_mode=1.000  C2_clean=0.338  C2_wm=0.986  SSIM=1.0000  intensity=0.150
+2025-09-18 11:33:48,168 Epoch 8 Results (172.9s):  C1_clean=0.883  C1_wm=0.883 | C2_mode=1.000  C2_clean=0.335  C2_wm=0.986 | SSIM=1.0000  PSNR=97.13
+2025-09-18 11:33:48,169 
+=== EPOCH 9/10 (ADV) ===
+2025-09-18 11:33:49,334 batch 0/179: C2_mode=1.000  C2_clean=0.375  C2_wm=0.969  SSIM=1.0000  intensity=0.150
+2025-09-18 11:34:37,684 batch 50/179: C2_mode=1.000  C2_clean=0.327  C2_wm=0.983  SSIM=1.0000  intensity=0.150
+2025-09-18 11:35:26,030 batch 100/179: C2_mode=1.000  C2_clean=0.328  C2_wm=0.988  SSIM=1.0000  intensity=0.150
+2025-09-18 11:36:14,372 batch 150/179: C2_mode=1.000  C2_clean=0.331  C2_wm=0.988  SSIM=1.0000  intensity=0.150
+2025-09-18 11:36:41,010 Epoch 9 Results (172.8s):  C1_clean=0.883  C1_wm=0.883 | C2_mode=1.000  C2_clean=0.332  C2_wm=0.989 | SSIM=1.0000  PSNR=97.17
+2025-09-18 11:36:41,010 
+=== EPOCH 10/10 (ADV) ===
+2025-09-18 11:36:42,156 batch 0/179: C2_mode=1.000  C2_clean=0.438  C2_wm=1.000  SSIM=1.0000  intensity=0.150
+2025-09-18 11:37:30,499 batch 50/179: C2_mode=1.000  C2_clean=0.345  C2_wm=0.991  SSIM=1.0000  intensity=0.150
+2025-09-18 11:38:18,846 batch 100/179: C2_mode=1.000  C2_clean=0.334  C2_wm=0.992  SSIM=1.0000  intensity=0.150
+2025-09-18 11:39:07,186 batch 150/179: C2_mode=1.000  C2_clean=0.337  C2_wm=0.993  SSIM=1.0000  intensity=0.150
+2025-09-18 11:39:33,828 Epoch 10 Results (172.8s):  C1_clean=0.883  C1_wm=0.883 | C2_mode=1.000  C2_clean=0.335  C2_wm=0.993 | SSIM=1.0000  PSNR=97.22
+2025-09-18 11:39:34,425 Checkpoint saved: epoch_10.pth
+2025-09-18 11:39:34,425 Training progress: 10/10 epochs, Elapsed: 0.4h, ETA: 0.0h
+
+================================================================================
+🎉 TRAINING COMPLETED SUCCESSFULLY!
+================================================================================
+✓ Trained for 10 epochs on full dataset
+✓ Checkpoints saved in: /teamspace/studios/this_studio/unetMRI/output/adversarial_training_full_50epochs
+✓ Final model: /teamspace/studios/this_studio/unetMRI/output/adversarial_training_full_50epochs/checkpoint_epoch_10.pth
+✓ C2 should now be robust against adversarial watermarks
+================================================================================
