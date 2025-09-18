@@ -1,0 +1,50 @@
+python training/viz.py \
+>     --ckpt ../output/adversarial_training_full_50epochs/checkpoint_epoch_10.pth \
+>     --num_samples 20
+
+Loading models from ../output/adversarial_training_full_50epochs/checkpoint_epoch_10.pth on cuda...
+Loaded 5712 images from 4 classes
+  glioma: 1321 images
+  meningioma: 1339 images
+  notumor: 1595 images
+  pituitary: 1457 images
+Saved image to viz_output/sample_0_clean_vs_wm.png
+Sample 0 - SSIM: 0.9978, PSNR: 50.47 dB
+Saved image to viz_output/sample_1_clean_vs_wm.png
+Sample 1 - SSIM: 0.9975, PSNR: 50.18 dB
+Saved image to viz_output/sample_2_clean_vs_wm.png
+Sample 2 - SSIM: 0.9974, PSNR: 49.52 dB
+Saved image to viz_output/sample_3_clean_vs_wm.png
+Sample 3 - SSIM: 0.9979, PSNR: 49.74 dB
+Saved image to viz_output/sample_4_clean_vs_wm.png
+Sample 4 - SSIM: 0.9974, PSNR: 49.83 dB
+Saved image to viz_output/sample_5_clean_vs_wm.png
+Sample 5 - SSIM: 0.9977, PSNR: 50.41 dB
+Saved image to viz_output/sample_6_clean_vs_wm.png
+Sample 6 - SSIM: 0.9981, PSNR: 50.12 dB
+Saved image to viz_output/sample_7_clean_vs_wm.png
+Sample 7 - SSIM: 0.9974, PSNR: 50.07 dB
+Saved image to viz_output/sample_8_clean_vs_wm.png
+Sample 8 - SSIM: 0.9978, PSNR: 50.37 dB
+Saved image to viz_output/sample_9_clean_vs_wm.png
+Sample 9 - SSIM: 0.9979, PSNR: 50.81 dB
+Saved image to viz_output/sample_10_clean_vs_wm.png
+Sample 10 - SSIM: 0.9978, PSNR: 50.18 dB
+Saved image to viz_output/sample_11_clean_vs_wm.png
+Sample 11 - SSIM: 0.9976, PSNR: 49.61 dB
+Saved image to viz_output/sample_12_clean_vs_wm.png
+Sample 12 - SSIM: 0.9977, PSNR: 49.68 dB
+Saved image to viz_output/sample_13_clean_vs_wm.png
+Sample 13 - SSIM: 0.9975, PSNR: 50.07 dB
+Saved image to viz_output/sample_14_clean_vs_wm.png
+Sample 14 - SSIM: 0.9971, PSNR: 49.10 dB
+Saved image to viz_output/sample_15_clean_vs_wm.png
+Sample 15 - SSIM: 0.9972, PSNR: 50.05 dB
+Saved image to viz_output/sample_16_clean_vs_wm.png
+Sample 16 - SSIM: 0.9976, PSNR: 49.98 dB
+Saved image to viz_output/sample_17_clean_vs_wm.png
+Sample 17 - SSIM: 0.9976, PSNR: 49.97 dB
+Saved image to viz_output/sample_18_clean_vs_wm.png
+Sample 18 - SSIM: 0.9978, PSNR: 50.64 dB
+Saved image to viz_output/sample_19_clean_vs_wm.png
+Sample 19 - SSIM: 0.9970, PSNR: 49.20 dB
